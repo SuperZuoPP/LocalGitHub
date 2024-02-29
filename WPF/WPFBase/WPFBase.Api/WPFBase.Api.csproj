@@ -16,4 +16,8 @@
     <ProjectReference Include="..\WPFBase.Shared\WPFBase.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Context\Model\BM\" />
+  </ItemGroup>
+
 </Project>

@@ -12,14 +12,14 @@ namespace WPFBase.Models
     /// </summary>
     public class MenuBar : BindableBase
     {
-        private string icom;
+        private string icon;
         private string title;
         private string nameSpace;
 
         public string Icon
         {
-            get { return icom; }
-            set { icom = value; }
+            get { return icon; }
+            set { icon = value; }
         }
          
         public string Title

@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using WPFBase.Shared.DTO.SM;
+using WPFBase.Shared.Extensions;
 
-namespace WPFBase.Shared.DTO.SM
+namespace WPFBase.Shared.DTO.BM
 {
-    public class OperatorDto : BaseDto
+    public class TbWeighOperatorDto : BaseDto
     {
-        private string userCode;
+        
         private string userNumber;
         private string userName;
         private string passWord;
         private int status;
 
-        public string UserCode
-        {
-            get { return userCode; }
-            set { SetProperty<string>(ref userCode, value); }
-        }
+      
 
         public string UserNumber
         {
@@ -29,7 +27,7 @@ namespace WPFBase.Shared.DTO.SM
             get { return userName; }
             set { SetProperty<string>(ref userName, value); }
         }
-         
+
 
         public string PassWord
         {

@@ -15,6 +15,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WPFBase.Api.Context;
 using WPFBase.Api.Context.Model;
+using WPFBase.Api.Context.Model.BM;
 using WPFBase.Api.Context.Model.SM;
 using WPFBase.Api.Context.Repository;
 using WPFBase.Api.Context.UnitOfWork;
@@ -49,10 +50,13 @@ namespace WPFBase.Api
            .AddCustomRepository<ToDo, ToDoRepository>()
            .AddCustomRepository<Memo, MemoRepository>()
            .AddCustomRepository<User, UserRepository>()
-            .AddCustomRepository<Operator, OperatorRepository>();
+           .AddCustomRepository<Operator, OperatorRepository>()
+           .AddCustomRepository<TbWeighOperator, TbWeighOperatorRepository>();
 
             services.AddTransient<IToDoService, ToDoService>();
             services.AddTransient<ILoginService, LoginService>();
+            services.AddTransient<ITbWeighOperatorService, TbWeighOperatorService>();
+
             //Ìí¼ÓAutoMapper
             var atuomapperConfig = new MapperConfiguration(config => {
                 config.AddProfile(new AutoMapperProFile());

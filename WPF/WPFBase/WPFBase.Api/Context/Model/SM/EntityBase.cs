@@ -6,7 +6,7 @@ namespace WPFBase.Api.Context.Model.SM
     {
         public int Id { get; set; }
 
-        public int OperateBit { get; set; }
+        public int? OperateBit { get; set; }
 
         public string CreateUserCode { get; set; }
 
@@ -18,9 +18,10 @@ namespace WPFBase.Api.Context.Model.SM
 
         public string LastModifiedUserName { get; set; }
 
-        public DateTime LastModifiedTime { get; set; }
+        public DateTime? LastModifiedTime { get; set; }
 
         public string Remark { get; set; }
+         
 
     }
 }
