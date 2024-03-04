@@ -43,9 +43,11 @@ namespace WPFBase.ViewModels.SMViewModel
 
         void CreateMenuBar()
         {
-            MenuBars.Add(new MenuBar() { Icon = "\xe62f", Title = "个性化", NameSpace = "SkinView" });
-            MenuBars.Add(new MenuBar() { Icon = "\xe64a", Title = "系统设置", NameSpace = "" });
-            MenuBars.Add(new MenuBar() { Icon = "\xe62f", Title = "关于更多", NameSpace = "AboutView" });
+            MenuBars.Add(new MenuBar() { Icon = "Palette", Title = "个性化", NameSpace = "SkinView" });
+            MenuBars.Add(new MenuBar() { Icon = "Account", Title = "用户管理", NameSpace = "UserGroupView" });
+            MenuBars.Add(new MenuBar() { Icon = "Cog", Title = "权限管理", NameSpace = "AuthorityView" });
+            MenuBars.Add(new MenuBar() { Icon = "Cog", Title = "系统设置", NameSpace = "" });
+            MenuBars.Add(new MenuBar() { Icon = "Palette", Title = "关于更多", NameSpace = "AboutView" });
         }
     }
 }

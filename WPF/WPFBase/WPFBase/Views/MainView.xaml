@@ -4,119 +4,169 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:prism="http://prismlibrary.com/"
+        xmlns:materialDesign ="http://materialdesigninxaml.net/winfx/xaml/themes"
         prism:ViewModelLocator.AutoWireViewModel="True" 
-        xmlns:local="clr-namespace:WPFBase"
-        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:local="clr-namespace:WPFBase" 
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
         xmlns:ext="clr-namespace:WPFBase.Extensions" 
         FontFamily="微软雅黑"
         mc:Ignorable="d"
         Title="MainView" 
         Width="1280"
-        Height="768"  
-        WindowStartupLocation="CenterScreen"
-        Style="{StaticResource noneBorderWindowStyle}"
-        >
-    <Border CornerRadius="30" Background="#EFF2F7" x:Name="mainwindow" >
-        <hc:TransitioningContentControl >
-            <hc:SimplePanel Margin="22">
-                <hc:Drawer Name="DrawerLeft" Dock="Left" ShowMode="Push" >
-                    <Border Background="{DynamicResource RegionBrush}" Width="300" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource BorderBrush}">
+        Height="768"   
+    AllowsTransparency="True"
+    Background="{DynamicResource MaterialDesignPaper}" 
+    TextElement.FontSize="13"
+    TextElement.FontWeight="Regular"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="Auto"
+    WindowStartupLocation="CenterScreen" 
+    WindowStyle="None" >
 
-                        <DockPanel MinWidth="220">
+     
+    <materialDesign:DialogHost
+        DialogTheme="Inherit"  x:Name="DialogHost" 
+        Identifier="Root" >
+        <materialDesign:DrawerHost x:Name="drawerHost" IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
+            <materialDesign:DrawerHost.LeftDrawerContent>
+                <DockPanel MinWidth="220">
 
-                            <StackPanel Margin="0,20" DockPanel.Dock="Top">
-                                <Image
-                                    Width="50"
-                                    Height="50"
-                                    Source="wxzc.jpg">
-                                        <Image.Clip>
-                                            <EllipseGeometry
-                                            Center="25,25"
-                                            RadiusX="25"
-                                            RadiusY="25" />
-                                        </Image.Clip>   
-                                </Image>
-                                <TextBlock
-                                    Margin="0,10"
-                                    HorizontalAlignment="Center"
-                                    Text="{Binding UserName}" />    
-                            </StackPanel>
+                    <StackPanel Margin="0,20" DockPanel.Dock="Top">
+                        <Image
+                            Width="50"
+                            Height="50"
+                            Source="wxzc.jpg">
+                            <Image.Clip>
+                                <EllipseGeometry
+                                    Center="25,25"
+                                    RadiusX="25"
+                                    RadiusY="25" />
+                            </Image.Clip>
+                        </Image>
+                        <TextBlock
+                        Margin="0,10"
+                        HorizontalAlignment="Center"
+                        Text="{Binding UserName}" />
+                    </StackPanel>
 
-                            <ListBox
-                                x:Name="menuBar"
-                                
-                                ItemContainerStyle="{StaticResource MyListBoxItemStyle}"
-                                ItemsSource="{Binding MenuBars}">   
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="SelectionChanged">
-                                        <i:InvokeCommandAction Command="{Binding NavigateCommand}" 
+                    <ListBox
+                        x:Name="menuBar"
+                        ItemContainerStyle="{StaticResource MyListBoxItemStyle}"
+                        ItemsSource="{Binding MenuBars}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding NavigateCommand}" 
                                                        CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=ListBox}}" />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Background="Transparent" Orientation="Horizontal">
-                                            <TextBlock Margin="10,0" Text="{Binding Icon}" FontFamily="{DynamicResource Iconfont}" VerticalAlignment="Center" HorizontalAlignment="Center"   FontSize="14"/>
-                                            <TextBlock Margin="10,0" Text="{Binding Title}" />
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Background="Transparent" Orientation="Horizontal">
+                                    <materialDesign:PackIcon Margin="15,0" Kind="{Binding Icon}" />
+                                    <TextBlock Margin="10,0" Text="{Binding Title}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
 
-                        </DockPanel>
-                    </Border>
-                </hc:Drawer>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition/> 
-                    </Grid.RowDefinitions>
+                </DockPanel>
+            </materialDesign:DrawerHost.LeftDrawerContent>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <materialDesign:Snackbar x:Name="Snackbar" Panel.ZIndex="1" MessageQueue="{materialDesign:MessageQueue}"/>
+                <materialDesign:ColorZone
+                    x:Name="ColorZone"
+                    Padding="16"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                    DockPanel.Dock="Top"
+                    Mode="PrimaryMid">
                     <DockPanel LastChildFill="True">
                         <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                             <Button
                                 x:Name="btnMin"
-                                Content="—" />
+                                Content="—"
+                                Style="{StaticResource MaterialDesignFlatMidBgButton}" />
                             <Button
                                 x:Name="btnMax"
-                                Content="☐"  />
+                                Content="☐"
+                                Style="{StaticResource MaterialDesignFlatMidBgButton}" />
                             <Button
                                 x:Name="btnClose"
-                                Content="✕" />
+                                Content="✕"
+                                Style="{StaticResource MaterialDesignFlatMidBgButton}" />
                         </StackPanel>
 
-                        <StackPanel Orientation="Horizontal">
-                            <ToggleButton Margin="5 5 0 5" HorizontalAlignment="Left" Content="&#xe628;" FontFamily="{DynamicResource Iconfont}" FontSize="16"  IsChecked="{Binding IsOpen,ElementName=DrawerLeft}"/>
+                        <materialDesign:PopupBox DockPanel.Dock="Right">
+                            <materialDesign:PopupBox.ToggleContent>
+                                <Image
+                                Width="25"
+                                Height="25" 
+                                Source="wxzc.jpg"   
+                                    >
+                                    <Image.Clip>
+                                        <EllipseGeometry
+                                        Center="12.5,12.5"
+                                        RadiusX="12.5"
+                                        RadiusY="12.5" />
+                                    </Image.Clip>
+                                </Image>
+                            </materialDesign:PopupBox.ToggleContent>
 
-                            <Button 
+                            <StackPanel>
+                                <Button Command="{Binding AppCenterCommand}" Content="个人中心"/>
+                                <Button Command="{Binding LoginOutCommand}" Content="注销当前账户"/>
+                            </StackPanel>
+                        </materialDesign:PopupBox>
+
+
+
+                        <StackPanel Orientation="Horizontal">
+                            <ToggleButton
+                                x:Name="MenuToggleButton"
+                                AutomationProperties.Name="HamburgerToggleButton"
+                                IsChecked="False" 
+                                Style="{StaticResource MaterialDesignHamburgerToggleButton}" />
+
+                            <Button
                                 Margin="24,0,0,0"
-                                Command="{Binding GoBackCommand}" 
-                                hc:IconElement.Geometry="{StaticResource LeftGeometry}"
+                                materialDesign:RippleAssist.Feedback="{Binding RelativeSource={RelativeSource Self}, Path=Foreground, Converter={StaticResource BrushRoundConverter}}"
+                                Command="{Binding GoBackCommand}"
+                                Content="{materialDesign:PackIcon Kind=ArrowLeft,
+                                                                  Size=24}"
                                 Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"
-                            
+                                Style="{DynamicResource MaterialDesignToolButton}"
                                 ToolTip="Previous Item" />
 
                             <Button
                                 Margin="16,0,0,0"
+                                materialDesign:RippleAssist.Feedback="{Binding RelativeSource={RelativeSource Self}, Path=Foreground, Converter={StaticResource BrushRoundConverter}}"
                                 Command="{Binding GoForwardCommand}"
-                                hc:IconElement.Geometry="{StaticResource RightGeometry}"
+                                Content="{materialDesign:PackIcon Kind=ArrowRight,
+                                                                  Size=24}"
                                 Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"
-                              
+                                Style="{DynamicResource MaterialDesignToolButton}"
                                 ToolTip="Next Item" />
 
                             <TextBlock
                                 Margin="16,0"
                                 HorizontalAlignment="Center"
-                                VerticalAlignment="Center" 
+                                VerticalAlignment="Center"
+                                AutomationProperties.Name="Material Design In XAML Toolkit"
                                 FontSize="22"
-                                Text="基础框架模板" />
+                                Text="基础框架" />
                         </StackPanel>
                     </DockPanel>
-                 
-                    <ContentControl Margin="0,10,0,10" Grid.Row="1" prism:RegionManager.RegionName="{x:Static ext:PrismManager.MainViewRegionName}"  />
-                </Grid>
-            </hc:SimplePanel>
-        </hc:TransitioningContentControl>
-    </Border>
-    
+                </materialDesign:ColorZone>
+
+                <ContentControl Grid.Row="1" prism:RegionManager.RegionName="{x:Static ext:PrismManager.MainViewRegionName}"  />
+            </Grid>
+        </materialDesign:DrawerHost>
+    </materialDesign:DialogHost>
+   
+
 </Window>

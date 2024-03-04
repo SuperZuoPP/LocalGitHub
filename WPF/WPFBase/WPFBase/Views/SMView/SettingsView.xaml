@@ -6,8 +6,10 @@
              xmlns:local="clr-namespace:WPFBase.Views.SMView"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:ext="clr-namespace:WPFBase.Extensions"
              mc:Ignorable="d" 
+             Background="Transparent" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
@@ -16,36 +18,49 @@
         </Grid.RowDefinitions>
 
         <TextBlock
-      Margin="20,10"
-      FontSize="26"
-      Text="设置" />
+          Margin="20,5"
+          FontSize="26"
+          Text="系统设置" />    
 
         <Border BorderBrush="#DDDDDD" BorderThickness="0,0,0,0.3" />
 
-        <Grid Grid.Row="1" Margin="50">
+        <Grid Grid.Row="1" Margin="30">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="220" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <ListBox
-          x:Name="menuBar"
-          ItemContainerStyle="{StaticResource MyListBoxItemStyle}"
-          ItemsSource="{Binding MenuBars}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding NavigateCommand}" CommandParameter="{Binding ElementName=menuBar, Path=SelectedItem}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Background="Transparent" Orientation="Horizontal">
-                            <TextBlock Margin="10,0" Text="{Binding Icon}" FontFamily="{DynamicResource Iconfont}" VerticalAlignment="Center" HorizontalAlignment="Center"   FontSize="14"/>
-                            <TextBlock Margin="10,0" Text="{Binding Title}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <Border Background="#623ED0" CornerRadius="0 50 0 30">
+                <DockPanel>
+                    <Border Width="80" Height="80" Padding="3" Background="White" CornerRadius="100" DockPanel.Dock="Top" HorizontalAlignment="Left" Margin="20 -30 0 0">
+                        <Ellipse>
+                            <Ellipse.Fill>
+                                <ImageBrush ImageSource="/Views/SMView/user.jpg"/>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                    </Border>
+                    <ListBox Margin="0,0"
+                      x:Name="menuBar"
+                      ItemContainerStyle="{StaticResource MyListBoxItemStyle}"
+                      ItemsSource="{Binding MenuBars}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding NavigateCommand}" CommandParameter="{Binding ElementName=menuBar, Path=SelectedItem}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Background="Transparent" Orientation="Horizontal">
+                                    <materialDesign:PackIcon Margin="15,0" Kind="{Binding Icon}" />
+                                    <TextBlock Margin="10,0" Text="{Binding Title}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel> 
+            </Border>
+                
+
 
             <ContentControl
           Grid.Column="1"

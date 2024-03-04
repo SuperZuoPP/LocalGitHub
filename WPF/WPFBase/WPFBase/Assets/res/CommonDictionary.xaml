@@ -9,13 +9,98 @@
         <Setter Property="AllowsTransparency" Value="True"/>
         <Setter Property="Background" Value="Transparent"/>
     </Style>
+ 
+    <Style TargetType="{x:Type Button}" x:Key="SearchButtonStyle">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" CornerRadius="0,3,3,0">
+                        <TextBox Text="搜 索" VerticalAlignment="Center" HorizontalAlignment="Center"  BorderThickness="0" Background="Transparent" IsReadOnly="True" ></TextBox>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-    <Style x:Key="CommboxMediumStyle" BasedOn="{StaticResource ComboBoxExtend}" TargetType="{x:Type ComboBox}">
-        <Setter Property="ItemContainerStyle" Value="{StaticResource ComboBox.Small}"/>
-        <Setter Property="hc:InfoElement.MinContentHeight" Value="28"/>
-        <Setter Property="hc:InfoElement.ContentHeight" Value="28"/>
-        <Setter Property="hc:TitleElement.MarginOnTheLeft" Value="5,6,10,0"/>
-        <Setter Property="Padding" Value="6,2,6,1"/>
-        <Setter Property="MinHeight" Value="28"/> 
+    <!--搜索框样式-->
+    <Style TargetType="{x:Type TextBox}"  x:Key="SearchTextBoxStyle">
+        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+        <Setter Property="BorderBrush" Value="#FFD4EEFB"></Setter>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="AllowDrop" Value="True"/>
+        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                SnapsToDevicePixels="True"
+                                Height="30" CornerRadius="5">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="50"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="&#xe607;" FontFamily="{DynamicResource Iconfont}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="LightBlue" FontSize="14"></TextBlock>
+                            <TextBlock Name="mask" Text="输入条件查找" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="3,0" FontSize="12" Foreground="#ccc" Grid.Column="1" Visibility="Collapsed"></TextBlock>
+                            <ScrollViewer x:Name="PART_ContentHost" Grid.Column="1" Focusable="False" VerticalAlignment="Center" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"></ScrollViewer>
+                            <!--<TextBox Grid.Column="1" Text="{TemplateBinding Text}" Background="Transparent" BorderThickness="0" VerticalAlignment="Center"></TextBox>-->
+                            <Button Grid.Column="2"  Background="{TemplateBinding BorderBrush}" Style="{StaticResource SearchButtonStyle}"></Button>
+
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush"  Value="#2886FD"></Setter>
+                        </Trigger>
+                        <DataTrigger Binding="{Binding Text,RelativeSource={RelativeSource self}}" Value="">
+                            <Setter Property="Visibility" Value="Visible" TargetName="mask"></Setter>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsKeyboardFocused" Value="True">
+                <Setter Property="BorderBrush" Value="LightBlue"></Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--自定义ListBox样式-->
+    <Style x:Key="MyListBoxItemStyle" TargetType="ListBoxItem"> 
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Grid>
+                        <Border x:Name="borderHeader" />
+                        <Border x:Name="border" />
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="borderHeader" Property="BorderThickness" Value="4,0,0,0" />
+                            <Setter TargetName="borderHeader" Property="BorderBrush" Value="LightGray" />
+                            <Setter TargetName="border" Property="Background" Value="LightGray" />
+                            <Setter TargetName="border" Property="Opacity" Value="0.2" />
+                        </Trigger>
+
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="LightGray" />
+                            <Setter TargetName="border" Property="Opacity" Value="0.2" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 </ResourceDictionary>
