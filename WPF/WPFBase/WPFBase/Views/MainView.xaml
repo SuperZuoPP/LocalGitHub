@@ -151,7 +151,16 @@
                                 Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"
                                 Style="{DynamicResource MaterialDesignToolButton}"
                                 ToolTip="Next Item" />
-
+                            <Button
+                                Margin="16,0,0,0"
+                                materialDesign:RippleAssist.Feedback="{Binding RelativeSource={RelativeSource Self}, Path=Foreground, Converter={StaticResource BrushRoundConverter}}"
+                                Command="{Binding GoHomeCommand}"
+                                Content="{materialDesign:PackIcon Kind=HomeCircle,
+                                                                  Size=24}"
+                                Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"
+                                Style="{DynamicResource MaterialDesignToolButton}"
+                                ToolTip="主页" />
+                             
                             <TextBlock
                                 Margin="16,0"
                                 HorizontalAlignment="Center"

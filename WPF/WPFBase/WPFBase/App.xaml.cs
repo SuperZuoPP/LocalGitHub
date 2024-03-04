@@ -14,6 +14,8 @@ using WPFBase.ViewModels.SMViewModel;
 using WPFBase.Views; 
 using WPFBase.Views.SMView;
 using WPFBase.Views.Dialogs;
+using WPFBase.Services.ServiceBase;
+using WPFBase.Services;
 
 namespace WPFBase
 {
@@ -38,6 +40,15 @@ namespace WPFBase
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            //注册httpclient
+            containerRegistry.GetContainer()
+                .Register<HttpRestClient>(made: Parameters.Of.Type<string>(serviceKey: "webUrl"));
+            //containerRegistry.GetContainer().RegisterInstance(ConfigurationManager.AppSettings["Url"], serviceKey: "webUrl");
+            containerRegistry.GetContainer().RegisterInstance(@"https://localhost:44390/", serviceKey: "webUrl");
+
+            //注册服务  
+            containerRegistry.Register<ILoginService, LoginService>(); 
+
             containerRegistry.Register<IDialogHostService, DialogHostService>();
 
             containerRegistry.RegisterForNavigation<AboutView>();

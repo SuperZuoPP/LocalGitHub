@@ -14,13 +14,18 @@
 
   <ItemGroup>
     <Folder Include="Assets\Images\" />
-    <Folder Include="Services\ServiceBase\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="HandyControl" Version="3.5.0" />
     <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
+    <PackageReference Include="RestSharp" Version="106.12.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WPFBase.Shared\WPFBase.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
