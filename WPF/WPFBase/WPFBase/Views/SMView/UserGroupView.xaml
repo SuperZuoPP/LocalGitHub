@@ -86,13 +86,13 @@
                 </DataGridTemplateColumn>
                 <DataGridTextColumn
                     Width="0.8*"
-                    Binding="{Binding TbWeighOperatorDto.userNumber}"
+                    Binding="{Binding UserNumber}"
                     ElementStyle="{StaticResource textColStyleCenter}"
                     Header="编号"
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Width="0.8*"
-                    Binding="{Binding TbWeighOperatorDto.userName}"
+                    Binding="{Binding UserName}"
                     ElementStyle="{StaticResource textColStyleCenter}"
                     Header="用户名"
                     IsReadOnly="True" />

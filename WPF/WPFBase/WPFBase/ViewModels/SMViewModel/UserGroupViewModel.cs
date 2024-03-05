@@ -119,7 +119,7 @@ namespace WPFBase.ViewModels.SMViewModel
                 PageIndex = 0,
                 PageSize = 5,
                 Search = Search, 
-                Status = 0
+                Status = 1
             });
 
             if (result.Status)
