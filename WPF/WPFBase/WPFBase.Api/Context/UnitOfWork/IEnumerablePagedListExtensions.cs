@@ -2,7 +2,7 @@
 { 
     using System;
     using System.Collections.Generic;
-    using WPFBase.Shared.Contact;
+    using WPFBase.Shared.Extensions;
 
     /// <summary>
     /// Provides some extension methods for <see cref="IEnumerable{T}"/> to provide paging capability.

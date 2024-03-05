@@ -30,8 +30,8 @@ namespace WPFBase.Views
             aggregator.ResgiterMessage(arg =>
             {
                 Snackbar.MessageQueue.Enqueue(arg.Message);
-            });
-
+            },"Main");
+            
             //注册等待消息窗口
             aggregator.Resgiter(arg =>
             {

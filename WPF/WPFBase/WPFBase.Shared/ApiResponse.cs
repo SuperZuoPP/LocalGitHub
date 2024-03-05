@@ -21,4 +21,6 @@ namespace WPFBase.Shared
 
         public T Result { get; set; }
     }
+
+     
 }

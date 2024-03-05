@@ -9,7 +9,7 @@
     using Microsoft.EntityFrameworkCore.Query;
     using Microsoft.EntityFrameworkCore.ChangeTracking;
     using Microsoft.EntityFrameworkCore;
-    using WPFBase.Shared.Contact;
+    using WPFBase.Shared.Extensions;
 
     /// <summary>
     /// Defines the interfaces for generic repository.

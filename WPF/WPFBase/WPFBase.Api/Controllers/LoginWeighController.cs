@@ -4,6 +4,7 @@ using WPFBase.Api.Services.BM;
 using WPFBase.Api.Services.SM;
 using WPFBase.Shared.DTO.BM;
 using WPFBase.Shared.DTO.SM;
+using WPFBase.Shared.Parameters;
 
 namespace WPFBase.Api.Controllers
 {
@@ -24,6 +25,7 @@ namespace WPFBase.Api.Controllers
         //[Authorize]
         public async Task<ApiResponse> Resgiter([FromBody] TbWeighOperatorDto param) => await service.Resgiter(param);
 
-
+        [HttpGet]
+        public async Task<ApiResponse> GetAllFilterAsync([FromQuery] TbWeighOperatorDtoParameter param) => await service.GetAllFilterAsync(param);
     }
 }

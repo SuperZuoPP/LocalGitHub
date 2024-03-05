@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using WPFBase.Api.Context.Model;
 using WPFBase.Api.Context.Model.BM;
@@ -10,6 +11,7 @@ using WPFBase.Api.Services.SM;
 using WPFBase.Shared.DTO.BM;
 using WPFBase.Shared.DTO.SM;
 using WPFBase.Shared.Extensions;
+using WPFBase.Shared.Parameters;
 
 namespace WPFBase.Api.Services.BM
 {
@@ -23,6 +25,28 @@ namespace WPFBase.Api.Services.BM
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
         }
+
+        public async Task<ApiResponse> GetAllFilterAsync(TbWeighOperatorDtoParameter paramter)
+        {
+            try
+            {
+                var repository = unitOfWork.GetRepository<TbWeighOperator>();
+                var operators = await repository.GetPagedListAsync(predicate:
+                   x => (string.IsNullOrWhiteSpace(paramter.Search) ? true : x.UserName.Contains(paramter.Search))
+                   && (paramter.Status == null ? true : x.Status.Equals(paramter.Status)),
+                   pageIndex: paramter.PageIndex,
+                   pageSize: paramter.PageSize,
+                   orderBy: source => source.OrderByDescending(t => t.CreateTime));
+ 
+                return new ApiResponse(true, operators);
+            }
+            catch (Exception ex)
+            { 
+                return new ApiResponse(ex.Message);
+            }
+             
+        }
+
         public async Task<ApiResponse> LoginAsync(string account, string password)
         {
             try
@@ -69,5 +93,10 @@ namespace WPFBase.Api.Services.BM
                 return new ApiResponse("注册账号失败！" + ex.ToString());
             }
         }
+
+
+        
+
+
     }
 }

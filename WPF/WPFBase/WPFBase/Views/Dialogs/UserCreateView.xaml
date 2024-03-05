@@ -4,8 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:WPFBase.Views.Dialogs"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:pass="clr-namespace:WPFBase.Extensions" 
     Width="450"
     Height="350"
     mc:Ignorable="d">
@@ -16,6 +18,12 @@
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
+        <materialDesign:Snackbar
+            x:Name="LoginSnakeBar"
+            Grid.ColumnSpan="2"
+            Panel.ZIndex="1"
+            MessageQueue="{materialDesign:MessageQueue}" />
+        
         <TextBlock
             Padding="20,10"
             FontSize="20"
@@ -28,9 +36,9 @@
                 DockPanel.Dock="Top"
                 Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Text="启用:" />
-                <ComboBox Margin="10,0,0,0" SelectedIndex="{Binding Status}">
-                    <ComboBoxItem Selector.IsSelected="True">是</ComboBoxItem>
+                <ComboBox Margin="10,0,0,0" SelectedIndex="{Binding Status}"> 
                     <ComboBoxItem>否</ComboBoxItem>
+                    <ComboBoxItem Selector.IsSelected="True">是</ComboBoxItem>
                 </ComboBox>
             </StackPanel>
 
@@ -64,6 +72,7 @@
                 <TextBox
                     Width="200"
                     materialDesign:HintAssist.Hint="请输入姓名"
+                     materialDesign:HintAssist.HelperText="示例：左超"
                     Style="{StaticResource MaterialDesignTextBox}"
                     Text="{Binding UserName}" />
             </StackPanel>
@@ -82,9 +91,14 @@
                     Width="200"
                     Margin="20,5"
                     materialDesign:HintAssist.Hint="请输入密码"
+                    pass:PassWordExtensions.PassWord="{Binding PassWord, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     materialDesign:TextFieldAssist.HasClearButton="True"
-                    DockPanel.Dock="Top"
-                    Style="{StaticResource MaterialDesignPasswordBox}" />
+                    DockPanel.Dock="Top" 
+                     Style="{StaticResource MaterialDesignPasswordBox}">
+                    <i:Interaction.Behaviors>
+                        <pass:PasswordBehavior />
+                    </i:Interaction.Behaviors>
+                </PasswordBox>
             </StackPanel>
 
 
@@ -102,9 +116,14 @@
                     Width="200"
                     Margin="20,5"
                     materialDesign:HintAssist.Hint="请再次输入密码"
+                    pass:PassWordExtensions.PassWord="{Binding NewPassWord, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     materialDesign:TextFieldAssist.HasClearButton="True"
                     DockPanel.Dock="Top"
-                    Style="{StaticResource MaterialDesignPasswordBox}" />
+                    Style="{StaticResource MaterialDesignPasswordBox}" >
+                    <i:Interaction.Behaviors>
+                        <pass:PasswordBehavior />
+                    </i:Interaction.Behaviors>
+                </PasswordBox>
             </StackPanel>
         </DockPanel>
 

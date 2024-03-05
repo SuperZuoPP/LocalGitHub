@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using WPFBase.Shared.Contact;
+using System.Threading.Tasks; 
 using WPFBase.Shared;
+using WPFBase.Shared.Extensions;
 using WPFBase.Shared.Parameters;
 
 namespace WPFBase.Services.ServiceBase

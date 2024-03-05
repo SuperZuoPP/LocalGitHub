@@ -5,7 +5,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
-    using WPFBase.Shared.Contact;
+    using WPFBase.Shared.Extensions;
 
     public static class IQueryablePageListExtensions
     {

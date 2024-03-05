@@ -70,5 +70,6 @@ namespace WPFBase.Api.Services.BM
                 return new ApiResponse("注册账号失败！" + ex.ToString());
             }
         }
+         
     }
 }

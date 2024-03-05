@@ -13,7 +13,7 @@ namespace WPFBase.Api.Context.UnitOfWork
     using Microsoft.EntityFrameworkCore.Metadata;
     using Microsoft.EntityFrameworkCore.Query;
     using Microsoft.EntityFrameworkCore.ChangeTracking;
-    using WPFBase.Shared.Contact;
+    using WPFBase.Shared.Extensions;
 
     /// <summary>
     /// Represents a default generic repository implements the <see cref="IRepository{TEntity}"/> interface.

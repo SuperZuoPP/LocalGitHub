@@ -49,7 +49,7 @@
         </Border>
 
 
-        <DataGrid Grid.Row="1" x:Name="dgUserGroupList" Style="{StaticResource dgStyle}" ItemsSource="{Binding DataGridList}"  
+        <DataGrid Grid.Row="1" x:Name="dgUserGroupList" Style="{StaticResource dgStyle}" ItemsSource="{Binding TbWeighOperatorDto}"  
                 BorderThickness="1">
             <DataGrid.Columns>
                 <!-- 全选列 -->
@@ -65,18 +65,18 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="编号"  IsReadOnly="True" Width="0.8*" ElementStyle="{StaticResource textColStyleCenter}"  Binding="{Binding ID}"/>
-                <DataGridTextColumn Header="用户名"  IsReadOnly="True" Width="0.8*" ElementStyle="{StaticResource textColStyleCenter}"  Binding="{Binding Name}"/>
-                <DataGridTextColumn Header="性别"  IsReadOnly="True" Width="0.8*" ElementStyle="{StaticResource textColStyleCenter}"  Binding="{Binding Sex}"/>
+                <DataGridTextColumn Header="编号"  IsReadOnly="True" Width="0.8*" ElementStyle="{StaticResource textColStyleCenter}"  Binding="{Binding TbWeighOperatorDto.ID}"/>
+                <DataGridTextColumn Header="用户名"  IsReadOnly="True" Width="0.8*" ElementStyle="{StaticResource textColStyleCenter}"  Binding="{Binding TbWeighOperatorDto.UserName}"/>
+                <DataGridTextColumn Header="性别"  IsReadOnly="True" Width="0.8*" ElementStyle="{StaticResource textColStyleCenter}"  />
 
                 <DataGridTemplateColumn  Header="是否启用" Width="1.0*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox IsChecked="True" Style="{StaticResource chkColStyle}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <CheckBox IsChecked="True" Style="{StaticResource chkColStyle}"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="备注"  ElementStyle="{StaticResource textColStyleLeft}" IsReadOnly="True" Width="3*" Binding="{Binding Remark}"/>
+                <DataGridTextColumn Header="备注"  ElementStyle="{StaticResource textColStyleLeft}" IsReadOnly="True" Width="3*" Binding="{Binding TbWeighOperatorDto.Remark}"/>
                 <DataGridTemplateColumn  Header="操作" Width="150">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

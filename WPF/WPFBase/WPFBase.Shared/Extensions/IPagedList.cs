@@ -1,4 +1,4 @@
-﻿namespace WPFBase.Shared.Contact
+﻿namespace WPFBase.Shared.Extensions
 {
 
     using System.Collections.Generic;

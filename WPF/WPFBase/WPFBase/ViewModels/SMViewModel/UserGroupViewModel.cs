@@ -15,6 +15,8 @@ using WPFBase.Common;
 using Prism.Ioc;
 using System.Windows.Data;
 using System.ComponentModel;
+using WPFBase.Services;
+using WPFBase.Shared.DTO.BM;
 
 namespace WPFBase.ViewModels.SMViewModel
 {
@@ -22,14 +24,16 @@ namespace WPFBase.ViewModels.SMViewModel
     {
         private readonly IRegionManager regionManager;
         private readonly IDialogHostService dialog;
+        private readonly ILoginService loginService;
 
-        public UserGroupViewModel(IContainerProvider provider, IDialogHostService dialog) : base(provider)
+        public UserGroupViewModel(IContainerProvider provider, IDialogHostService dialog,ILoginService loginService) : base(provider)
         {
-            DataGridList = new ObservableCollection<DataGridList>();
+            TbWeighOperatorDto = new ObservableCollection<TbWeighOperatorDto>(); 
             this.regionManager = provider.Resolve<IRegionManager>();
-            this.dialog = dialog; 
+            this.dialog = dialog;
+            this.loginService = loginService;
             ExecuteCommand = new DelegateCommand<string>(Execute);
-            CreateMenuBar();
+            GetDataAsync();
         }
 
         async void Execute(string obj)
@@ -53,15 +57,15 @@ namespace WPFBase.ViewModels.SMViewModel
 
        
         public DelegateCommand<string> ExecuteCommand { get; private set; }
-        private ObservableCollection<DataGridList> dataGridList;
-       
 
-        public ObservableCollection<DataGridList> DataGridList
+        private ObservableCollection<TbWeighOperatorDto> tbWeighOperatorDto;
+
+        public ObservableCollection<TbWeighOperatorDto> TbWeighOperatorDto
         {
-            get { return dataGridList; }
-            set { dataGridList = value; RaisePropertyChanged(); }
+            get { return tbWeighOperatorDto; }
+            set { SetProperty<ObservableCollection<TbWeighOperatorDto>>(ref tbWeighOperatorDto, value); }
         }
-
+ 
         private string title;
 
         public string Title
@@ -70,39 +74,43 @@ namespace WPFBase.ViewModels.SMViewModel
             set { SetProperty<string>(ref title, value); }
         }
 
+        private string search;
+
+        /// <summary>
+        /// 搜索条件
+        /// </summary>
+        public string Search
+        {
+            get { return search; }
+            set { search = value; RaisePropertyChanged(); }
+        }
+
         private ICollectionView dataGridCollectionView;
         public ICollectionView DataGridCollectionView
         {
             get { return dataGridCollectionView; }
             set { SetProperty<ICollectionView>(ref dataGridCollectionView, value); }
         }
-        void CreateMenuBar()
+       
+
+        async void GetDataAsync() 
         {
-            for (int i = 0; i < 20; i++)
+            var result = await loginService.GetAllFilterAsync(new Shared.Parameters.TbWeighOperatorDtoParameter() {
+                PageIndex = 0,
+                PageSize = 10,
+                Search = "", 
+                Status = 0
+            });
+
+            if (result.Status)
             {
-
-                DataGridList.Add(new DataGridList() {ID=i,Name=i.ToString(),Sex=(i%2).ToString(), Remark=i.ToString() });
+                TbWeighOperatorDto.Clear();
+                foreach (var item in result.Result.Items)
+                {
+                    TbWeighOperatorDto.Add(item);
+                }
             }
-            CollectionViewSource collectionViewSource = new CollectionViewSource();
-            collectionViewSource.Source = DataGridList;
-
-            // 设置分组属性
-            collectionViewSource.GroupDescriptions.Add(new PropertyGroupDescription("Sex"));
-
-            // 设置 DataGridCollectionView
-            DataGridCollectionView = collectionViewSource.View;
         }
-         
     }
-
-    public class DataGridList 
-    {
-        public int ID { get; set; }
-
-        public string Name { get; set; }
-
-        public string Sex { get; set; }
-
-        public string Remark { get; set; }
-    }
+     
 }

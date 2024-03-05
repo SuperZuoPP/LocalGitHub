@@ -61,7 +61,7 @@ namespace WPFBase.ViewModels.Dialogs
         }
 
 
-        private string passWord="111";
+        private string passWord;
 
         public string PassWord
         {
@@ -69,7 +69,7 @@ namespace WPFBase.ViewModels.Dialogs
             set { SetProperty<string>(ref passWord, value); }
         }
 
-        private string newPassWord = "111";
+        private string newPassWord;
 
         public string NewPassWord
         {
@@ -108,14 +108,28 @@ namespace WPFBase.ViewModels.Dialogs
             }
         }
 
-        async void Resgiter()
+        private async void Resgiter()
         {
-            var loginResult = await loginService.Resgiter(new TbWeighOperatorDto() { UserNumber = UserNumber,UserName = UserName,PassWord="111", Status = Status });
+            if (string.IsNullOrWhiteSpace(UserNumber) ||
+                string.IsNullOrWhiteSpace(UserName) ||
+                string.IsNullOrWhiteSpace(PassWord) ||
+                string.IsNullOrWhiteSpace(NewPassWord))
+            {
+                aggregator.SendMessage("请输入完整的注册信息！", "Login");
+                return;
+            }
+
+            if (PassWord != NewPassWord)
+            {
+                aggregator.SendMessage("密码不一致,请重新输入！", "Login");
+                return;
+            }
+            var loginResult = await loginService.Resgiter(new TbWeighOperatorDto() { UserNumber = UserNumber,UserName = UserName,PassWord= PassWord, Status = Status });
 
             if (loginResult != null && loginResult.Status) 
             {
-                RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
-                return;
+                aggregator.SendMessage("注册成功", "Main");
+                Cancel();
             } 
             else
             {

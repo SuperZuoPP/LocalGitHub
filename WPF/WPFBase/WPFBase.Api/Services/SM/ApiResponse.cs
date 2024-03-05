@@ -1,17 +1,22 @@
-﻿namespace WPFBase.Api.Services.SM
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace WPFBase.Api.Services.SM
 {
     public class ApiResponse
     {
         public ApiResponse(string message, bool status = false)
         {
-            Message = message;
-            Status = status;
+            this.Message = message;
+            this.Status = status;
         }
 
         public ApiResponse(bool status, object result)
         {
-            Status = status;
-            Result = result;
+            this.Status = status;
+            this.Result = result;
         }
 
         public string Message { get; set; }
