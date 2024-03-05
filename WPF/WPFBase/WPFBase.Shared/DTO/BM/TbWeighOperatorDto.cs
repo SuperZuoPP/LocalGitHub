@@ -12,7 +12,7 @@ namespace WPFBase.Shared.DTO.BM
         private string userNumber;
         private string userName;
         private string passWord;
-        private int status;
+        private bool status;
 
       
 
@@ -35,10 +35,10 @@ namespace WPFBase.Shared.DTO.BM
             set { SetProperty<string>(ref passWord, value); }
         }
 
-        public int Status
+        public bool Status
         {
             get { return status; }
-            set { SetProperty<int>(ref status, value); }
+            set { SetProperty<bool>(ref status, value); }
         }
 
 

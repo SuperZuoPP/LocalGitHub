@@ -33,7 +33,7 @@ namespace WPFBase.Api.Services.BM
                 var repository = unitOfWork.GetRepository<TbWeighOperator>();
                 var operators = await repository.GetPagedListAsync(predicate:
                    x => (string.IsNullOrWhiteSpace(paramter.Search) ? true : x.UserName.Contains(paramter.Search))
-                   && (paramter.Status == null ? true : x.Status.Equals(paramter.Status)),
+                   && (!paramter.Status.HasValue || x.Status == (paramter.Status == 1)),//(paramter.Status == null ? true : x.Status.Equals(paramter.Status)),
                    pageIndex: paramter.PageIndex,
                    pageSize: paramter.PageSize,
                    orderBy: source => source.OrderByDescending(t => t.CreateTime));

@@ -28,7 +28,7 @@ namespace WPFBase.ViewModels.SMViewModel
 
         public UserGroupViewModel(IContainerProvider provider, IDialogHostService dialog,ILoginService loginService) : base(provider)
         {
-            TbWeighOperatorDto = new ObservableCollection<TbWeighOperatorDto>(); 
+            WeighOperatorDto = new ObservableCollection<TbWeighOperatorDto>(); 
             this.regionManager = provider.Resolve<IRegionManager>();
             this.dialog = dialog;
             this.loginService = loginService;
@@ -36,7 +36,21 @@ namespace WPFBase.ViewModels.SMViewModel
             GetDataAsync();
         }
 
-        async void Execute(string obj)
+        void Execute(string obj)
+        {
+            switch (obj)
+            {
+                case "UserCreateView":
+                    OpenAddDiaolog(obj);
+                    break;
+                case "search":
+                    GetDataAsync();
+                    break;
+            }
+           
+        }
+
+         async void OpenAddDiaolog(string obj) 
         {
             DialogParameters keys = new DialogParameters();
             keys.Add("Value", "Hello"); //发送数据至弹窗 
@@ -54,18 +68,24 @@ namespace WPFBase.ViewModels.SMViewModel
             }
         }
        
-
-       
         public DelegateCommand<string> ExecuteCommand { get; private set; }
 
-        private ObservableCollection<TbWeighOperatorDto> tbWeighOperatorDto;
+        private ObservableCollection<TbWeighOperatorDto> weighOperatorDto;
 
-        public ObservableCollection<TbWeighOperatorDto> TbWeighOperatorDto
+        public ObservableCollection<TbWeighOperatorDto> WeighOperatorDto
         {
-            get { return tbWeighOperatorDto; }
-            set { SetProperty<ObservableCollection<TbWeighOperatorDto>>(ref tbWeighOperatorDto, value); }
+            get { return weighOperatorDto; }
+            set { SetProperty<ObservableCollection<TbWeighOperatorDto>>(ref weighOperatorDto, value); }
         }
- 
+
+        private TbWeighOperatorDto currentTbWeighOperatorDto;
+
+        public TbWeighOperatorDto CurrentTbWeighOperatorDto
+        {
+            get { return currentTbWeighOperatorDto; }
+            set { SetProperty<TbWeighOperatorDto>(ref currentTbWeighOperatorDto, value); }
+        }
+
         private string title;
 
         public string Title
@@ -97,17 +117,17 @@ namespace WPFBase.ViewModels.SMViewModel
         {
             var result = await loginService.GetAllFilterAsync(new Shared.Parameters.TbWeighOperatorDtoParameter() {
                 PageIndex = 0,
-                PageSize = 10,
-                Search = "", 
+                PageSize = 5,
+                Search = Search, 
                 Status = 0
             });
 
             if (result.Status)
             {
-                TbWeighOperatorDto.Clear();
+                WeighOperatorDto.Clear();
                 foreach (var item in result.Result.Items)
                 {
-                    TbWeighOperatorDto.Add(item);
+                    WeighOperatorDto.Add(item);
                 }
             }
         }

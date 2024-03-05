@@ -44,7 +44,7 @@ namespace WPFBase.Services
         {
             BaseRequest request = new BaseRequest();
             request.Method = RestSharp.Method.GET;
-            request.Route = $"api/{serviceName}/GetAllFilterAsync?pageIndex={parameter.PageIndex}" +
+            request.Route = $"api/{serviceName}/GetAllFilter?pageIndex={parameter.PageIndex}" +
                 $"&pageSize={parameter.PageSize}" +
                 $"&search={parameter.Search}" +
                 $"&status={parameter.Status}";

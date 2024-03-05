@@ -48,7 +48,6 @@ namespace WPFBase
 
             //注册服务  
             containerRegistry.Register<ILoginService, LoginService>(); 
-
             containerRegistry.Register<IDialogHostService, DialogHostService>();
 
             containerRegistry.RegisterForNavigation<AboutView>();
@@ -58,7 +57,7 @@ namespace WPFBase
             containerRegistry.RegisterForNavigation<AuthorityView, AuthorityViewModel>();
             containerRegistry.RegisterForNavigation<UserGroupView, UserGroupViewModel>();
             containerRegistry.RegisterForNavigation<UserCreateView,UserCreateViewModel>();
-            containerRegistry.RegisterForNavigation<SkinView, SkinViewModel>();
+            containerRegistry.RegisterForNavigation<SkinView, SkinViewModel>(); 
         }
     }
 }

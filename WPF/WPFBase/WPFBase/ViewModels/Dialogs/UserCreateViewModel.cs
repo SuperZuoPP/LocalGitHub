@@ -77,12 +77,12 @@ namespace WPFBase.ViewModels.Dialogs
             set { SetProperty<string>(ref newPassWord, value); }
         }
 
-        private int status;
+        private bool status;
 
-        public int Status
+        public bool Status
         {
             get { return status; }
-            set { SetProperty<int>(ref status, value); }
+            set { SetProperty<bool>(ref status, value); }
         }
         #endregion
 

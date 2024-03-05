@@ -5,7 +5,7 @@ using System.Text;
 namespace WPFBase.Shared
 {
     public class ApiResponse
-    {
+    { 
         public string Message { get; set; }
 
         public bool Status { get; set; }
