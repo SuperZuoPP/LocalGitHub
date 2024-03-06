@@ -27,5 +27,8 @@ namespace WPFBase.Api.Controllers
 
         [HttpGet]
         public async Task<ApiResponse> GetAllFilterAsync([FromQuery] TbWeighOperatorDtoParameter param) => await service.GetAllFilterAsync(param);
+
+        [HttpGet]
+        public async Task<ApiResponse> Summary() => await service.Summary(); 
     }
 }

@@ -10,6 +10,7 @@ namespace WPFBase.Api.Services.BM
         Task<ApiResponse> LoginAsync(string account, string password);
 
         Task<ApiResponse> Resgiter(OperatorDto operatorDto);
+ 
     }
 }
 

@@ -15,6 +15,8 @@ namespace WPFBase.Api.Services.BM
         Task<ApiResponse> Resgiter(TbWeighOperatorDto tbWeighOperatorDto);
 
         Task<ApiResponse> GetAllFilterAsync(TbWeighOperatorDtoParameter patameter);
+
+        Task<ApiResponse> Summary();
     }
 }
 

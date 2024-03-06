@@ -105,6 +105,31 @@ namespace WPFBase.ViewModels.SMViewModel
             set { search = value; RaisePropertyChanged(); }
         }
 
+
+        private int status = 1;
+
+        /// <summary>
+        /// 账户是否启用
+        /// </summary>
+        public int Status
+        {
+            get { return status; }
+            set 
+            { 
+                SetProperty<int>(ref status, value);
+                GetDataAsync(); 
+            }
+        }
+
+        private int pageIndex=1;
+
+        public int PageIndex
+        {
+            get { return pageIndex; }
+            set { SetProperty<int>(ref pageIndex, value); GetDataAsync(); }
+        }
+
+        
         private ICollectionView dataGridCollectionView;
         public ICollectionView DataGridCollectionView
         {
@@ -116,10 +141,10 @@ namespace WPFBase.ViewModels.SMViewModel
         async void GetDataAsync() 
         {
             var result = await loginService.GetAllFilterAsync(new Shared.Parameters.TbWeighOperatorDtoParameter() {
-                PageIndex = 0,
-                PageSize = 5,
+                PageIndex = PageIndex-1,
+                PageSize = 10,
                 Search = Search, 
-                Status = 1
+                Status = Status
             });
 
             if (result.Status)

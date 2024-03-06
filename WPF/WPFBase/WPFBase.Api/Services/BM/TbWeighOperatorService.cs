@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.Data.SqlClient;
 using System;
+using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using WPFBase.Api.Context.Model;
@@ -95,7 +98,32 @@ namespace WPFBase.Api.Services.BM
         }
 
 
-        
+        public async Task<ApiResponse> Summary()
+        {
+            try
+            {
+                //var repository = unitOfWork.GetRepository<TbWeighOperator>();
+                //var models = await repository.GetAllAsync();
+                //var count = models.Count();
+                //return new ApiResponse(true, count);
+
+                // 创建 SQL 查询字符串
+                string sql = "SELECT COUNT(*) FROM TbWeighOperator";
+                //DbParameter[] cmdParams = new DbParameter[]
+                //{
+                // // new SqlParameter("@status", SqlDbType.Int,num)  
+                //};
+                
+                // 执行原始 SQL 查询
+                var count = unitOfWork.ExecuteSqlCommand(sql);
+                
+                return new ApiResponse(true, count);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse("获取总人员数失败！");
+            }
+        }
 
 
     }

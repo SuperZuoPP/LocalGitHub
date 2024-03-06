@@ -8,10 +8,14 @@
     xmlns:local="clr-namespace:WPFBase.Views.SMView"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:converters="clr-namespace:WPFBase.Common.Converters"
     xmlns:prsim="http://prismlibrary.com/"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <converters:IntToBoolConveter x:Key="IntToBoolConveter" />
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="60" />
@@ -29,15 +33,28 @@
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <TextBox
+                <!--<TextBox
                     Width="200"
-                    Margin="10,0"
-                    Style="{StaticResource SearchTextBoxStyle}" />
-                <Button
+                    Margin="10,0"  
+                    Style="{StaticResource SearchTextBoxStyle}" />-->
+                <!--<Button
                     Grid.Column="1"
                     Command="{Binding ExecuteCommand}"
                     CommandParameter="search"
-                    Content="搜索" />
+                    Content="搜索" />-->
+                
+                <hc:SearchBar hc:InfoElement.ShowClearButton="True"
+                              hc:InfoElement.Placeholder="输入条件查找"
+                              Style="{StaticResource SearchBarPlus}" Height="30" Width="200"
+                              VerticalContentAlignment="Center"
+                              Command="{Binding ExecuteCommand}"
+                              CommandParameter="search"/>
+                <ToggleButton Grid.Column="1"   Style="{StaticResource MaterialDesignSwitchLightToggleButton}" 
+                              ToolTip="是否启用"
+                              Width="60" Height="30"
+                              VerticalAlignment="Center" HorizontalAlignment="Left" IsChecked="{Binding Status,Converter={StaticResource IntToBoolConveter}}"
+                               
+                              />
                 <Button
                     Grid.Column="2"
                     Margin="2,0"
@@ -123,7 +140,7 @@
                         <DataTemplate>
                             <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                                 <Button Margin="0,0,10,0" Style="{StaticResource ButtonInfo}">
-                                    <md:PackIcon Kind="AccountEdit" />
+                                    <md:PackIcon Kind="AccountEditOutline" />
                                 </Button>
                                 <Button Margin="0,0,10,0" Style="{StaticResource ButtonDanger}">
                                     <md:PackIcon Kind="Delete" />
@@ -142,8 +159,8 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             IsJumpEnabled="True"
-            MaxPageCount="10"
-            PageIndex="5" />
+            MaxPageCount="10" 
+            PageIndex="{Binding PageIndex,Mode=TwoWay}" />
 
     </Grid>
 </UserControl>
