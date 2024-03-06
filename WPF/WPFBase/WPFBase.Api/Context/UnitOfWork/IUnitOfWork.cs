@@ -58,8 +58,7 @@ namespace WPFBase.Api.Context.UnitOfWork
         /// <param name="parameters">The parameters.</param>
         /// <returns>The number of state entities written to database.</returns>
         int ExecuteSqlCommand(string sql, params object[] parameters);
-
-        /// <summary>
+         
         /// Uses raw SQL queries to fetch the specified <typeparamref name="TEntity"/> data.
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>

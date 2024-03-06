@@ -29,6 +29,23 @@ namespace WPFBase.Api.Controllers
         public async Task<ApiResponse> GetAllFilterAsync([FromQuery] TbWeighOperatorDtoParameter param) => await service.GetAllFilterAsync(param);
 
         [HttpGet]
-        public async Task<ApiResponse> Summary() => await service.Summary(); 
+        public async Task<ApiResponse> Summary() => await service.Summary();
+
+        [HttpGet]
+        public async Task<ApiResponse> Get(int id) => await service.GetSingleAsync(id);
+
+        [HttpGet]
+        //[Authorize]
+        public async Task<ApiResponse> GetAll([FromQuery] TbWeighOperatorDtoParameter param) => await service.GetAllAsync(param);
+
+       
+        [HttpPost]
+        public async Task<ApiResponse> Add([FromBody] TbWeighOperatorDto model) => await service.AddAsync(model);
+
+        [HttpPost]
+        public async Task<ApiResponse> Update([FromBody] TbWeighOperatorDto model) => await service.UpdateAsync(model);
+
+        [HttpDelete]
+        public async Task<ApiResponse> Delete(int id) => await service.DeleteAsync(id);
     }
 }

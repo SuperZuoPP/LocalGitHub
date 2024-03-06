@@ -120,6 +120,7 @@ namespace WPFBase.Api.Context.UnitOfWork
         /// <returns>The number of state entities written to database.</returns>
         public int ExecuteSqlCommand(string sql, params object[] parameters) => _context.Database.ExecuteSqlRaw(sql, parameters);
 
+  
         /// <summary>
         /// Uses raw SQL queries to fetch the specified <typeparamref name="TEntity" /> data.
         /// </summary>

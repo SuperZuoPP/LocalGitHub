@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.Data.SqlClient;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
@@ -102,29 +104,106 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                //var repository = unitOfWork.GetRepository<TbWeighOperator>();
-                //var models = await repository.GetAllAsync();
-                //var count = models.Count();
-                //return new ApiResponse(true, count);
-
-                // 创建 SQL 查询字符串
-                string sql = "SELECT COUNT(*) FROM TbWeighOperator";
-                //DbParameter[] cmdParams = new DbParameter[]
-                //{
-                // // new SqlParameter("@status", SqlDbType.Int,num)  
-                //};
-                
-                // 执行原始 SQL 查询
-                var count = unitOfWork.ExecuteSqlCommand(sql);
-                
+                var repository = unitOfWork.GetRepository<TbWeighOperator>();
+                var count = await repository.CountAsync();  
                 return new ApiResponse(true, count);
             }
             catch (Exception ex)
             {
-                return new ApiResponse("获取总人员数失败！");
+                return new ApiResponse("获取总人员数失败！"+ ex.ToString());
             }
         }
 
+        public async Task<ApiResponse> GetAllAsync(QueryParameter parameter)
+        {
+            try
+            {
+                var repository = unitOfWork.GetRepository<TbWeighOperator>();
+                var models = await repository.GetPagedListAsync(predicate:
+                   x => string.IsNullOrWhiteSpace(parameter.Search) ? true : x.UserName.Contains(parameter.Search),
+                   pageIndex: parameter.PageIndex,
+                   pageSize: parameter.PageSize,
+                   orderBy: source => source.OrderByDescending(t => t.CreateTime));
+                return new ApiResponse(true, models);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse(ex.Message);
+            }
+        }
 
+       
+        public async Task<ApiResponse> GetSingleAsync(int id)
+        {
+            try
+            {
+                var repository = unitOfWork.GetRepository<TbWeighOperator>();
+                var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(id));
+                return new ApiResponse(true, model);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse(ex.Message);
+            }
+        }
+
+        public async Task<ApiResponse> AddAsync(TbWeighOperatorDto tbWeighOperator)
+        {
+            try
+            {
+                var model = mapper.Map<TbWeighOperator>(tbWeighOperator);
+                model.CreateTime = DateTime.Now;
+                await unitOfWork.GetRepository<TbWeighOperator>().InsertAsync(model);
+                if (await unitOfWork.SaveChangesAsync() > 0)
+                    return new ApiResponse(true, model);
+                return new ApiResponse(false, "添加数据失败");
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse(ex.Message);
+            }
+        }
+         
+        public async Task<ApiResponse> UpdateAsync(TbWeighOperatorDto tbWeighOperator)
+        {
+            try
+            {
+                var dbmodel= mapper.Map<TbWeighOperator>(tbWeighOperator);
+                var repository = unitOfWork.GetRepository<TbWeighOperator>();
+                var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(dbmodel.Id));
+                model.UserName = dbmodel.UserName;
+                model.Remark = dbmodel.Remark;
+                model.Status = dbmodel.Status;
+                model.LastModifiedTime = DateTime.Now;
+                repository.Update(model);
+
+                if (await unitOfWork.SaveChangesAsync() > 0)
+                    return new ApiResponse(true, model);
+                return new ApiResponse(false, "更新数据失败");
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse(ex.Message);
+            }
+        }
+
+        public async Task<ApiResponse> DeleteAsync(int id)
+        {
+            try
+            {
+                var repository = unitOfWork.GetRepository<TbWeighOperator>();
+                var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(id));
+                repository.Delete(model);
+                if (await unitOfWork.SaveChangesAsync() > 0)
+                    return new ApiResponse(true, "");
+                return new ApiResponse("删除数据失败");
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse(ex.Message);
+            }
+        }
+
+        
     }
 }

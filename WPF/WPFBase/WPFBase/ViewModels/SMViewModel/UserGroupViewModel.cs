@@ -17,6 +17,7 @@ using System.Windows.Data;
 using System.ComponentModel;
 using WPFBase.Services;
 using WPFBase.Shared.DTO.BM;
+using MaterialDesignThemes.Wpf;
 
 namespace WPFBase.ViewModels.SMViewModel
 {
@@ -33,6 +34,9 @@ namespace WPFBase.ViewModels.SMViewModel
             this.dialog = dialog;
             this.loginService = loginService;
             ExecuteCommand = new DelegateCommand<string>(Execute);
+            EditCommand = new DelegateCommand<TbWeighOperatorDto>(Edit);
+            DeleteCommand = new DelegateCommand<TbWeighOperatorDto>(Delete);
+            GetTotalSum();
             GetDataAsync();
         }
 
@@ -50,10 +54,41 @@ namespace WPFBase.ViewModels.SMViewModel
            
         }
 
-         async void OpenAddDiaolog(string obj) 
+        private async void Delete(TbWeighOperatorDto obj)
+        {
+            try
+            {
+                var dialogResult = await dialog.Question("温馨提示", $"确认删除用户:{obj.UserName} ?");
+                if (dialogResult.Result != Prism.Services.Dialogs.ButtonResult.OK) return;
+ 
+                var deleteResult = await loginService.DeleteAsync(obj.Id);
+                if (deleteResult.Status)
+                {
+                    var model = WeighOperatorDto.FirstOrDefault(t => t.Id.Equals(obj.Id));
+                    if (model != null)
+                        WeighOperatorDto.Remove(model);
+                }
+            }
+            catch
+            {
+                
+            }
+        }
+
+        private async void Edit(TbWeighOperatorDto obj)
+        {
+            var result = await loginService.GetFirstOfDefaultAsync(obj.Id);
+            if (result.Status)
+            {
+                CurrentTbWeighOperatorDto = result.Result;
+                OpenAddDiaolog("UserCreateView");
+            }
+        }
+
+        async void OpenAddDiaolog(string obj) 
         {
             DialogParameters keys = new DialogParameters();
-            keys.Add("Value", "Hello"); //发送数据至弹窗 
+            keys.Add("Value", CurrentTbWeighOperatorDto); //发送数据至弹窗 
             var dialogResult = await dialog.ShowDialog(obj, keys);
             if (dialogResult.Result == ButtonResult.OK)
             {
@@ -69,6 +104,9 @@ namespace WPFBase.ViewModels.SMViewModel
         }
        
         public DelegateCommand<string> ExecuteCommand { get; private set; }
+        public DelegateCommand<TbWeighOperatorDto> EditCommand { get; set; }
+
+        public DelegateCommand<TbWeighOperatorDto> DeleteCommand { get; set; }
 
         private ObservableCollection<TbWeighOperatorDto> weighOperatorDto;
 
@@ -94,15 +132,15 @@ namespace WPFBase.ViewModels.SMViewModel
             set { SetProperty<string>(ref title, value); }
         }
 
-        private string search;
+        private string searchText;
 
         /// <summary>
         /// 搜索条件
         /// </summary>
-        public string Search
+        public string SearchText
         {
-            get { return search; }
-            set { search = value; RaisePropertyChanged(); }
+            get { return searchText; }
+            set { SetProperty<string>(ref searchText, value); }
         }
 
 
@@ -129,7 +167,14 @@ namespace WPFBase.ViewModels.SMViewModel
             set { SetProperty<int>(ref pageIndex, value); GetDataAsync(); }
         }
 
-        
+        private int pageSum;
+
+        public int PageSum
+        {
+            get { return pageSum; }
+            set { SetProperty<int>(ref pageSum, value); GetDataAsync(); }
+        }
+
         private ICollectionView dataGridCollectionView;
         public ICollectionView DataGridCollectionView
         {
@@ -143,7 +188,7 @@ namespace WPFBase.ViewModels.SMViewModel
             var result = await loginService.GetAllFilterAsync(new Shared.Parameters.TbWeighOperatorDtoParameter() {
                 PageIndex = PageIndex-1,
                 PageSize = 10,
-                Search = Search, 
+                Search = SearchText, 
                 Status = Status
             });
 
@@ -154,6 +199,22 @@ namespace WPFBase.ViewModels.SMViewModel
                 {
                     WeighOperatorDto.Add(item);
                 }
+            }
+        }
+
+        async void GetTotalSum()
+        {
+            try
+            {
+                var result = await loginService.Summary();
+                if (result.Status)
+                {
+                    PageSum = (int)Math.Ceiling(Convert.ToDouble(result.Result.ToString())/10);
+                }
+            }
+            catch  
+            { 
+
             }
         }
     }

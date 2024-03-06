@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using WPFBase.Common;
 using WPFBase.Services;
 using WPFBase.Shared.DTO.BM;
+using WPFBase.Shared.DTO.SM;
 
 namespace WPFBase.ViewModels.Dialogs
 {
@@ -21,12 +22,13 @@ namespace WPFBase.ViewModels.Dialogs
         private readonly IEventAggregator aggregator;
         public UserCreateViewModel(ILoginService loginService, IEventAggregator aggregator)
         {
-            UserDto = new ResgiterDto();
+            TbWeighOperatorDto = new TbWeighOperatorDto();
             this.loginService = loginService;
             this.aggregator = aggregator;
             ExecuteCommand = new DelegateCommand<string>(Execute);
             
         }
+         
 
         public event Action<IDialogResult> RequestClose;
 
@@ -36,12 +38,12 @@ namespace WPFBase.ViewModels.Dialogs
         public string DialogHostName { get; set; }
         public string Title { get; set; }
 
-        private ResgiterDto userDto;
+        private TbWeighOperatorDto tbWeighOperatorDto;
 
-        public ResgiterDto UserDto
+        public TbWeighOperatorDto TbWeighOperatorDto
         {
-            get { return userDto; }
-            set { SetProperty<ResgiterDto>(ref userDto, value); }
+            get { return tbWeighOperatorDto; }
+            set { SetProperty<TbWeighOperatorDto>(ref tbWeighOperatorDto, value); }
         }
 
         private string userNumber;
@@ -90,7 +92,7 @@ namespace WPFBase.ViewModels.Dialogs
         public DelegateCommand<string> ExecuteCommand { get; set; }
         public DelegateCommand SaveCommand { get ; set; }
         public DelegateCommand CancelCommand { get; set ; }
-
+         
         #endregion
 
 
@@ -155,7 +157,10 @@ namespace WPFBase.ViewModels.Dialogs
         //接收数据
         public void OnDialogOpened(IDialogParameters parameters)
         {
-            Title = parameters.GetValue<string>("Title");
+            TbWeighOperatorDto = parameters.GetValue<TbWeighOperatorDto>("Value");
+            UserNumber = TbWeighOperatorDto.UserNumber;
+            UserName = TbWeighOperatorDto.UserName;
+            Status = TbWeighOperatorDto.Status;
         }
 
         public bool CanCloseDialog()

@@ -8,7 +8,7 @@ using WPFBase.Shared.Parameters;
 
 namespace WPFBase.Api.Services.BM
 {
-    public interface ITbWeighOperatorService
+    public interface ITbWeighOperatorService:IBaseService<TbWeighOperatorDto>
     {
         Task<ApiResponse> LoginAsync(string account, string password);
 

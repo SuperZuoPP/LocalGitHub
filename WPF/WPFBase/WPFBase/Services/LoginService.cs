@@ -12,12 +12,12 @@ using WPFBase.Shared.Parameters;
 
 namespace WPFBase.Services
 {
-    public class LoginService : ILoginService
+    public class LoginService : BaseService<TbWeighOperatorDto> ,ILoginService
     {
         private readonly HttpRestClient client;
         private readonly string serviceName = "LoginWeigh";
 
-        public LoginService(HttpRestClient client)
+        public LoginService(HttpRestClient client) : base(client, "LoginWeigh")
         {
             this.client = client;
         }
@@ -50,5 +50,15 @@ namespace WPFBase.Services
                 $"&status={parameter.Status}";
             return await client.ExecuteAsync<PagedList<TbWeighOperatorDto>>(request);
         }
+
+        public async Task<ApiResponse> Summary( )
+        {
+            BaseRequest baseRequest = new BaseRequest();
+            baseRequest.Method = RestSharp.Method.GET;
+            baseRequest.Route = $"api/{serviceName}/Summary";
+            baseRequest.Parameter = "";
+            return await client.ExecuteAsync(baseRequest);
+        }
+        
     }
 }
