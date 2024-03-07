@@ -58,6 +58,7 @@ namespace WPFBase
             containerRegistry.RegisterForNavigation<MsgView, MsgViewModel>();
             containerRegistry.RegisterForNavigation<AuthorityView, AuthorityViewModel>();
             containerRegistry.RegisterForNavigation<UserView, UserViewModel>();
+            containerRegistry.RegisterForNavigation<UserGroupView, UserGroupViewModel>();
             containerRegistry.RegisterForNavigation<UserCreateView,UserCreateViewModel>();
             containerRegistry.RegisterForNavigation<SkinView, SkinViewModel>(); 
         }
