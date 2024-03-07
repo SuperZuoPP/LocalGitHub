@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WPFBase.Views.SMView
+namespace WPFBase.Components
 {
     /// <summary>
-    /// UserGroupView.xaml 的交互逻辑
+    /// Truck.xaml 的交互逻辑
     /// </summary>
-    public partial class UserGroupView : UserControl
+    public partial class Truck : UserControl
     {
-        public UserGroupView()
+        public Truck()
         {
             InitializeComponent();
         }

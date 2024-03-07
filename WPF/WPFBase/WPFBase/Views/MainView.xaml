@@ -23,8 +23,14 @@
     TextOptions.TextRenderingMode="Auto"
     WindowStartupLocation="CenterScreen" 
     WindowStyle="None" >
+    <!--<Window.Background>
+        --><!--线性渐变--><!--
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#F7F9FA" Offset="0"/>
+            <GradientStop Color="#FFD3EBF7" Offset="1"/>
+        </LinearGradientBrush>
+    </Window.Background>-->
 
-     
     <materialDesign:DialogHost
         DialogTheme="Inherit"  x:Name="DialogHost" 
         Identifier="Root" >

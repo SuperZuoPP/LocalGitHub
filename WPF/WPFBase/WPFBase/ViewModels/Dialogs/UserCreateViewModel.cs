@@ -158,9 +158,12 @@ namespace WPFBase.ViewModels.Dialogs
         public void OnDialogOpened(IDialogParameters parameters)
         {
             TbWeighOperatorDto = parameters.GetValue<TbWeighOperatorDto>("Value");
-            UserNumber = TbWeighOperatorDto.UserNumber;
-            UserName = TbWeighOperatorDto.UserName;
-            Status = TbWeighOperatorDto.Status;
+            if (TbWeighOperatorDto != null)
+            {
+                UserNumber = TbWeighOperatorDto.UserNumber;
+                UserName = TbWeighOperatorDto.UserName;
+                Status = TbWeighOperatorDto.Status;
+            } 
         }
 
         public bool CanCloseDialog()

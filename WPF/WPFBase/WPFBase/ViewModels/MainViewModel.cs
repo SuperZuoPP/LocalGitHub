@@ -32,6 +32,11 @@ namespace WPFBase.ViewModels
                 if (journal != null && journal.CanGoForward)
                     journal.GoForward();
             });
+
+            GoHomeCommand = new DelegateCommand(()=> 
+            {
+                regionManager.Regions[PrismManager.MainViewRegionName].RequestNavigate("HomeView"); 
+            });
         }
 
         private void Nagvigate(MenuBar obj)
@@ -48,6 +53,8 @@ namespace WPFBase.ViewModels
         public DelegateCommand GoBackCommand { get; private set; }
         public DelegateCommand GoForwardCommand { get; private set; }
         public DelegateCommand LoginOutCommand { get; private set; }
+
+        public DelegateCommand GoHomeCommand { get; private set; }
 
         private ObservableCollection<MenuBar> menuBars;
         private readonly IRegionManager regionManager;
@@ -70,7 +77,7 @@ namespace WPFBase.ViewModels
 
         void CreateMenuBar()
         {
-            MenuBars.Add(new MenuBar() { Icon = "Home", Title = "首页", NameSpace = "IndexView" });
+            MenuBars.Add(new MenuBar() { Icon = "Home", Title = "首页", NameSpace = "HomeView" });
             MenuBars.Add(new MenuBar() { Icon = "NotebookOutline", Title = "待办事项", NameSpace = "ToDoView" });
             MenuBars.Add(new MenuBar() { Icon = "NotebookPlusOutline", Title = "备忘录", NameSpace = "MemoView" });
             MenuBars.Add(new MenuBar() { Icon = "Cog", Title = "系统设置", NameSpace = "SettingsView" });
@@ -81,7 +88,7 @@ namespace WPFBase.ViewModels
         public void Configure()
         { 
             CreateMenuBar();
-            //regionManager.Regions[PrismManager.MainViewRegionName].RequestNavigate("IndexView");
+            regionManager.Regions[PrismManager.MainViewRegionName].RequestNavigate("HomeView");
         }
     }
 }

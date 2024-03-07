@@ -32,5 +32,10 @@ namespace WPFBase.Views.Dialogs
                 LoginSnakeBar.MessageQueue.Enqueue(arg.Message);
             }, "Login");
         }
+
+        private void ComboBoxItem_Selected(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

@@ -8,9 +8,13 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:pass="clr-namespace:WPFBase.Extensions" 
+    xmlns:converters="clr-namespace:WPFBase.Common.Converters"
     Width="450"
     Height="350"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <converters:BoolToIntConveter x:Key="BoolToIntConveter"/>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -36,8 +40,8 @@
                 DockPanel.Dock="Top"
                 Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Text="启用:" />
-                <ComboBox Margin="10,0,0,0" SelectedIndex="{Binding Status}"> 
-                    <ComboBoxItem>否</ComboBoxItem>
+                <ComboBox Margin="10,0,0,0" SelectedIndex="{Binding Status,Converter={StaticResource BoolToIntConveter}}">
+                    <ComboBoxItem >否</ComboBoxItem>
                     <ComboBoxItem Selector.IsSelected="True">是</ComboBoxItem>
                 </ComboBox>
             </StackPanel>

@@ -16,6 +16,7 @@ using WPFBase.Views.SMView;
 using WPFBase.Views.Dialogs;
 using WPFBase.Services.ServiceBase;
 using WPFBase.Services;
+using WPFBase.Views.BMView;
 
 namespace WPFBase
 {
@@ -50,12 +51,13 @@ namespace WPFBase
             containerRegistry.Register<ILoginService, LoginService>(); 
             containerRegistry.Register<IDialogHostService, DialogHostService>();
 
+            containerRegistry.RegisterForNavigation<HomeView>();
             containerRegistry.RegisterForNavigation<AboutView>();
             containerRegistry.RegisterForNavigation<TestView>();
             containerRegistry.RegisterForNavigation<SettingsView, SettingsViewModel>();
             containerRegistry.RegisterForNavigation<MsgView, MsgViewModel>();
             containerRegistry.RegisterForNavigation<AuthorityView, AuthorityViewModel>();
-            containerRegistry.RegisterForNavigation<UserGroupView, UserGroupViewModel>();
+            containerRegistry.RegisterForNavigation<UserView, UserViewModel>();
             containerRegistry.RegisterForNavigation<UserCreateView,UserCreateViewModel>();
             containerRegistry.RegisterForNavigation<SkinView, SkinViewModel>(); 
         }

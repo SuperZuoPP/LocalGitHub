@@ -153,6 +153,8 @@ namespace WPFBase.Api.Services.BM
             {
                 var model = mapper.Map<TbWeighOperator>(tbWeighOperator);
                 model.CreateTime = DateTime.Now;
+                model.UserCode = SystemBase.GetRndStrOnlyFor(20, true); 
+                model.Password = EncryptTools.GetMD5(model.Password);
                 await unitOfWork.GetRepository<TbWeighOperator>().InsertAsync(model);
                 if (await unitOfWork.SaveChangesAsync() > 0)
                     return new ApiResponse(true, model);
@@ -171,12 +173,13 @@ namespace WPFBase.Api.Services.BM
                 var dbmodel= mapper.Map<TbWeighOperator>(tbWeighOperator);
                 var repository = unitOfWork.GetRepository<TbWeighOperator>();
                 var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(dbmodel.Id));
+                model.UserNumber = dbmodel.UserNumber;
+                model.Password = EncryptTools.GetMD5(dbmodel.Password);
                 model.UserName = dbmodel.UserName;
                 model.Remark = dbmodel.Remark;
                 model.Status = dbmodel.Status;
                 model.LastModifiedTime = DateTime.Now;
-                repository.Update(model);
-
+                repository.Update(model); 
                 if (await unitOfWork.SaveChangesAsync() > 0)
                     return new ApiResponse(true, model);
                 return new ApiResponse(false, "更新数据失败");
