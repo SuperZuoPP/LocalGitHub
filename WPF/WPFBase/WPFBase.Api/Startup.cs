@@ -37,10 +37,11 @@ namespace WPFBase.Api
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<BaseContext>(options => {
+            services.AddDbContext<BaseContext>(options =>
+            {
 
                 //使用sqlserver
-                var connectionString = Configuration.GetConnectionString("SqlServerConnection1");
+                var connectionString = Configuration.GetConnectionString("SqlServerConnection");
                 options.UseSqlServer(connectionString);
 
                 //使用sqlite
@@ -51,12 +52,14 @@ namespace WPFBase.Api
            .AddCustomRepository<Memo, MemoRepository>()
            .AddCustomRepository<User, UserRepository>()
            .AddCustomRepository<Operator, OperatorRepository>()
-           .AddCustomRepository<TbWeighOperator, TbWeighOperatorRepository>();
+           .AddCustomRepository<TbWeighOperator, TbWeighOperatorRepository>()
+           .AddCustomRepository<TbWeighUsergroup, TbWeighUsergroupRepository>();
+           
 
             services.AddTransient<IToDoService, ToDoService>();
             services.AddTransient<ILoginService, LoginService>();
             services.AddTransient<ITbWeighOperatorService, TbWeighOperatorService>();
-
+            services.AddTransient<ITbWeighUsergroupService, TbWeighUsergroupService>();
             //添加AutoMapper
             var atuomapperConfig = new MapperConfiguration(config => {
                 config.AddProfile(new AutoMapperProFile());

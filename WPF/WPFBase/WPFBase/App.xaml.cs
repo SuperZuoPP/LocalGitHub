@@ -50,6 +50,7 @@ namespace WPFBase
             //注册服务  
             containerRegistry.Register<ILoginService, LoginService>(); 
             containerRegistry.Register<IDialogHostService, DialogHostService>();
+            containerRegistry.Register<IUserGroupService, UserGroupService>();
 
             containerRegistry.RegisterForNavigation<HomeView>();
             containerRegistry.RegisterForNavigation<AboutView>();
