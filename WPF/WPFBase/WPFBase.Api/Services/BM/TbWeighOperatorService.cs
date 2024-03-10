@@ -151,14 +151,21 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var model = mapper.Map<TbWeighOperator>(tbWeighOperator);
-                model.CreateTime = DateTime.Now;
-                model.UserCode = SystemBase.GetRndStrOnlyFor(20, true); 
-                model.Password = EncryptTools.GetMD5(model.Password);
-                await unitOfWork.GetRepository<TbWeighOperator>().InsertAsync(model);
-                if (await unitOfWork.SaveChangesAsync() > 0)
-                    return new ApiResponse(true, model);
-                return new ApiResponse(false, "添加数据失败");
+
+                var dbmodel = mapper.Map<TbWeighOperator>(tbWeighOperator);
+                var repository = unitOfWork.GetRepository<TbWeighOperator>();
+                var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.UserNumber.Equals(tbWeighOperator.UserNumber));
+                if (model == null) 
+                {
+                    dbmodel.CreateTime = DateTime.Now;
+                    dbmodel.UserCode = SystemBase.GetRndStrOnlyFor(20, true);
+                    dbmodel.Password = EncryptTools.GetMD5(dbmodel.Password);
+                    await unitOfWork.GetRepository<TbWeighOperator>().InsertAsync(dbmodel);
+                    if (await unitOfWork.SaveChangesAsync() > 0)
+                        return new ApiResponse(true, dbmodel);
+                }
+                
+                return new ApiResponse(false, "添加数据失败，账号已存在");
             }
             catch (Exception ex)
             {

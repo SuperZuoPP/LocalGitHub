@@ -42,5 +42,15 @@ namespace WPFBase.Api.Controllers
 
         [HttpGet]
         public async Task<ApiResponse> GetUserSum() => await service.GetUserSum();
+
+        [HttpGet]
+        public async Task<ApiResponse> GetUserGroupAndUserList([FromQuery] QueryParameter parameter) => await service.GetUserGroupAndUserList(parameter);
+
+        [HttpPost]
+        public async Task<ApiResponse> GroupUserAdd([FromBody] TbWeighGroupauthorityuserDto parameter) => await service.GroupUserAdd(parameter);
+
+
+        [HttpPost]
+        public async Task<ApiResponse> GroupUserRemove([FromBody] TbWeighGroupauthorityuserDto parameter) => await service.GroupUserRemove(parameter);
     }
 }

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
 
 namespace WPFBase.Api.Context.Model.BM
 {
+    [Table("tb_weigh_groupauthorityusers")]
     public partial class TbWeighGroupauthorityuser
     {
         public int Id { get; set; }

@@ -19,7 +19,9 @@ namespace WPFBase.Services
         {
             this.client = client;
         }
-         
+
+       
+
         public async Task<ApiResponse<PagedList<TbWeighOperatorDto>>> GetUserList(TbWeighOperatorDtoParameter parameter)
         {
             BaseRequest request = new BaseRequest();
@@ -38,6 +40,34 @@ namespace WPFBase.Services
             baseRequest.Route = $"api/{serviceName}/GetUserSum";
             baseRequest.Parameter = "";
             return await client.ExecuteAsync(baseRequest);
+        }
+
+        public async Task<ApiResponse<PagedList<TbWeighGroupauthorityuserDto>>> GetUserGroupAndUserList(QueryParameter parameter)
+        {
+            BaseRequest request = new BaseRequest();
+            request.Method = RestSharp.Method.GET;
+            request.Route = $"api/{serviceName}/GetUserGroupAndUserList?pageIndex={parameter.PageIndex}" +
+                $"&pageSize={parameter.PageSize}" +
+                $"&search={parameter.Search}" ;
+            return await client.ExecuteAsync<PagedList<TbWeighGroupauthorityuserDto>>(request);
+        }
+
+        public async Task<ApiResponse> GroupUserAdd(TbWeighGroupauthorityuserDto parameter)
+        {
+            BaseRequest request = new BaseRequest();
+            request.Method = RestSharp.Method.POST;
+            request.Route = $"api/{serviceName}/GroupUserAdd";
+            request.Parameter = parameter;
+            return await client.ExecuteAsync(request);
+        }
+
+        public async Task<ApiResponse> GroupUserRemove(TbWeighGroupauthorityuserDto parameter)
+        {
+            BaseRequest request = new BaseRequest();
+            request.Method = RestSharp.Method.POST;
+            request.Route = $"api/{serviceName}/GroupUserRemove";
+            request.Parameter = parameter;
+            return await client.ExecuteAsync(request);
         }
     }
 }

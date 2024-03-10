@@ -23,10 +23,16 @@ namespace WPFBase.ViewModels.SMViewModel
 
         public UserGroupViewModel(IContainerProvider provider, IUserGroupService service) : base(provider)
         {
+            //用户列表
             UserListDatas = new ObservableCollection<TbWeighOperatorDto>();
-            UserListDatasByGroup = new ObservableCollection<TbWeighOperatorDto>();
+            //当前用户组所包含的用户列表
+            UserListDatasByGroup = new ObservableCollection<TbWeighGroupauthorityuserDto>();
+            //用户组列表
             GroupListDatas = new ObservableCollection<TbWeighUsergroupDto>();
+            //当前新增用户组
             CurrentGroup = new TbWeighUsergroupDto();
+            //当前前用户组所包含的用户
+            CurrentUserGroup = new TbWeighGroupauthorityuserDto();
             ListData = new ObservableCollection<string> { "超级管理员组", "管理员组", 
                 "用户组", "班长组", "司磅员组", "取样员组" };
             this.service = service;
@@ -34,7 +40,11 @@ namespace WPFBase.ViewModels.SMViewModel
             dialog = provider.Resolve<IDialogHostService>();
             ShowRoleCommand = new DelegateCommand(ShowRoleList);
             ExecuteCommand = new DelegateCommand<string>(Execute);
+            AddUserCommand = new DelegateCommand(AddUserToGroup);
+            RemoveUserCommand = new DelegateCommand(RemoveUserFromGroup);
         }
+
+       
 
 
 
@@ -85,6 +95,28 @@ namespace WPFBase.ViewModels.SMViewModel
             get { return selectedGroupItem; }
             set { SetProperty(ref selectedGroupItem, value); }
         }
+
+        private TbWeighOperatorDto selectedUserItem;
+        public TbWeighOperatorDto SelectedUserItem
+        {
+            get { return selectedUserItem; }
+            set { SetProperty(ref selectedUserItem, value); }
+        }
+
+        private TbWeighGroupauthorityuserDto selectedUserGroupItem;
+        public TbWeighGroupauthorityuserDto SelectedUserGroupItem
+        {
+            get { return selectedUserGroupItem; }
+            set { SetProperty(ref selectedUserGroupItem, value); }
+        }
+
+        private TbWeighGroupauthorityuserDto currentUserGroup;
+        public TbWeighGroupauthorityuserDto CurrentUserGroup
+        {
+            get { return currentUserGroup; }
+            set { SetProperty(ref currentUserGroup, value); }
+        }
+
         private ObservableCollection<string> listData;
 
         public ObservableCollection<string> ListData
@@ -101,12 +133,12 @@ namespace WPFBase.ViewModels.SMViewModel
             set { SetProperty<ObservableCollection<TbWeighOperatorDto>>(ref userListDatas, value); }
         }
 
-        private ObservableCollection<TbWeighOperatorDto> userListDatasByGroup;
+        private ObservableCollection<TbWeighGroupauthorityuserDto> userListDatasByGroup;
 
-        public ObservableCollection<TbWeighOperatorDto> UserListDatasByGroup
+        public ObservableCollection<TbWeighGroupauthorityuserDto> UserListDatasByGroup
         {
             get { return userListDatasByGroup; }
-            set { SetProperty<ObservableCollection<TbWeighOperatorDto>>(ref userListDatasByGroup, value); }
+            set { SetProperty<ObservableCollection<TbWeighGroupauthorityuserDto>>(ref userListDatasByGroup, value); }
         }
 
         private ObservableCollection<TbWeighUsergroupDto> groupListDatas;
@@ -132,12 +164,37 @@ namespace WPFBase.ViewModels.SMViewModel
 
         public DelegateCommand<string> ExecuteCommand { get; private set; }
 
+        public DelegateCommand AddUserCommand { get; set; }
+
+        public DelegateCommand RemoveUserCommand { get; set; }
         #endregion
 
         #region 方法
-        private void ShowRoleList()
-        {
-            Console.WriteLine(SelectedGroupItem.UserGroupName);
+        private async void ShowRoleList()
+        { 
+            try
+            {
+                var grouplists = await service.GetUserGroupAndUserList(new Shared.Parameters.QueryParameter()
+                {
+                    PageIndex = 0,
+                    PageSize = 100,
+                    Search = selectedGroupItem.UserGroupCode
+                });
+
+                if (grouplists.Status)
+                {
+                    UserListDatasByGroup.Clear();
+                    foreach (var item in grouplists.Result.Items)
+                    {
+                        UserListDatasByGroup.Add(item);
+                    }
+                } 
+            }
+            catch  
+            { 
+
+            }
+           
         }
 
         void Execute(string obj)
@@ -188,7 +245,7 @@ namespace WPFBase.ViewModels.SMViewModel
         {
             var result = await service.GetUserList(new Shared.Parameters.TbWeighOperatorDtoParameter()
             {
-                PageIndex = 0,
+                PageIndex = PageIndex - 1,
                 PageSize = 20,
                 Search = SearchText,
                 Status = 1
@@ -213,7 +270,7 @@ namespace WPFBase.ViewModels.SMViewModel
                 var result = await service.GetUserSum();
                 if (result.Status)
                 {
-                    PageSum = (int)Math.Ceiling(Convert.ToDouble(result.Result.ToString()) / 20);
+                    PageSum = (int)Math.Ceiling(Convert.ToDouble(result.Result.ToString()) / 10);
                 }
             }
             catch
@@ -240,6 +297,63 @@ namespace WPFBase.ViewModels.SMViewModel
                 }
             }
         }
+
+        private async void RemoveUserFromGroup()
+        {
+            if (selectedGroupItem is null)
+            {
+                aggregator.SendMessage("请选择用户组", "Main");
+                return;
+            }
+
+            if (SelectedUserGroupItem is null)
+            {
+                aggregator.SendMessage("请选择移除的用户", "Main");
+                return;
+            }
+            
+            CurrentUserGroup.UserGroupCode = SelectedUserGroupItem.UserGroupCode;
+            CurrentUserGroup.UserCode = SelectedUserGroupItem.UserCode;
+
+            var result = await service.GroupUserRemove(CurrentUserGroup);
+
+            if (result.Status)
+            {
+                ShowRoleList();
+                UserListDatas.Remove(SelectedUserItem);
+            }
+        }
+
+        private async void AddUserToGroup()
+        {
+            if (selectedGroupItem is null)
+            {
+                aggregator.SendMessage("请选择用户组", "Main");
+                return;
+            }
+
+            if (SelectedUserItem is null)
+            {
+                aggregator.SendMessage("请选择用户", "Main");
+                return;
+            }
+            CurrentUserGroup.UserGroupCode = selectedGroupItem.UserGroupCode;
+            CurrentUserGroup.UserCode = selectedUserItem.UserCode;
+
+            var result = await service.GroupUserAdd(CurrentUserGroup);
+
+            if (result.Status)
+            {
+                ShowRoleList();
+                UserListDatas.Remove(SelectedUserItem);
+                aggregator.SendMessage("添加成功", "Main");
+            }
+            else
+            {
+                aggregator.SendMessage("该用户已在用户组中", "Main");
+            } 
+        }
+
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
             base.OnNavigatedTo(navigationContext);

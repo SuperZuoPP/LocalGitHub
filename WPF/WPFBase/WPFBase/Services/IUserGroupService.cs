@@ -17,5 +17,11 @@ namespace WPFBase.Services
         Task<ApiResponse<PagedList<TbWeighOperatorDto>>> GetUserList(TbWeighOperatorDtoParameter parameter);
 
         Task<ApiResponse> GetUserSum();
+
+        Task<ApiResponse<PagedList<TbWeighGroupauthorityuserDto>>> GetUserGroupAndUserList(QueryParameter parameter);
+
+        Task<ApiResponse> GroupUserAdd(TbWeighGroupauthorityuserDto userdto);
+
+        Task<ApiResponse> GroupUserRemove(TbWeighGroupauthorityuserDto userdto);
     }
 }

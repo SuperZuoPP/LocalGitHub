@@ -178,13 +178,19 @@
                                 <ListBox
                                     Grid.Column="0"
                                     Margin="10,0,10,0"
+                                    ItemsSource="{Binding UserListDatasByGroup}"
+                                    SelectedItem="{Binding SelectedUserGroupItem}"
                                     Style="{StaticResource MaterialDesignNavigationPrimaryListBox}">
-                                    <ListBoxItem Content="测试1" />
-                                    <ListBoxItem Content="测试2" />
-                                    <ListBoxItem Content="测试2" />
-                                    <ListBoxItem Content="测试2" />
-                                    <ListBoxItem Content="测试2" />
-                                    <ListBoxItem Content="测试3" />
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="SelectionChanged">
+                                            <prism:InvokeCommandAction Command="{Binding AddRoleCommand}" CommandParameter="{Binding SelectedUserGroupItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBox}}}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding UserCode}" />
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
                                 </ListBox>
                             </StackPanel>
 
@@ -193,10 +199,10 @@
                                 Grid.Column="1"
                                 VerticalAlignment="Center"
                                 Orientation="Vertical">
-                                <Button Margin="3,10">
+                                <Button Margin="3,10" Command="{Binding AddUserCommand}">
                                     <md:PackIcon Kind="ChevronLeftCircle" />
                                 </Button>
-                                <Button Margin="3,10">
+                                <Button Margin="3,10" Command="{Binding RemoveUserCommand}">
                                     <md:PackIcon Kind="ChevronRightCircle" />
                                 </Button>
                             </StackPanel>
@@ -226,7 +232,13 @@
                                 <ListBox
                                     Margin="10,0,10,0"
                                     ItemsSource="{Binding UserListDatas}"
+                                    SelectedItem="{Binding SelectedUserItem}"
                                     Style="{StaticResource MaterialDesignNavigationPrimaryListBox}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="SelectionChanged">
+                                            <prism:InvokeCommandAction Command="{Binding AddRoleCommand}" CommandParameter="{Binding SelectedUserItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBox}}}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding UserName}" />
@@ -288,7 +300,7 @@
                     VerticalAlignment="Bottom"
                     IsJumpEnabled="True"
                     MaxPageCount="{Binding PageSum}"
-                    PageIndex="{Binding PageIndex}" />
+                    PageIndex="{Binding PageIndex, Mode=TwoWay}" />
             </Grid>
         </md:DrawerHost>
     </md:DialogHost>

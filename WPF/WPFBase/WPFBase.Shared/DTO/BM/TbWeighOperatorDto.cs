@@ -8,14 +8,18 @@ namespace WPFBase.Shared.DTO.BM
 {
     public class TbWeighOperatorDto : BaseDto
     {
-        
+        private string userCode;
         private string userNumber;
         private string userName;
         private string passWord;
         private bool status;
 
-      
 
+        public string UserCode
+        {
+            get { return userCode; }
+            set { SetProperty<string>(ref userCode, value); }
+        }
         public string UserNumber
         {
             get { return userNumber; }

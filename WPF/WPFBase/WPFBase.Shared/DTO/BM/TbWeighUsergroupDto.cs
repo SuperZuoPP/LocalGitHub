@@ -7,11 +7,16 @@ namespace WPFBase.Shared.DTO.BM
 {
     public class TbWeighUsergroupDto:BaseDto
     {
-        
+        private string userGroupCode;
         private string userGroupName;
         private string weighHouseCodes;
         private bool status;
 
+        public string UserGroupCode
+        {
+            get { return userGroupCode; }
+            set { SetProperty<string>(ref userGroupCode, value); }
+        }
         public string UserGroupName
         {
             get { return userGroupName; }
