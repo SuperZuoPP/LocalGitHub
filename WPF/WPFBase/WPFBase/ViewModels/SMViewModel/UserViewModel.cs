@@ -18,6 +18,7 @@ using System.ComponentModel;
 using WPFBase.Services;
 using WPFBase.Shared.DTO.BM;
 using MaterialDesignThemes.Wpf;
+using HandyControl.Controls;
 
 namespace WPFBase.ViewModels.SMViewModel
 {
@@ -35,10 +36,17 @@ namespace WPFBase.ViewModels.SMViewModel
             this.loginService = loginService;
             ExecuteCommand = new DelegateCommand<string>(Execute);
             EditCommand = new DelegateCommand<TbWeighOperatorDto>(Edit);
-            DeleteCommand = new DelegateCommand<TbWeighOperatorDto>(Delete);  
+            DeleteCommand = new DelegateCommand<TbWeighOperatorDto>(Delete);
+            PageUpdatedCommand = new DelegateCommand(PageUpdated);
+            PerPageNumSeletedCommand = new DelegateCommand<string>(PerPageNumSeleted);
         }
 
-       
+        private void PerPageNumSeleted(string selectedItemContent)
+        {
+            Console.WriteLine("Selected Item Content: " + selectedItemContent);
+        }
+
+
 
 
         #region 属性
@@ -116,15 +124,47 @@ namespace WPFBase.ViewModels.SMViewModel
         public int PageIndex
         {
             get { return pageIndex; }
-            set { SetProperty<int>(ref pageIndex, value); GetDataAsync(); }
+            set { SetProperty<int>(ref pageIndex, value); }
         }
 
-        private int pageSum;
+        private int pageCount;
 
-        public int PageSum
+        public int PageCount
+        {
+            get { return pageCount; }
+            set { SetProperty<int>(ref pageCount, value); }
+        }
+
+        private int perPageNum;
+
+        public int PerPageNum
+        {
+            get { return perPageNum; }
+            set { SetProperty<int>(ref perPageNum, value); }
+        }
+
+        private string test;
+
+        public string Test
+        {
+            get { return test; }
+            set { SetProperty<string>(ref test, value); }
+        }
+
+        private object selectedItem;
+
+        public object SelectedItem
+        {
+            get { return selectedItem; }
+            set { SetProperty<object>(ref selectedItem, value); }
+        }
+
+        private string pageSum;
+
+        public string PageSum
         {
             get { return pageSum; }
-            set { SetProperty<int>(ref pageSum, value); GetDataAsync(); }
+            set { SetProperty<string>(ref pageSum, value); }
         }
 
         private ObservableCollection<TbWeighOperatorDto> weighOperatorDtos;
@@ -150,7 +190,12 @@ namespace WPFBase.ViewModels.SMViewModel
         public DelegateCommand<TbWeighOperatorDto> EditCommand { get; set; }
 
         public DelegateCommand<TbWeighOperatorDto> DeleteCommand { get; set; }
-          
+
+        public DelegateCommand PageUpdatedCommand { get; set; }
+
+        public DelegateCommand<string> PerPageNumSeletedCommand { get; set; }
+        
+
         #endregion
 
         #region 方法
@@ -184,7 +229,7 @@ namespace WPFBase.ViewModels.SMViewModel
             var result = await loginService.GetAllFilterAsync(new Shared.Parameters.TbWeighOperatorDtoParameter()
             {
                 PageIndex = PageIndex - 1,
-                PageSize = 10,
+                PageSize = PerPageNum,
                 Search = SearchText,
                 Status = selectStatus
             });
@@ -206,7 +251,8 @@ namespace WPFBase.ViewModels.SMViewModel
                 var result = await loginService.Summary();
                 if (result.Status)
                 {
-                    PageSum = (int)Math.Ceiling(Convert.ToDouble(result.Result.ToString()) / 10);
+                   PageSum = $"共 {result.Result.ToString()} 条"; 
+                   PageCount = (int)Math.Ceiling(Convert.ToDouble(result.Result.ToString()) / PerPageNum); 
                 }
             }
             catch
@@ -229,13 +275,15 @@ namespace WPFBase.ViewModels.SMViewModel
                 string.IsNullOrWhiteSpace(CurrentTbWeighOperatorDto.UserName) ||
                 string.IsNullOrWhiteSpace(PassWord))
             {
-                aggregator.SendMessage("请输入完整的注册信息！", "Main");
+                Growl.WarningGlobal("请输入完整的注册信息！");
+                //aggregator.SendMessage("请输入完整的注册信息！", "Main");
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(PassWord)  || PassWord != NewPassWord )
             {
-                aggregator.SendMessage("密码不一致,请重新输入！", "Main");
+                Growl.WarningGlobal("密码不一致,请重新输入！");
+                //aggregator.SendMessage("密码不一致,请重新输入！", "Main");
                 return;
             }
             try
@@ -253,7 +301,8 @@ namespace WPFBase.ViewModels.SMViewModel
                             operatormodel.UserName = CurrentTbWeighOperatorDto.UserName;
                             operatormodel.PassWord = PassWord;
                             operatormodel.Status = CurrentTbWeighOperatorDto.Status;
-                            aggregator.SendMessage("修改成功", "Main");
+                            //aggregator.SendMessage("修改成功", "Main");
+                            Growl.SuccessGlobal("修改成功！");
                         }
                     }
                     IsRightDrawerOpen = false;
@@ -266,21 +315,23 @@ namespace WPFBase.ViewModels.SMViewModel
                     {
                         weighOperatorDtos.Add(addResult.Result);
                         IsRightDrawerOpen = false;
-                        aggregator.SendMessage("添加成功", "Main");
+                        //aggregator.SendMessage("添加成功", "Main");
+                        Growl.SuccessGlobal("添加成功！");
                     }
                 }
                 GetTotalSum();
             }
             catch
             {
-                aggregator.SendMessage("添加失败", "Main");
+                Growl.ErrorGlobal("添加失败！");
+               // aggregator.SendMessage("添加失败", "Main");
             } 
         }
 
         private async void Delete(TbWeighOperatorDto obj)
         {
             try
-            {
+            { 
                 var dialogResult = await dialog.Question("温馨提示", $"确认删除用户:{obj.UserName} ?");
                 if (dialogResult.Result != Prism.Services.Dialogs.ButtonResult.OK) return;
 
@@ -308,7 +359,12 @@ namespace WPFBase.ViewModels.SMViewModel
                 IsRightDrawerOpen = true;
             }
         }
- 
+
+
+        private void PageUpdated()
+        {
+            GetDataAsync();
+        }
 
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {

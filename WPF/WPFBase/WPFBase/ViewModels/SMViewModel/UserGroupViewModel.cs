@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using HandyControl.Controls;
+using Prism.Commands;
 using Prism.Ioc;
 using Prism.Regions;
 using System;
@@ -32,9 +33,7 @@ namespace WPFBase.ViewModels.SMViewModel
             //当前新增用户组
             CurrentGroup = new TbWeighUsergroupDto();
             //当前前用户组所包含的用户
-            CurrentUserGroup = new TbWeighGroupauthorityuserDto();
-            ListData = new ObservableCollection<string> { "超级管理员组", "管理员组", 
-                "用户组", "班长组", "司磅员组", "取样员组" };
+            CurrentUserGroup = new TbWeighGroupauthorityuserDto(); 
             this.service = service;
             this.regionManager = provider.Resolve<IRegionManager>();
             dialog = provider.Resolve<IDialogHostService>();
@@ -42,11 +41,10 @@ namespace WPFBase.ViewModels.SMViewModel
             ExecuteCommand = new DelegateCommand<string>(Execute);
             AddUserCommand = new DelegateCommand(AddUserToGroup);
             RemoveUserCommand = new DelegateCommand(RemoveUserFromGroup);
+            PageUpdatedCommand = new DelegateCommand(PageUpdated);
         }
 
        
-
-
 
         #region 属性
 
@@ -55,7 +53,7 @@ namespace WPFBase.ViewModels.SMViewModel
         public int PageIndex
         {
             get { return pageIndex; }
-            set { SetProperty<int>(ref pageIndex, value); GetUserData(); }
+            set { SetProperty<int>(ref pageIndex, value); }
         }
 
         private int pageSum;
@@ -63,7 +61,7 @@ namespace WPFBase.ViewModels.SMViewModel
         public int PageSum
         {
             get { return pageSum; }
-            set { SetProperty<int>(ref pageSum, value); GetUserData(); }
+            set { SetProperty<int>(ref pageSum, value);}
         }
 
         private string searchText;
@@ -116,15 +114,7 @@ namespace WPFBase.ViewModels.SMViewModel
             get { return currentUserGroup; }
             set { SetProperty(ref currentUserGroup, value); }
         }
-
-        private ObservableCollection<string> listData;
-
-        public ObservableCollection<string> ListData
-        {
-            get { return listData; }
-            set { SetProperty<ObservableCollection<string>>(ref listData, value); }
-        }
-
+         
         private ObservableCollection<TbWeighOperatorDto> userListDatas;
 
         public ObservableCollection<TbWeighOperatorDto> UserListDatas
@@ -167,13 +157,24 @@ namespace WPFBase.ViewModels.SMViewModel
         public DelegateCommand AddUserCommand { get; set; }
 
         public DelegateCommand RemoveUserCommand { get; set; }
+
+        public DelegateCommand PageUpdatedCommand { get; set; }
+
         #endregion
 
         #region 方法
+        private void PageUpdated()
+        {
+            GetUserData();
+        }
+
         private async void ShowRoleList()
         { 
             try
             {
+                if (selectedGroupItem == null)
+                    return;
+
                 var grouplists = await service.GetUserGroupAndUserList(new Shared.Parameters.QueryParameter()
                 {
                     PageIndex = 0,
@@ -203,10 +204,8 @@ namespace WPFBase.ViewModels.SMViewModel
             {
                 case "AddGroup": AddGroup(); break;
                 case "Search": GetUserData();break;
-                case "SaveGroup": SaveGroup(); break;
-                    
-            }
-
+                case "SaveGroup": SaveGroup(); break; 
+            } 
         }
 
        
@@ -222,7 +221,8 @@ namespace WPFBase.ViewModels.SMViewModel
         {
             if (string.IsNullOrWhiteSpace(CurrentGroup.UserGroupName))
             {
-                aggregator.SendMessage("请输入用户组名称！", "Main");
+                Growl.WarningGlobal("请输入用户组名称！");
+                //aggregator.SendMessage("请输入用户组名称！", "Main");
                 return;
             }
             try
@@ -232,12 +232,14 @@ namespace WPFBase.ViewModels.SMViewModel
                 {
                     GroupListDatas.Add(addResult.Result);
                     IsLeftDrawerOpen = false;
-                    aggregator.SendMessage("添加用户组成功", "Main");
+                    Growl.SuccessGlobal("添加用户组成功！");
+                    //aggregator.SendMessage("添加用户组成功", "Main");
                 }
             }
             catch
             {
-                aggregator.SendMessage("添加用户组失败", "Main");
+                Growl.ErrorGlobal("添加用户组失败！");
+                //aggregator.SendMessage("添加用户组失败", "Main");
             }
         }
 
@@ -302,13 +304,15 @@ namespace WPFBase.ViewModels.SMViewModel
         {
             if (selectedGroupItem is null)
             {
-                aggregator.SendMessage("请选择用户组", "Main");
+                Growl.WarningGlobal("请选择用户组！");
+                //aggregator.SendMessage("请选择用户组", "Main");
                 return;
             }
 
             if (SelectedUserGroupItem is null)
             {
-                aggregator.SendMessage("请选择移除的用户", "Main");
+                Growl.WarningGlobal("请选择移除的用户！");
+                //aggregator.SendMessage("请选择移除的用户", "Main");
                 return;
             }
             
@@ -321,6 +325,7 @@ namespace WPFBase.ViewModels.SMViewModel
             {
                 ShowRoleList();
                 UserListDatas.Remove(SelectedUserItem);
+                Growl.SuccessGlobal("用户已移除用户组！");
             }
         }
 
@@ -328,17 +333,21 @@ namespace WPFBase.ViewModels.SMViewModel
         {
             if (selectedGroupItem is null)
             {
-                aggregator.SendMessage("请选择用户组", "Main");
+                Growl.WarningGlobal("请选择用户组！");
+               // aggregator.SendMessage("请选择用户组", "Main");
                 return;
             }
 
             if (SelectedUserItem is null)
             {
-                aggregator.SendMessage("请选择用户", "Main");
+                Growl.WarningGlobal("请选择用户！");
+                //aggregator.SendMessage("请选择用户", "Main");
                 return;
             }
             CurrentUserGroup.UserGroupCode = selectedGroupItem.UserGroupCode;
             CurrentUserGroup.UserCode = selectedUserItem.UserCode;
+            CurrentUserGroup.Attribute1 = selectedGroupItem.UserGroupName;
+            CurrentUserGroup.Attribute2 = selectedUserItem.UserName;
 
             var result = await service.GroupUserAdd(CurrentUserGroup);
 
@@ -346,17 +355,20 @@ namespace WPFBase.ViewModels.SMViewModel
             {
                 ShowRoleList();
                 UserListDatas.Remove(SelectedUserItem);
-                aggregator.SendMessage("添加成功", "Main");
+                //aggregator.SendMessage("添加成功", "Main");
+                Growl.SuccessGlobal("用户添加成功！");
             }
             else
             {
-                aggregator.SendMessage("该用户已在用户组中", "Main");
+                Growl.WarningGlobal("该用户已在用户组中！");
+                //aggregator.SendMessage("该用户已在用户组中", "Main");
             } 
         }
 
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
             base.OnNavigatedTo(navigationContext);
+            UserListDatasByGroup.Clear();
             GetUserData();
             GetTotalUserSum();
             GetGroupList();

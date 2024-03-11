@@ -53,8 +53,7 @@ namespace WPFBase
             containerRegistry.Register<IUserGroupService, UserGroupService>();
 
             containerRegistry.RegisterForNavigation<HomeView>();
-            containerRegistry.RegisterForNavigation<AboutView>();
-            containerRegistry.RegisterForNavigation<TestView>();
+            containerRegistry.RegisterForNavigation<AboutView>(); 
             containerRegistry.RegisterForNavigation<SettingsView, SettingsViewModel>();
             containerRegistry.RegisterForNavigation<MsgView, MsgViewModel>();
             containerRegistry.RegisterForNavigation<AuthorityView, AuthorityViewModel>();

@@ -186,6 +186,8 @@ namespace WPFBase.Api.Services.BM
                     dbmodel.CreateTime = DateTime.Now;
                     dbmodel.UserGroupCode = groupauthorityuserDto.UserGroupCode;
                     dbmodel.UserCode = groupauthorityuserDto.UserCode;
+                    dbmodel.Attribute1 = groupauthorityuserDto.Attribute1;
+                    dbmodel.Attribute2 = groupauthorityuserDto.Attribute2;
                     dbmodel.OperateBit = 0;
                     await repository.InsertAsync(dbmodel);
                     if (await unitOfWork.SaveChangesAsync() > 0)

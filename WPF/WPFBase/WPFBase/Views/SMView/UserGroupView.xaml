@@ -83,7 +83,7 @@
             </md:DrawerHost.LeftDrawerContent>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="60" />
+                    <RowDefinition Height="70" />
                     <RowDefinition />
                     <RowDefinition Height="60" />
                 </Grid.RowDefinitions>
@@ -183,12 +183,12 @@
                                     Style="{StaticResource MaterialDesignNavigationPrimaryListBox}">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="SelectionChanged">
-                                            <prism:InvokeCommandAction Command="{Binding AddRoleCommand}" CommandParameter="{Binding SelectedUserGroupItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBox}}}" />
+                                            <prism:InvokeCommandAction CommandParameter="{Binding SelectedUserGroupItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBox}}}" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding UserCode}" />
+                                            <TextBlock Text="{Binding Attribute2}" />
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>
@@ -236,7 +236,7 @@
                                     Style="{StaticResource MaterialDesignNavigationPrimaryListBox}">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="SelectionChanged">
-                                            <prism:InvokeCommandAction Command="{Binding AddRoleCommand}" CommandParameter="{Binding SelectedUserItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBox}}}" />
+                                            <prism:InvokeCommandAction CommandParameter="{Binding SelectedUserItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBox}}}" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                     <ListBox.ItemTemplate>
@@ -249,49 +249,6 @@
                         </Grid>
                     </Border>
 
-                    <!--<DataGrid
-                        x:Name="dgUserGroupList"
-                        Grid.Column="1"
-                        BorderThickness="1"
-                        ItemsSource="{Binding WeighOperatorDtos}"
-                        Style="{StaticResource dgStyle}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn
-                                Width="1*"
-                                Binding="{Binding UserNumber}"
-                                ElementStyle="{StaticResource textColStyleLeft}"
-                                Header="用户组"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Width="1*"
-                                Binding="{Binding UserName}"
-                                ElementStyle="{StaticResource textColStyleCenter}"
-                                Header="用户名"
-                                IsReadOnly="True" />
-
-
-                            <DataGridTextColumn
-                                Width="2*"
-                                ElementStyle="{StaticResource textColStyleLeft}"
-                                Header="备注"
-                                IsReadOnly="True" />
-                            <DataGridTemplateColumn Width="150" Header="操作">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                                            <Button
-                                                Margin="0,0,10,0"
-                                                Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
-                                                CommandParameter="{Binding SelectedItem, ElementName=dgUserGroupList}"
-                                                Style="{StaticResource ButtonDanger}">
-                                                <md:PackIcon Kind="Delete" />
-                                            </Button>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>-->
                 </Grid>
 
                 <hc:Pagination
@@ -300,7 +257,13 @@
                     VerticalAlignment="Bottom"
                     IsJumpEnabled="True"
                     MaxPageCount="{Binding PageSum}"
-                    PageIndex="{Binding PageIndex, Mode=TwoWay}" />
+                    PageIndex="{Binding PageIndex, Mode=TwoWay}" >
+                    <hc:Interaction.Triggers>
+                        <hc:EventTrigger EventName="PageUpdated">
+                            <hc:EventToCommand Command="{Binding PageUpdatedCommand}" PassEventArgsToCommand="True"/>
+                        </hc:EventTrigger>
+                    </hc:Interaction.Triggers>
+                </hc:Pagination>
             </Grid>
         </md:DrawerHost>
     </md:DialogHost>

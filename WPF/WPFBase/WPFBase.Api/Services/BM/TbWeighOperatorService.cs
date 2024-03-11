@@ -56,7 +56,7 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                password = EncryptTools.GetMD5(password);
+                password = EncryptTools.GetMD5(account+password);
                 var model = await  unitOfWork.GetRepository<TbWeighOperator>().GetFirstOrDefaultAsync(predicate: x => (x.UserNumber.Equals(account)) && (x.Password.Equals(password)));
                 if (model == null)
                     return new ApiResponse("账号密码错误！请重新输入！");
@@ -86,7 +86,7 @@ namespace WPFBase.Api.Services.BM
                  
                 model.UserCode = SystemBase.GetRndStrOnlyFor(20, true); 
                 model.CreateTime = DateTime.Now;
-                model.Password = EncryptTools.GetMD5(model.Password);
+                model.Password = EncryptTools.GetMD5(model.UserNumber+model.Password);
                 await repository.InsertAsync(model);
                 if (await unitOfWork.SaveChangesAsync() > 0)
                     return new ApiResponse(true, model);
@@ -159,7 +159,7 @@ namespace WPFBase.Api.Services.BM
                 {
                     dbmodel.CreateTime = DateTime.Now;
                     dbmodel.UserCode = SystemBase.GetRndStrOnlyFor(20, true);
-                    dbmodel.Password = EncryptTools.GetMD5(dbmodel.Password);
+                    dbmodel.Password = EncryptTools.GetMD5(dbmodel.UserNumber+dbmodel.Password);
                     await unitOfWork.GetRepository<TbWeighOperator>().InsertAsync(dbmodel);
                     if (await unitOfWork.SaveChangesAsync() > 0)
                         return new ApiResponse(true, dbmodel);
@@ -181,7 +181,7 @@ namespace WPFBase.Api.Services.BM
                 var repository = unitOfWork.GetRepository<TbWeighOperator>();
                 var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(dbmodel.Id));
                 model.UserNumber = dbmodel.UserNumber;
-                model.Password = EncryptTools.GetMD5(dbmodel.Password);
+                model.Password = EncryptTools.GetMD5(dbmodel.UserNumber+dbmodel.Password);
                 model.UserName = dbmodel.UserName;
                 model.Remark = dbmodel.Remark;
                 model.Status = dbmodel.Status;

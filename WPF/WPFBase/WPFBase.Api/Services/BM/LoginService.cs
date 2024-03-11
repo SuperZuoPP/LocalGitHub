@@ -27,7 +27,7 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                password = EncryptTools.GetMD5(password);
+                password = EncryptTools.GetMD5(account+password);
                 var model = await  unitOfWork.GetRepository<Operator>().GetFirstOrDefaultAsync(predicate: x => (x.UserNumber.Equals(account)) && (x.Password.Equals(password)));
                 if (model == null)
                     return new ApiResponse("账号密码错误！请重新输入！");
@@ -58,7 +58,7 @@ namespace WPFBase.Api.Services.BM
 
                 model.UserCode = SystemBase.GetRndStrOnlyFor(20, true);
                 model.CreateTime = DateTime.Now;
-                model.Password = EncryptTools.GetMD5(model.Password);
+                model.Password = EncryptTools.GetMD5(model.UserNumber+model.Password);
                 await repository.InsertAsync(model); 
                 if (await unitOfWork.SaveChangesAsync() > 0)
                     return new ApiResponse(true, model);
