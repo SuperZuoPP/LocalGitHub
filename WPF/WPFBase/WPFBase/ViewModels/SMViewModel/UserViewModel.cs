@@ -19,6 +19,7 @@ using WPFBase.Services;
 using WPFBase.Shared.DTO.BM;
 using MaterialDesignThemes.Wpf;
 using HandyControl.Controls;
+using System.Windows.Controls;
 
 namespace WPFBase.ViewModels.SMViewModel
 {
@@ -38,12 +39,13 @@ namespace WPFBase.ViewModels.SMViewModel
             EditCommand = new DelegateCommand<TbWeighOperatorDto>(Edit);
             DeleteCommand = new DelegateCommand<TbWeighOperatorDto>(Delete);
             PageUpdatedCommand = new DelegateCommand(PageUpdated);
-            PerPageNumSeletedCommand = new DelegateCommand<string>(PerPageNumSeleted);
+            PerPageNumSeletedCommand = new DelegateCommand<ComboBoxItem>(PerPageNumSeleted);
         }
 
-        private void PerPageNumSeleted(string selectedItemContent)
+        private void PerPageNumSeleted(ComboBoxItem selectedItemContent)
         {
-            Console.WriteLine("Selected Item Content: " + selectedItemContent);
+            PerPageNum = Convert.ToInt32(selectedItemContent.Content);
+            GetDataAsync();
         }
 
 
@@ -135,7 +137,7 @@ namespace WPFBase.ViewModels.SMViewModel
             set { SetProperty<int>(ref pageCount, value); }
         }
 
-        private int perPageNum;
+        private int perPageNum=10;
 
         public int PerPageNum
         {
@@ -143,22 +145,14 @@ namespace WPFBase.ViewModels.SMViewModel
             set { SetProperty<int>(ref perPageNum, value); }
         }
 
-        private string test;
+        private ComboBoxItem comboBoxItemSelected;
 
-        public string Test
+        public ComboBoxItem ComboBoxItemSelected
         {
-            get { return test; }
-            set { SetProperty<string>(ref test, value); }
+            get { return comboBoxItemSelected; }
+            set { SetProperty<ComboBoxItem>(ref comboBoxItemSelected, value); }
         }
-
-        private object selectedItem;
-
-        public object SelectedItem
-        {
-            get { return selectedItem; }
-            set { SetProperty<object>(ref selectedItem, value); }
-        }
-
+ 
         private string pageSum;
 
         public string PageSum
@@ -193,7 +187,7 @@ namespace WPFBase.ViewModels.SMViewModel
 
         public DelegateCommand PageUpdatedCommand { get; set; }
 
-        public DelegateCommand<string> PerPageNumSeletedCommand { get; set; }
+        public DelegateCommand<ComboBoxItem> PerPageNumSeletedCommand { get; set; }
         
 
         #endregion

@@ -44,7 +44,7 @@ namespace WPFBase.ViewModels.SMViewModel
         void CreateMenuBar()
         {
             MenuBars.Add(new MenuBar() { Icon = "Palette", Title = "个性化", NameSpace = "SkinView" });
-            MenuBars.Add(new MenuBar() { Icon = "MicrosoftXboxControllerMenu", Title = "菜单管理", NameSpace = "MenuView" });
+            MenuBars.Add(new MenuBar() { Icon = "MicrosoftXboxControllerMenu", Title = "菜单管理", NameSpace = "MenuListView" });
             MenuBars.Add(new MenuBar() { Icon = "Account", Title = "用户管理", NameSpace = "UserView" });
             MenuBars.Add(new MenuBar() { Icon = "AccountMultiple", Title = "用户组管理", NameSpace = "UserGroupView" });
             MenuBars.Add(new MenuBar() { Icon = "ShieldLock", Title = "权限管理", NameSpace = "AuthorityView" });
