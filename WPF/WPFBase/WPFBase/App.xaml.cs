@@ -17,6 +17,7 @@ using WPFBase.Views.Dialogs;
 using WPFBase.Services.ServiceBase;
 using WPFBase.Services;
 using WPFBase.Views.BMView;
+using WPFBase.ViewModels;
 
 namespace WPFBase
 {
@@ -53,6 +54,8 @@ namespace WPFBase
             containerRegistry.Register<IUserGroupService, UserGroupService>();
             containerRegistry.Register<IMenuService, MenuService>();
 
+         
+            containerRegistry.RegisterForNavigation<TreeDemoView,TreeDemoViewModel>();
             containerRegistry.RegisterForNavigation<HomeView>();
             containerRegistry.RegisterForNavigation<AboutView>(); 
             containerRegistry.RegisterForNavigation<SettingsView, SettingsViewModel>();

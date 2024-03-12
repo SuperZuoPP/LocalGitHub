@@ -1,0 +1,49 @@
+﻿<UserControl
+    x:Class="WPFBase.Views.TreeDemoView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:WPFBase.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style x:Key="CustomTreeViewStyle" TargetType="TreeView">
+            <!--  定义TreeView的背景、边框、字体等属性  -->
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderBrush" Value="Gray" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontSize" Value="24" />
+            <!--  添加更多样式设置根据您的需求  -->
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <TreeView ItemsSource="{Binding TreeNodes}" Style="{StaticResource CustomTreeViewStyle}">
+            <TreeView.ItemTemplate>
+                <!--  层次结构数据模板  -->
+                <HierarchicalDataTemplate ItemsSource="{Binding Path=ChildNodes}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding Path=NodeName}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseLeftButtonDown">
+                                    <i:InvokeCommandAction Command="{Binding DataContext.SelectCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBlock>
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+        <TextBlock
+            Grid.Column="1"
+            FontSize="50"
+            Text="{Binding CurrentNode.NodeName}" />
+    </Grid>
+</UserControl>

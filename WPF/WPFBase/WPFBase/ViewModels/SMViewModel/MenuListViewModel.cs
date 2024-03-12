@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using HandyControl.Controls;
+using Prism.Commands;
 using Prism.Ioc;
 using Prism.Regions;
 using System;
@@ -28,6 +29,10 @@ namespace WPFBase.ViewModels.SMViewModel
             dialog = provider.Resolve<IDialogHostService>();
             this.service = service;
             ExecuteCommand = new DelegateCommand<string>(Execute);
+            PageUpdatedCommand = new DelegateCommand(PageUpdated);
+            PerPageNumSeletedCommand = new DelegateCommand<ComboBoxItem>(PerPageNumSeleted);
+            EditCommand = new DelegateCommand<TbWeighMenuDto>(Edit);
+            DeleteCommand = new DelegateCommand<TbWeighMenuDto>(Delete);
         }
 
         #region 属性
@@ -100,10 +105,28 @@ namespace WPFBase.ViewModels.SMViewModel
             get { return currentMenuDto; }
             set { SetProperty<TbWeighMenuDto>(ref currentMenuDto, value); }
         }
+
+        private ComboBoxItem comboBoxItemSelected;
+
+        public ComboBoxItem ComboBoxItemSelected
+        {
+            get { return comboBoxItemSelected; }
+            set { SetProperty<ComboBoxItem>(ref comboBoxItemSelected, value); }
+        }
+
         #endregion
 
         #region 命令
         public DelegateCommand<string> ExecuteCommand { get; private set; }
+
+        public DelegateCommand PageUpdatedCommand { get; set; }
+
+        public DelegateCommand<ComboBoxItem> PerPageNumSeletedCommand { get; set; }
+
+        public DelegateCommand<TbWeighMenuDto> EditCommand { get; set; }
+
+        public DelegateCommand<TbWeighMenuDto> DeleteCommand { get; set; }
+
         #endregion
 
         #region 方法
@@ -112,9 +135,40 @@ namespace WPFBase.ViewModels.SMViewModel
             switch (obj)
             {
                 case "Add": Add(); break;
-                case "Search": GetDataAsync(); break; 
+                case "Search": GetDataAsync(); break;
+                case "SaveMenu": SaveMenu();break;
             }
 
+        }
+        private async void Edit(TbWeighMenuDto obj)
+        {
+            var result = await service.GetFirstOfDefaultAsync(obj.Id);
+            if (result.Status)
+            {
+                CurrentMenuDto = result.Result; 
+                IsRightDrawerOpen = true;
+            }
+        }
+
+        private async void Delete(TbWeighMenuDto obj)
+        {
+            try
+            {
+                var dialogResult = await dialog.Question("温馨提示", $"确认删除菜单:{obj.MenuName} ?");
+                if (dialogResult.Result != Prism.Services.Dialogs.ButtonResult.OK) return;
+
+                var deleteResult = await service.DeleteAsync(obj.Id);
+                if (deleteResult.Status)
+                {
+                    var model = MenuListsDtos.FirstOrDefault(t => t.Id.Equals(obj.Id));
+                    if (model != null)
+                        MenuListsDtos.Remove(model);
+                }
+            }
+            catch
+            {
+
+            }
         }
 
         async void GetDataAsync()
@@ -160,9 +214,66 @@ namespace WPFBase.ViewModels.SMViewModel
             IsRightDrawerOpen = true;
         }
 
+        private void PageUpdated()
+        {
+            GetDataAsync(); 
+        }
+
+        private void PerPageNumSeleted(ComboBoxItem selectedItemContent)
+        {
+            PerPageNum = Convert.ToInt32(selectedItemContent.Content);
+            GetDataAsync();
+        }
+
+        private async void SaveMenu()
+        {
+            if (string.IsNullOrWhiteSpace(CurrentMenuDto.MenuName) )
+            {
+                Growl.WarningGlobal("请输入菜单名称！"); 
+                return;
+            }
+             
+            try
+            {
+                if (CurrentMenuDto.Id > 0)
+                { 
+                    var updateResult = await service.UpdateAsync(CurrentMenuDto);
+                    if (updateResult.Status)
+                    {
+                        var model = MenuListsDtos.FirstOrDefault(t => t.Id == CurrentMenuDto.Id);
+                        if (model != null)
+                        {
+                            model.MenuCode = CurrentMenuDto.MenuCode;
+                            model.MenuNumber = CurrentMenuDto.MenuNumber;
+                            model.MenuName = CurrentMenuDto.MenuName;
+                            model.Status = CurrentMenuDto.Status; 
+                            Growl.SuccessGlobal("修改成功！");
+                        }
+                    }
+                    IsRightDrawerOpen = false;
+                }
+                else
+                { 
+                    var addResult = await service.AddAsync(CurrentMenuDto);
+                    if (addResult.Status)
+                    {
+                        MenuListsDtos.Add(addResult.Result);
+                        IsRightDrawerOpen = false; 
+                        Growl.SuccessGlobal("添加成功！");
+                    }
+                }
+                GetTotalSum();
+            }
+            catch
+            {
+                Growl.ErrorGlobal("添加失败！"); 
+            }
+        }
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
-            base.OnNavigatedTo(navigationContext); 
+            base.OnNavigatedTo(navigationContext);
+            GetTotalSum();
+            GetDataAsync();
         }
         #endregion
     }

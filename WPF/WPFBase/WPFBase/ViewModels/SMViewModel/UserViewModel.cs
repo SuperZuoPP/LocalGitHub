@@ -41,15 +41,7 @@ namespace WPFBase.ViewModels.SMViewModel
             PageUpdatedCommand = new DelegateCommand(PageUpdated);
             PerPageNumSeletedCommand = new DelegateCommand<ComboBoxItem>(PerPageNumSeleted);
         }
-
-        private void PerPageNumSeleted(ComboBoxItem selectedItemContent)
-        {
-            PerPageNum = Convert.ToInt32(selectedItemContent.Content);
-            GetDataAsync();
-        }
-
-
-
+ 
 
         #region 属性
 
@@ -357,6 +349,12 @@ namespace WPFBase.ViewModels.SMViewModel
 
         private void PageUpdated()
         {
+            GetDataAsync();
+        }
+
+        private void PerPageNumSeleted(ComboBoxItem selectedItemContent)
+        {
+            PerPageNum = Convert.ToInt32(selectedItemContent.Content);
             GetDataAsync();
         }
 

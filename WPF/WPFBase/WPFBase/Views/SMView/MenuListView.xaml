@@ -36,7 +36,7 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
                             DockPanel.Dock="Top"
-                            IsChecked="{Binding CurrentTbWeighOperatorDto.Status}"
+                            IsChecked="{Binding CurrentMenuDto.Status}"
                             Style="{StaticResource MaterialDesignSwitchLightToggleButton}"
                             ToolTip="是否启用" />
                     </StackPanel>
@@ -51,10 +51,10 @@
                             Kind="Identifier" />
                         <TextBox
                             Width="200"
-                            md:HintAssist.HelperText="示例：zuochao"
-                            md:HintAssist.Hint="请输入账号"
+                            md:HintAssist.HelperText="示例：101"
+                            md:HintAssist.Hint="请输入菜单编号"
                             Style="{StaticResource MaterialDesignTextBox}"
-                            Text="{Binding CurrentTbWeighOperatorDto.UserNumber}" />
+                            Text="{Binding CurrentMenuDto.MenuNumber}" />
                     </StackPanel>
                     <StackPanel
                         Margin="20,10"
@@ -67,10 +67,10 @@
                             Kind="Account" />
                         <TextBox
                             Width="200"
-                            md:HintAssist.HelperText="示例：左超"
-                            md:HintAssist.Hint="请输入姓名"
+                            md:HintAssist.HelperText="示例：系统设置"
+                            md:HintAssist.Hint="请输入菜单名称"
                             Style="{StaticResource MaterialDesignTextBox}"
-                            Text="{Binding CurrentTbWeighOperatorDto.UserName}" />
+                            Text="{Binding CurrentMenuDto.MenuName}" />
                     </StackPanel>
 
                     <StackPanel
@@ -78,23 +78,16 @@
                         DockPanel.Dock="Top"
                         Orientation="Horizontal">
                         <md:PackIcon
-                            Margin="15,0"
+                            Margin="15,0,35,0"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Kind="AccountKey" />
-                        <PasswordBox
-                            x:Name="PasswordBox"
-                            Width="220"
-                            Margin="20,5"
-                            md:HintAssist.Hint="请输入密码"
-                            md:TextFieldAssist.HasClearButton="True"
-                            pass:PassWordExtensions.PassWord="{Binding PassWord, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            DockPanel.Dock="Top"
-                            Style="{StaticResource MaterialDesignPasswordBox}">
-                            <i:Interaction.Behaviors>
-                                <pass:PasswordBehavior />
-                            </i:Interaction.Behaviors>
-                        </PasswordBox>
+                            Kind="Account" />
+                        <TextBox
+                            Width="200"
+                            md:HintAssist.HelperText="示例：系统设置"
+                            md:HintAssist.Hint="请输入页面路径"
+                            Style="{StaticResource MaterialDesignTextBox}"
+                            Text="{Binding CurrentMenuDto.MenuCode}" />
                     </StackPanel>
 
 
@@ -103,23 +96,16 @@
                         DockPanel.Dock="Top"
                         Orientation="Horizontal">
                         <md:PackIcon
-                            Margin="15,0"
+                            Margin="15,0,35,0"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Kind="AccountKey" />
-                        <PasswordBox
-                            x:Name="PasswordBox1"
-                            Width="220"
-                            Margin="20,5"
-                            md:HintAssist.Hint="请再次输入密码"
-                            md:TextFieldAssist.HasClearButton="True"
-                            pass:PassWordExtensions.PassWord="{Binding NewPassWord, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            DockPanel.Dock="Top"
-                            Style="{StaticResource MaterialDesignPasswordBox}">
-                            <i:Interaction.Behaviors>
-                                <pass:PasswordBehavior />
-                            </i:Interaction.Behaviors>
-                        </PasswordBox>
+                            Kind="Account" />
+                        <TextBox
+                            Width="200"
+                            md:HintAssist.HelperText="示例：系统设置"
+                            md:HintAssist.Hint="请选择菜单图标"
+                            Style="{StaticResource MaterialDesignTextBox}"
+                            Text="{Binding CurrentMenuDto.Attribute2}" />
                     </StackPanel>
 
 
@@ -127,7 +113,7 @@
                         Margin="10"
                         HorizontalAlignment="Right"
                         Command="{Binding ExecuteCommand}"
-                        CommandParameter="Resgiter"
+                        CommandParameter="SaveMenu"
                         Content="确定"
                         DockPanel.Dock="Top" />
 
