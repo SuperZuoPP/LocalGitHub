@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Xml.Linq;
-using WPFBase.Extensions;
+using WPFBase.Models;
 
 namespace WPFBase.ViewModels
 {
