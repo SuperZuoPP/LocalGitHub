@@ -11,10 +11,8 @@ namespace WPFBase.Models
         public int NodeID { get; set; }
         public int ParentID { get; set; }
         public string NodeName { get; set; }
-
-        public bool IsCheckAll { get; set; }
-
-        public bool? IsCheck { get; set; }
+          
+        public bool? IsCheck { get; set; }=false;
 
         public bool IsExpand { get; set; }
 

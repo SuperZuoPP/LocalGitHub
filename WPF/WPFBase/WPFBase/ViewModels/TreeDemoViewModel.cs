@@ -40,7 +40,7 @@ namespace WPFBase.ViewModels
             Nodes = new List<TreeNode>()
             {
                 new TreeNode(){ParentID=0, NodeID=1, NodeName = "书本" },
-                new TreeNode(){ParentID=0, NodeID=2, NodeName="课桌"},
+                new TreeNode(){ParentID=0, NodeID=2, NodeName="课桌",IsCheck=true,IsExpand=true },
                 new TreeNode(){ParentID=0,NodeID=3, NodeName="文具"},
                 new TreeNode(){ParentID=1, NodeID=4, NodeName="书本名"},
                 new TreeNode(){ParentID=1, NodeID=5, NodeName="作者"},
