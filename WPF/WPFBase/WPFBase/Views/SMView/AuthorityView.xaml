@@ -43,14 +43,19 @@
                     VerticalAlignment="Center"
                     hc:TitleElement.Title="角色"
                     hc:TitleElement.TitlePlacement="Left"
-                    DisplayMemberPath="RoleName"
-                    ItemsSource="{Binding RoleList}"
-                    SelectedValue="{Binding RoleId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    SelectedValuePath="RoleId"
+                    DisplayMemberPath="GroupName"
+                    ItemsSource="{Binding GroupList}"
+                    SelectedValue="{Binding SelectedGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    SelectedValuePath="GroupId"
                     Style="{StaticResource MaterialDesignComboBox}">
-                    <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding LoadRoleRightCmd}" />
-                    </i:EventTrigger>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding SelectedGroupCommand}" CommandParameter="{Binding SelectedGroup}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <!--<i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding SelectedGroupCommand}"  CommandParameter="{Binding SelectedGroup}" />
+                    </i:EventTrigger>-->
                 </ComboBox>
                 <Button
                     Grid.Column="2"

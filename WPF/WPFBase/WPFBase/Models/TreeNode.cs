@@ -14,12 +14,12 @@ namespace WPFBase.Models
         public int ParentID { get; set; }
         public string NodeName { get; set; }
             
-        private bool? isCheck;
+        private bool isCheck;
 
-        public bool? IsCheck
+        public bool IsCheck
         {
             get { return isCheck; }
-            set { SetProperty<bool?>(ref isCheck, value); }
+            set { SetProperty<bool>(ref isCheck, value); }
         }
          
 
@@ -31,8 +31,13 @@ namespace WPFBase.Models
             set { SetProperty<bool>(ref isExpand, value); }
         }
 
+        private List<TreeNode> childNodes;
 
-        public List<TreeNode> ChildNodes { get; set; }
+        public List<TreeNode> ChildNodes
+        {
+            get { return childNodes; }
+            set { SetProperty<List<TreeNode>>(ref childNodes, value); }
+        } 
 
 
         public TreeNode()
