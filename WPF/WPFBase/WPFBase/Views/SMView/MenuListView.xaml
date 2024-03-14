@@ -16,7 +16,7 @@
     <md:DialogHost>
         <md:DrawerHost IsRightDrawerOpen="{Binding IsRightDrawerOpen}">
             <md:DrawerHost.RightDrawerContent>
-                <DockPanel Width="300" LastChildFill="False">
+                <DockPanel Width="330" LastChildFill="False">
                     <TextBlock
                         Padding="20,10"
                         DockPanel.Dock="Top"
@@ -44,27 +44,11 @@
                         Margin="20,10"
                         DockPanel.Dock="Top"
                         Orientation="Horizontal">
-                        <md:PackIcon
-                            Margin="15,0,35,0"
+                        <TextBlock
+                            Margin="0,0,20,0"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Kind="Identifier" />
-                        <TextBox
-                            Width="200"
-                            md:HintAssist.HelperText="示例：101"
-                            md:HintAssist.Hint="请输入菜单编号"
-                            Style="{StaticResource MaterialDesignTextBox}"
-                            Text="{Binding CurrentMenuDto.MenuNumber}" />
-                    </StackPanel>
-                    <StackPanel
-                        Margin="20,10"
-                        DockPanel.Dock="Top"
-                        Orientation="Horizontal">
-                        <md:PackIcon
-                            Margin="15,0,35,0"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Kind="Account" />
+                            Text="菜单名称" />
                         <TextBox
                             Width="200"
                             md:HintAssist.HelperText="示例：系统设置"
@@ -77,35 +61,127 @@
                         Margin="20,10"
                         DockPanel.Dock="Top"
                         Orientation="Horizontal">
-                        <md:PackIcon
-                            Margin="15,0,35,0"
+                        <TextBlock
+                            Margin="0,0,35,0"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Kind="Account" />
+                            Text="父菜单" />
+                        <ComboBox
+                            Width="200"
+                            Margin="0,0,0,10"
+                            Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+                            <ComboBoxItem Content="Option 1" />
+                            <ComboBoxItem Content="Option 2" />
+                            <ComboBoxItem Content="Option 3" />
+                        </ComboBox>
+
+                    </StackPanel>
+
+                    <StackPanel
+                        Margin="20,15"
+                        DockPanel.Dock="Top"
+                        Orientation="Horizontal">
+                        <TextBlock
+                            Margin="0,0,20,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Text="页面名称" />
                         <TextBox
                             Width="200"
-                            md:HintAssist.HelperText="示例：系统设置"
-                            md:HintAssist.Hint="请输入页面路径"
+                            md:HintAssist.HelperText="示例：HomeView"
+                            md:HintAssist.Hint="请输入页面名称"
                             Style="{StaticResource MaterialDesignTextBox}"
                             Text="{Binding CurrentMenuDto.MenuCode}" />
                     </StackPanel>
 
 
                     <StackPanel
-                        Margin="20,10"
+                        Margin="20,15,0,0"
                         DockPanel.Dock="Top"
                         Orientation="Horizontal">
-                        <md:PackIcon
-                            Margin="15,0,35,0"
+                        <TextBlock
+                            Margin="0,0,20,0"
                             HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
+                            VerticalAlignment="Top"
+                            Text="图标" />
+                        <md:PackIcon
+                            Width="30"
+                            Height="30"
+                            Margin="15,0,10,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Top"
+                            BorderBrush="LightBlue"
+                            BorderThickness="1"
                             Kind="Account" />
-                        <TextBox
+                        <ItemsControl
                             Width="200"
-                            md:HintAssist.HelperText="示例：系统设置"
-                            md:HintAssist.Hint="请选择菜单图标"
-                            Style="{StaticResource MaterialDesignTextBox}"
-                            Text="{Binding CurrentMenuDto.Attribute2}" />
+                            Height="200"
+                            BorderBrush="LightBlue"
+                            BorderThickness="1">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel
+                                        Margin="10,10"
+                                        VerticalAlignment="Top"
+                                        Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <md:PackIcon
+                                Width="30"
+                                Height="30"
+                                BorderBrush="Black"
+                                BorderThickness="1"
+                                Kind="Cog" />
+                            <md:PackIcon
+                                Width="30"
+                                Height="30"
+                                BorderBrush="Black"
+                                BorderThickness="1"
+                                Kind="Account" />
+                            <md:PackIcon
+                                Width="30"
+                                Height="30"
+                                BorderBrush="Black"
+                                BorderThickness="1"
+                                Kind="Palette" />
+                            <md:PackIcon
+                                Width="30"
+                                Height="30"
+                                BorderBrush="Black"
+                                BorderThickness="1"
+                                Kind="AccountMultiple" />
+                            <md:PackIcon
+                                Width="30"
+                                Height="30"
+                                BorderBrush="Black"
+                                BorderThickness="1"
+                                Kind="ShieldLock" />
+                            <md:PackIcon
+                                Width="30"
+                                Height="30"
+                                BorderBrush="Black"
+                                BorderThickness="1"
+                                Kind="Alert" />
+                            <md:PackIcon
+                                Width="30"
+                                Height="30"
+                                BorderBrush="Black"
+                                BorderThickness="1"
+                                Kind="Alarm" />
+                            <md:PackIcon
+                                Width="30"
+                                Height="30"
+                                BorderBrush="Black"
+                                BorderThickness="1"
+                                Kind="AlignHorizontalLeft" />
+                            <md:PackIcon
+                                Width="30"
+                                Height="30"
+                                BorderBrush="Black"
+                                BorderThickness="1"
+                                Kind="Wifi" />
+                        </ItemsControl>
                     </StackPanel>
 
 

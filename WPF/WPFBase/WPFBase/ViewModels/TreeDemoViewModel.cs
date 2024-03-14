@@ -1,4 +1,5 @@
 ﻿using Prism.Commands;
+using Prism.Ioc;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
@@ -9,33 +10,13 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Xml.Linq;
 using WPFBase.Models;
+using WPFBase.ViewModels.SMViewModel;
 
 namespace WPFBase.ViewModels
 {
-    public class TreeDemoViewModel : BindableBase
+    public class TreeDemoViewModel : NavigationViewModel
     {
-        private List<TreeNode> treenodes = new List<TreeNode>();
-        public List<TreeNode> TreeNodes
-        {
-            get => treenodes;
-            set => SetProperty(ref treenodes, value);
-        }
-
-        private List<TreeNode> nodes;
-        public List<TreeNode> Nodes
-        {
-            get => nodes;
-            set => SetProperty(ref nodes, value);
-        }
-
-        private TreeNode currentNode;
-        public TreeNode CurrentNode
-        {
-            get => currentNode;
-            set => SetProperty(ref currentNode, value);
-        }
-        public DelegateCommand<object> SelectCommand { get; set; }
-        public TreeDemoViewModel()
+        public TreeDemoViewModel(IContainerProvider provider) : base(provider)
         {
             Nodes = new List<TreeNode>()
             {
@@ -54,6 +35,45 @@ namespace WPFBase.ViewModels
             TreeNodes = getChildNodes(0, Nodes);
 
             SelectCommand = new DelegateCommand<object>(Select);
+            CheckItemCmd = new DelegateCommand<TreeNode>(CheckItem);
+        }
+
+        #region 属性
+        private List<TreeNode> treenodes = new List<TreeNode>();
+        public List<TreeNode> TreeNodes
+        {
+            get { return treenodes; }
+            set { SetProperty<List<TreeNode>>(ref treenodes, value); }
+        }
+
+        private List<TreeNode> nodes;
+        public List<TreeNode> Nodes
+        {
+            get { return nodes; }
+            set { SetProperty<List<TreeNode>>(ref nodes, value); }
+        }
+
+        private TreeNode currentNode;
+        public TreeNode CurrentNode
+        {
+            get { return currentNode; }
+            set { SetProperty<TreeNode>(ref currentNode, value); }
+        }
+        #endregion
+
+
+        #region 命令
+        public DelegateCommand<object> SelectCommand { get; set; }
+
+        public DelegateCommand<TreeNode> CheckItemCmd { get; set; }
+
+        #endregion
+
+
+        #region 方法
+        private void CheckItem(TreeNode treeNode)
+        {
+            CurrentNode = treeNode;
         }
 
         private void Select(object obj)
@@ -73,5 +93,11 @@ namespace WPFBase.ViewModels
                 node.ChildNodes = getChildNodes(node.NodeID, otherNodes);
             return mainNodes;
         }
+
+        #endregion
+
+
+
+
     }
 }
