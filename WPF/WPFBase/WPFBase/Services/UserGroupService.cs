@@ -69,5 +69,33 @@ namespace WPFBase.Services
             request.Parameter = parameter;
             return await client.ExecuteAsync(request);
         }
+
+        public async Task<ApiResponse<PagedList<TbWeighGroupauthorityDto>>> GetGroupAuthority(QueryParameter parameter)
+        {
+            BaseRequest request = new BaseRequest();
+            request.Method = RestSharp.Method.GET;
+            request.Route = $"api/{serviceName}/GetGroupAuthority?pageIndex={parameter.PageIndex}" +
+                $"&pageSize={parameter.PageSize}" +
+                $"&search={parameter.Search}";
+            return await client.ExecuteAsync<PagedList<TbWeighGroupauthorityDto>>(request);
+        }
+
+        public async Task<ApiResponse> GroupAuthorityAdd(TbWeighGroupauthorityDto parameter)
+        {
+            BaseRequest request = new BaseRequest();
+            request.Method = RestSharp.Method.POST;
+            request.Route = $"api/{serviceName}/GroupAuthorityAdd";
+            request.Parameter = parameter;
+            return await client.ExecuteAsync(request);
+        }
+
+        public async Task<ApiResponse> GroupAuthorityRemove(TbWeighGroupauthorityDto parameter)
+        {
+            BaseRequest request = new BaseRequest();
+            request.Method = RestSharp.Method.POST;
+            request.Route = $"api/{serviceName}/GroupAuthorityRemove";
+            request.Parameter = parameter;
+            return await client.ExecuteAsync(request);
+        }
     }
 }

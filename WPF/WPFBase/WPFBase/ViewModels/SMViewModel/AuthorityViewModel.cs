@@ -22,37 +22,28 @@ namespace WPFBase.ViewModels.SMViewModel
         private readonly IUserGroupService userGroupService;
 
         public AuthorityViewModel(IContainerProvider provider, IMenuService service, IUserGroupService userGroupService) : base(provider)
-        {
-            
-            //GroupList = new ObservableCollection<Group>();
-            //GroupList.Add(new Group { GroupId = "1", GroupName = "Group 1" });
-            //GroupList.Add(new Group { GroupId = "2", GroupName = "Group 2" });
-            //GroupList.Add(new Group { GroupId = "3", GroupName = "Group 3" });
+        { 
             this.service = service;
-            this.userGroupService = userGroupService;
-            //Nodes = new List<TreeNode>()
-            //{
-            //    new TreeNode(){ParentID=0, NodeID=1, NodeName = "书本" },
-            //    new TreeNode(){ParentID=0, NodeID=2, NodeName="课桌",IsCheck=true,IsExpand=true },
-            //    new TreeNode(){ParentID=0,NodeID=3, NodeName="文具"},
-            //    new TreeNode(){ParentID=1, NodeID=4, NodeName="书本名"},
-            //    new TreeNode(){ParentID=1, NodeID=5, NodeName="作者"},
-            //    new TreeNode(){ParentID=2, NodeID=6, NodeName="材质"},
-            //    new TreeNode(){ParentID=3, NodeID=7, NodeName="品牌1"},
-            //    new TreeNode(){ParentID=6, NodeID=8, NodeName="材质1"},
-            //    new TreeNode(){ParentID=6, NodeID=9, NodeName="材质2"},
-            //    new TreeNode(){ParentID=2, NodeID=10,NodeName="编号"},
-            //    new TreeNode(){ParentID=3, NodeID=11, NodeName="品牌2"}
-            //};
-            //TreeNodes = getChildNodes(0, Nodes);
-
+            this.userGroupService = userGroupService; 
             SelectCommand = new DelegateCommand<object>(Select);
             CheckItemCmd = new DelegateCommand<TreeNode>(CheckItem);
             SelectedGroupCommand = new DelegateCommand<string>(SelectedComboxItem);
+            CheckAllCmd = new DelegateCommand(CheckAllAuthority);
         }
 
-       
+
+
+
         #region 属性 
+
+        private bool isChenkAll;
+
+        public bool IsChenkAll
+        {
+            get { return isChenkAll; }
+            set { SetProperty<bool>(ref isChenkAll, value); }
+        }
+
         private string selectedGroup;
 
         public string SelectedGroup
@@ -102,17 +93,41 @@ namespace WPFBase.ViewModels.SMViewModel
         public DelegateCommand<TreeNode> CheckItemCmd { get; set; }
 
         public DelegateCommand<string> SelectedGroupCommand { get; set; }
-
+        public DelegateCommand CheckAllCmd { get; set; }
         #endregion
 
 
         #region 方法
 
+        /// <summary>
+        /// 全选
+        /// </summary>
+        private void CheckAllAuthority()
+        {
+            CheckAll(IsChenkAll);  
+        }
+
+        private void CheckAll(bool chk)
+        {
+            foreach (var item in TreeNodes)
+            {
+                item.IsExpand = chk;
+                item.IsCheck = chk;
+
+                foreach (var itemsub in item.ChildNodes)
+                {
+                    itemsub.IsExpand = chk;
+                    itemsub.IsCheck = chk;
+                }
+            }
+        }
+
         private void CheckItem(TreeNode treeNode)
         {
             CurrentNode = treeNode;
             treeNode.IsExpand = true;
-            List<TreeNode> CheckList = treeNode.ChildNodes; 
+            List<TreeNode> CheckList = treeNode.ChildNodes;
+            //CheckList.ForEach(item => item.IsCheck = treeNode.IsCheck);
             foreach (var item in CheckList)
             {
                 if (treeNode.IsCheck == true)
@@ -132,7 +147,34 @@ namespace WPFBase.ViewModels.SMViewModel
         }
         private void SelectedComboxItem(string groupid)
         {
-            var groupcode = groupid;
+            CheckAll(false);
+            GetAuthorityCodeByGroupCode(groupid); 
+        }
+
+        //获取MenuCodes
+        private async void GetAuthorityCodeByGroupCode(string groupcode) 
+        { 
+            var result = await userGroupService.GetGroupAuthority(new Shared.Parameters.QueryParameter() { 
+                Search= groupcode,
+                PageIndex = 0,
+                PageSize = 100
+            });
+
+            if (result.Status)
+            {
+                foreach (var item in result.Result.Items) 
+                { 
+                    var node = Nodes.FirstOrDefault(x => x.NodeCode == item.AuthorityCode);
+                    if (node != null)
+                    {
+                        node.IsCheck = true;
+                        node.IsExpand = true;
+                    }
+                }
+                    
+            }
+           
+
         }
 
         private async void GetDataAsync() 
@@ -141,19 +183,20 @@ namespace WPFBase.ViewModels.SMViewModel
             {
                 Search = "",
                 PageIndex = 0,
-                PageSize=100
+                PageSize = 100
             }) ;
 
             if (result.Status)
             {
-                Nodes.Clear();
-               
+                TreeNodes.Clear();
+                Nodes.Clear(); 
                 foreach (var item in result.Result.Items)
                 {
                     Nodes.Add(new TreeNode() {
                         ParentID = string.IsNullOrEmpty(item.Attribute1) == true ? 0 : Convert.ToInt32(item.Attribute1),
                         NodeID = Convert.ToInt32(item.MenuNumber),
-                        NodeName = item.MenuName 
+                        NodeName = item.MenuName ,
+                        NodeCode = item.MenuCode
                     }); 
                 }
                 TreeNodes = getChildNodes(0, Nodes);

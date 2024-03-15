@@ -23,5 +23,12 @@ namespace WPFBase.Services
         Task<ApiResponse> GroupUserAdd(TbWeighGroupauthorityuserDto userdto);
 
         Task<ApiResponse> GroupUserRemove(TbWeighGroupauthorityuserDto userdto);
+
+        Task<ApiResponse<PagedList<TbWeighGroupauthorityDto>>> GetGroupAuthority(QueryParameter parameter);
+
+        Task<ApiResponse> GroupAuthorityAdd(TbWeighGroupauthorityDto authoritydto);
+
+        Task<ApiResponse> GroupAuthorityRemove(TbWeighGroupauthorityDto authoritydto);
+
     }
 }

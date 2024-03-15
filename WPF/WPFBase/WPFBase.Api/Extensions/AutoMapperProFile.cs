@@ -19,6 +19,7 @@ namespace WPFBase.Api.Extensions
             CreateMap<TbWeighUsergroup, TbWeighUsergroupDto>().ReverseMap();
             CreateMap<TbWeighGroupauthorityuser, TbWeighGroupauthorityuserDto>().ReverseMap();
             CreateMap<TbWeighMenu, TbWeighMenuDto>().ReverseMap();
+            CreateMap<TbWeighGroupauthority, TbWeighGroupauthorityDto>().ReverseMap();
         }
     }
 }

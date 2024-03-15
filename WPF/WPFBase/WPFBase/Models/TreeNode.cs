@@ -11,7 +11,8 @@ namespace WPFBase.Models
     public class TreeNode: BindableBase
     {
         public int NodeID { get; set; }
-        public int ParentID { get; set; }
+        public int ParentID { get; set; } 
+        public string NodeCode { get; set; }
         public string NodeName { get; set; }
             
         private bool isCheck;

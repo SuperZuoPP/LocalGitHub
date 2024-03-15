@@ -220,5 +220,68 @@ namespace WPFBase.Api.Services.BM
             }
              
         }
+
+        public async Task<ApiResponse> GetGroupAuthority(QueryParameter parameter)
+        {
+            try
+            {
+                var repository = unitOfWork.GetRepository<TbWeighGroupauthority>();
+                var models = await repository.GetPagedListAsync(predicate: x => string.IsNullOrWhiteSpace(parameter.Search) ? true : x.UserGroupCode.Equals(parameter.Search),
+                    pageIndex: parameter.PageIndex,
+                    pageSize: parameter.PageSize,
+                    orderBy: source => source.OrderByDescending(t => t.CreateTime));
+                return new ApiResponse(true, models);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse(ex.Message);
+            }
+        }
+
+        public async Task<ApiResponse> GroupAuthorityAdd(TbWeighGroupauthorityDto tbWeighGroupauthorityDto)
+        {
+            try
+            {
+                var dbmodel = mapper.Map<TbWeighGroupauthority>(tbWeighGroupauthorityDto);
+                var repository = unitOfWork.GetRepository<TbWeighGroupauthority>();
+                var model = await repository.GetFirstOrDefaultAsync(predicate: x => (x.UserGroupCode.Equals(tbWeighGroupauthorityDto.UserGroupCode) && x.AuthorityCode.Equals(tbWeighGroupauthorityDto.AuthorityCode)));
+                if (model == null)
+                {
+                    dbmodel.CreateTime = DateTime.Now;
+                    dbmodel.UserGroupCode = tbWeighGroupauthorityDto.UserGroupCode;
+                    dbmodel.AuthorityCode = tbWeighGroupauthorityDto.AuthorityCode;
+                    dbmodel.Attribute1 = tbWeighGroupauthorityDto.Attribute1;
+                    dbmodel.Attribute2 = tbWeighGroupauthorityDto.Attribute2;
+                    dbmodel.OperateBit = 0;
+                    await repository.InsertAsync(dbmodel);
+                    if (await unitOfWork.SaveChangesAsync() > 0)
+                        return new ApiResponse(true, dbmodel);
+                }
+                return new ApiResponse(false, "添加数据失败，用户组已存在该权限组中！");
+
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse(ex.Message);
+            }
+        }
+
+        public async Task<ApiResponse> GroupAuthorityRemove(TbWeighGroupauthorityDto tbWeighGroupauthorityDto)
+        {
+            try
+            {
+                var dbmodel = mapper.Map<TbWeighGroupauthority>(tbWeighGroupauthorityDto);
+                var repository = unitOfWork.GetRepository<TbWeighGroupauthority>();
+                var model = await repository.GetFirstOrDefaultAsync(predicate: x => (x.UserGroupCode.Equals(tbWeighGroupauthorityDto.UserGroupCode) && x.AuthorityCode.Equals(tbWeighGroupauthorityDto.AuthorityCode)));
+                repository.Delete(model);
+                if (await unitOfWork.SaveChangesAsync() > 0)
+                    return new ApiResponse(true, "");
+                return new ApiResponse("删除数据失败");
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse(ex.Message);
+            }
+        }
     }
 }
