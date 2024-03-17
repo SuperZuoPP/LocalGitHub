@@ -25,6 +25,7 @@ namespace WPFBase.ViewModels.SMViewModel
         public MenuListViewModel(IContainerProvider provider, IMenuService service) : base(provider)
         {
             MenuListsDtos = new ObservableCollection<TbWeighMenuDto>();
+            MenuListsCombobox = new ObservableCollection<TbWeighMenuDto>();  
             this.regionManager = provider.Resolve<IRegionManager>();
             dialog = provider.Resolve<IDialogHostService>();
             this.service = service;
@@ -33,7 +34,17 @@ namespace WPFBase.ViewModels.SMViewModel
             PerPageNumSeletedCommand = new DelegateCommand<ComboBoxItem>(PerPageNumSeleted);
             EditCommand = new DelegateCommand<TbWeighMenuDto>(Edit);
             DeleteCommand = new DelegateCommand<TbWeighMenuDto>(Delete);
+            SelectedGroupCommand = new DelegateCommand<TbWeighMenuDto>(SelectComboBoxItem);
         }
+
+        private void SelectComboBoxItem(TbWeighMenuDto item)
+        {
+            if (item == null) return;
+            CurrentMenuDto.Attribute1 = item.MenuName;
+            currentMenuDto.MenuNumber = item.Id.ToString();
+        }
+
+
 
         #region 属性
         private string searchText;
@@ -98,6 +109,14 @@ namespace WPFBase.ViewModels.SMViewModel
             set { SetProperty<ObservableCollection<TbWeighMenuDto>>(ref menuListsDtos, value); }
         }
 
+        private ObservableCollection<TbWeighMenuDto> menuListsCombobox;
+
+        public ObservableCollection<TbWeighMenuDto> MenuListsCombobox
+        {
+            get { return menuListsCombobox; }
+            set { SetProperty<ObservableCollection<TbWeighMenuDto>>(ref menuListsCombobox, value); }
+        }
+
         private TbWeighMenuDto currentMenuDto;
 
         public TbWeighMenuDto CurrentMenuDto
@@ -114,6 +133,13 @@ namespace WPFBase.ViewModels.SMViewModel
             set { SetProperty<ComboBoxItem>(ref comboBoxItemSelected, value); }
         }
 
+        private object selectedMenuId;
+
+        public object SelectedMenuId
+        {
+            get { return selectedMenuId; }
+            set { SetProperty<object>(ref selectedMenuId, value); }
+        }
         #endregion
 
         #region 命令
@@ -126,6 +152,8 @@ namespace WPFBase.ViewModels.SMViewModel
         public DelegateCommand<TbWeighMenuDto> EditCommand { get; set; }
 
         public DelegateCommand<TbWeighMenuDto> DeleteCommand { get; set; }
+         
+        public DelegateCommand<TbWeighMenuDto> SelectedGroupCommand { get; set; }
 
         #endregion
 
@@ -150,17 +178,17 @@ namespace WPFBase.ViewModels.SMViewModel
             }
         }
 
-        private async void Delete(TbWeighMenuDto obj)
-        {
+        private async void Delete(TbWeighMenuDto dto)
+        { 
             try
             {
-                var dialogResult = await dialog.Question("温馨提示", $"确认删除菜单:{obj.MenuName} ?");
+                var dialogResult = await dialog.Question("温馨提示", $"确认删除菜单:{dto.MenuName} ?");
                 if (dialogResult.Result != Prism.Services.Dialogs.ButtonResult.OK) return;
 
-                var deleteResult = await service.DeleteAsync(obj.Id);
+                var deleteResult = await service.DeleteAsync(dto.Id);
                 if (deleteResult.Status)
                 {
-                    var model = MenuListsDtos.FirstOrDefault(t => t.Id.Equals(obj.Id));
+                    var model = MenuListsDtos.FirstOrDefault(t => t.Id.Equals(dto.Id));
                     if (model != null)
                         MenuListsDtos.Remove(model);
                 }
@@ -189,6 +217,23 @@ namespace WPFBase.ViewModels.SMViewModel
                     MenuListsDtos.Add(item);
                 }
             }
+
+            var resultCombobox = await service.GetAllFilterAsync(new Shared.Parameters.TbWeighMenuDtoParameter()
+            {
+                PageIndex = 0,
+                PageSize = 1000,
+                Search = "",
+                Status = 1
+            });
+
+            if (resultCombobox.Status)
+            {
+                MenuListsCombobox.Clear();
+                foreach (var item in resultCombobox.Result.Items)
+                {
+                    MenuListsCombobox.Add(item);
+                }
+            } 
         }
 
         async void GetTotalSum()
@@ -246,6 +291,7 @@ namespace WPFBase.ViewModels.SMViewModel
                             model.MenuCode = CurrentMenuDto.MenuCode;
                             model.MenuNumber = CurrentMenuDto.MenuNumber;
                             model.MenuName = CurrentMenuDto.MenuName;
+                            model.Attribute1 = CurrentMenuDto.Attribute1;
                             model.Status = CurrentMenuDto.Status; 
                             Growl.SuccessGlobal("修改成功！");
                         }

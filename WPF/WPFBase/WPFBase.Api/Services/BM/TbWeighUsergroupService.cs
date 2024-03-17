@@ -249,9 +249,7 @@ namespace WPFBase.Api.Services.BM
                 {
                     dbmodel.CreateTime = DateTime.Now;
                     dbmodel.UserGroupCode = tbWeighGroupauthorityDto.UserGroupCode;
-                    dbmodel.AuthorityCode = tbWeighGroupauthorityDto.AuthorityCode;
-                    dbmodel.Attribute1 = tbWeighGroupauthorityDto.Attribute1;
-                    dbmodel.Attribute2 = tbWeighGroupauthorityDto.Attribute2;
+                    dbmodel.AuthorityCode = tbWeighGroupauthorityDto.AuthorityCode; 
                     dbmodel.OperateBit = 0;
                     await repository.InsertAsync(dbmodel);
                     if (await unitOfWork.SaveChangesAsync() > 0)

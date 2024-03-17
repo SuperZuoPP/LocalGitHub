@@ -82,7 +82,7 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var model = mapper.Map<TbWeighMenu>(parameter);
+                var model = mapper.Map<TbWeighMenu>(parameter); 
                 model.CreateTime = DateTime.Now;
                 await unitOfWork.GetRepository<TbWeighMenu>().InsertAsync(model);
                 if (await unitOfWork.SaveChangesAsync() > 0)
@@ -119,6 +119,8 @@ namespace WPFBase.Api.Services.BM
                 model.MenuNumber = dbmodel.MenuNumber;
                 model.MenuName = dbmodel.MenuName;
                 model.Status = dbmodel.Status;
+                model.Attribute1 = dbmodel.Attribute1;
+                model.Attribute2 = dbmodel.Attribute2;
                 model.LastModifiedTime = DateTime.Now;
                 repository.Update(model);
 

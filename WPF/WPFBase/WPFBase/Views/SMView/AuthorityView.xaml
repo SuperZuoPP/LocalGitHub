@@ -62,7 +62,7 @@
                     Width="60"
                     HorizontalAlignment="Left"
                     BorderThickness="0"
-                    Command="{Binding SaveRighCmd}"
+                    Command="{Binding SaveAuthorityCmd}"
                     Content="保存"
                     Style="{StaticResource MaterialDesignPaperButton}" />
             </Grid>

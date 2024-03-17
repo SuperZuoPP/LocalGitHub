@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using HandyControl.Controls;
+using Prism.Commands;
 using Prism.Ioc;
 using Prism.Regions;
 using System;
@@ -10,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Xml.Linq;
 using WPFBase.Models;
 using WPFBase.Services;
 using WPFBase.Shared.DTO.BM;
@@ -29,7 +31,10 @@ namespace WPFBase.ViewModels.SMViewModel
             CheckItemCmd = new DelegateCommand<TreeNode>(CheckItem);
             SelectedGroupCommand = new DelegateCommand<string>(SelectedComboxItem);
             CheckAllCmd = new DelegateCommand(CheckAllAuthority);
+            SaveAuthorityCmd = new DelegateCommand(SaveAuthority);
         }
+
+      
 
 
 
@@ -58,6 +63,13 @@ namespace WPFBase.ViewModels.SMViewModel
             get { return treenodes; }
             set { SetProperty<List<TreeNode>>(ref treenodes, value); }
         }
+
+        private List<TreeNode> checkLists = new List<TreeNode>();
+        public List<TreeNode> CheckLists
+        {
+            get { return checkLists; }
+            set { SetProperty<List<TreeNode>>(ref checkLists, value); }
+        } 
 
         private List<TreeNode> nodes = new List<TreeNode>();
         public List<TreeNode> Nodes
@@ -94,6 +106,8 @@ namespace WPFBase.ViewModels.SMViewModel
 
         public DelegateCommand<string> SelectedGroupCommand { get; set; }
         public DelegateCommand CheckAllCmd { get; set; }
+
+        public DelegateCommand SaveAuthorityCmd { get; set; }
         #endregion
 
 
@@ -111,14 +125,18 @@ namespace WPFBase.ViewModels.SMViewModel
         {
             foreach (var item in TreeNodes)
             {
-                item.IsExpand = chk;
-                item.IsCheck = chk;
+                CheckNode(item, chk);
+            }
+        }
 
-                foreach (var itemsub in item.ChildNodes)
-                {
-                    itemsub.IsExpand = chk;
-                    itemsub.IsCheck = chk;
-                }
+        private void CheckNode(TreeNode node, bool chk) 
+        {
+            node.IsExpand = chk;
+            node.IsCheck = chk;
+
+            foreach (var child in node.ChildNodes)
+            {
+                CheckNode(child, chk); // 递归调用，设置子节点的选中状态
             }
         }
 
@@ -126,17 +144,67 @@ namespace WPFBase.ViewModels.SMViewModel
         {
             CurrentNode = treeNode;
             treeNode.IsExpand = true;
-            List<TreeNode> CheckList = treeNode.ChildNodes;
-            //CheckList.ForEach(item => item.IsCheck = treeNode.IsCheck);
-            foreach (var item in CheckList)
+            CheckParentNodes(treeNode);
+            CheckChildNodes(treeNode);
+            if (CheckLists.Exists(x=>x.NodeID == treeNode.NodeID))
+                CheckLists.Remove(treeNode);
+            CheckLists.Add(treeNode);
+        }
+
+        private void CheckChildNodes(TreeNode treeNode)
+        {
+            foreach (var item in treeNode.ChildNodes)
             {
-                if (treeNode.IsCheck == true)
-                    item.IsCheck = true;
-                else
-                    item.IsCheck = false;
+                item.IsCheck = treeNode.IsCheck; 
+                var existingNode = CheckLists.FirstOrDefault(x => x.NodeID == item.NodeID); 
+                if (existingNode != null)
+                    CheckLists.Remove(existingNode);
+                  
+                CheckLists.Add(item);
+                CheckChildNodes(item);
             }
         }
 
+        private void CheckParentNodes(TreeNode treeNode)
+        {
+            var parent = TreeNodes.FirstOrDefault(x => x.NodeID == treeNode.ParentID);
+            if (parent != null)
+            {
+                parent.IsCheck = true; 
+                CheckParentNodes(parent);
+            } 
+            //foreach (var node in TreeNodes)
+            //{
+            //    if (node.ChildNodes.Any(x => x.NodeID == treeNode.ParentID))
+            //    {
+            //        node.IsCheck = true; 
+            //        CheckParentNodes(node);
+            //    }
+            //}
+            //if (treeNode.ParentID != 0)
+            //{
+            //    var parent = TreeNodes.FirstOrDefault(x => x.NodeID == treeNode.ParentID);
+            //    if (parent != null)
+            //        parent.IsCheck = true;
+            //}
+
+            //foreach (var child in TreeNodes)
+            //{
+            //    var childitem = child.ChildNodes.FirstOrDefault(x => x.NodeID == treeNode.ParentID);
+            //    if (childitem != null)
+            //    {
+            //        childitem.IsCheck = true;
+            //        if (childitem.ParentID != 0)
+            //        {
+            //            var parent = TreeNodes.FirstOrDefault(x => x.NodeID == childitem.ParentID);
+            //            if (parent != null)
+            //                parent.IsCheck = true;
+            //        }
+            //    }
+            //}
+        }
+
+        
         private void Select(object obj)
         {
             var res = obj as TreeNode;
@@ -193,8 +261,8 @@ namespace WPFBase.ViewModels.SMViewModel
                 foreach (var item in result.Result.Items)
                 {
                     Nodes.Add(new TreeNode() {
-                        ParentID = string.IsNullOrEmpty(item.Attribute1) == true ? 0 : Convert.ToInt32(item.Attribute1),
-                        NodeID = Convert.ToInt32(item.MenuNumber),
+                        ParentID = string.IsNullOrEmpty(item.MenuNumber) == true ? 0 : Convert.ToInt32(item.MenuNumber),
+                        NodeID = item.Id,
                         NodeName = item.MenuName ,
                         NodeCode = item.MenuCode
                     }); 
@@ -227,6 +295,35 @@ namespace WPFBase.ViewModels.SMViewModel
                 }
             }
         }
+
+        private async void SaveAuthority()
+        {
+            if (string.IsNullOrEmpty(SelectedGroup)) 
+            {
+                Growl.WarningGlobal("请先选择用户组！");
+                return;
+            }
+                
+
+            foreach (var item in CheckLists)
+            {
+                TbWeighGroupauthorityDto CurrentGroupauthority = new TbWeighGroupauthorityDto();
+                CurrentGroupauthority.AuthorityCode = item.NodeCode;
+                CurrentGroupauthority.UserGroupCode = SelectedGroup;
+                if (item.IsCheck) 
+                { 
+                    await userGroupService.GroupAuthorityAdd(CurrentGroupauthority);
+                }
+                else
+                {
+                    await userGroupService.GroupAuthorityRemove(CurrentGroupauthority);
+                }
+            }
+            GetGroupList();
+            GetDataAsync();
+            CheckLists.Clear();
+        }
+         
 
         private List<TreeNode> getChildNodes(int parentID, List<TreeNode> nodes)
         {
