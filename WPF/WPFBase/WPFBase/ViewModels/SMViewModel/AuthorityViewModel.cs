@@ -125,6 +125,7 @@ namespace WPFBase.ViewModels.SMViewModel
         {
             foreach (var item in TreeNodes)
             {
+                CheckListsAdd(item);
                 CheckNode(item, chk);
             }
         }
@@ -136,6 +137,7 @@ namespace WPFBase.ViewModels.SMViewModel
 
             foreach (var child in node.ChildNodes)
             {
+                CheckListsAdd(child);
                 CheckNode(child, chk); // 递归调用，设置子节点的选中状态
             }
         }
@@ -146,9 +148,7 @@ namespace WPFBase.ViewModels.SMViewModel
             treeNode.IsExpand = true;
             CheckParentNodes(treeNode);
             CheckChildNodes(treeNode);
-            if (CheckLists.Exists(x=>x.NodeID == treeNode.NodeID))
-                CheckLists.Remove(treeNode);
-            CheckLists.Add(treeNode);
+            CheckListsAdd(treeNode);
         }
 
         private void CheckChildNodes(TreeNode treeNode)
@@ -204,7 +204,12 @@ namespace WPFBase.ViewModels.SMViewModel
             //}
         }
 
-        
+        private void CheckListsAdd(TreeNode treeNode) 
+        {
+            if (CheckLists.Exists(x => x.NodeID == treeNode.NodeID))
+                CheckLists.Remove(treeNode);
+            CheckLists.Add(treeNode);
+        }
         private void Select(object obj)
         {
             var res = obj as TreeNode;
@@ -321,7 +326,9 @@ namespace WPFBase.ViewModels.SMViewModel
             }
             GetGroupList();
             GetDataAsync();
+            IsChenkAll = false; 
             CheckLists.Clear();
+            Growl.SuccessGlobal("授权完成！"); 
         }
          
 

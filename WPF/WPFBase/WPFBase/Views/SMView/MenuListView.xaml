@@ -301,12 +301,6 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTextColumn
-                            Width="0.6*"
-                            Binding="{Binding MenuNumber}"
-                            ElementStyle="{StaticResource textColStyleCenter}"
-                            Header="排序号"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
                             Binding="{Binding Remark}"
                             ElementStyle="{StaticResource textColStyleLeft}"
                             Header="备注"

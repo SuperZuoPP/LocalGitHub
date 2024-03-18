@@ -50,11 +50,11 @@ namespace WPFBase.Api.Services.BM
             {
                 var repository = unitOfWork.GetRepository<TbWeighMenu>();
                 var models = await repository.GetPagedListAsync(predicate:
-                   x => (string.IsNullOrWhiteSpace(parameter.Search) ? true : x.MenuCode.Contains(parameter.Search))
+                   x => (string.IsNullOrWhiteSpace(parameter.Search) ? true : x.MenuName.Contains(parameter.Search))
                    && (!parameter.Status.HasValue || x.Status == (parameter.Status == 1)),
                    pageIndex: parameter.PageIndex,
                    pageSize: parameter.PageSize,
-                   orderBy: source => source.OrderByDescending(t => t.CreateTime));
+                   orderBy: source => source.OrderBy(t => t.MenuNumber).ThenBy(t => t.Id));
                 return new ApiResponse(true, models);
             }
             catch (Exception ex)

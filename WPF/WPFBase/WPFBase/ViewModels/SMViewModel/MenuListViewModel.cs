@@ -206,7 +206,7 @@ namespace WPFBase.ViewModels.SMViewModel
                 PageIndex = PageIndex - 1,
                 PageSize = PerPageNum,
                 Search = SearchText ,
-                Status = 1
+                Status = null
             });
 
             if (result.Status)
@@ -309,6 +309,7 @@ namespace WPFBase.ViewModels.SMViewModel
                     }
                 }
                 GetTotalSum();
+                GetDataAsync();
             }
             catch
             {

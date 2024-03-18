@@ -15,7 +15,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="60" />
             <RowDefinition />
-            <RowDefinition Height="60" />
+            <!--<RowDefinition Height="60" />-->
         </Grid.RowDefinitions>
 
         <Border
@@ -53,9 +53,6 @@
                             <i:InvokeCommandAction Command="{Binding SelectedGroupCommand}" CommandParameter="{Binding SelectedGroup}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                    <!--<i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding SelectedGroupCommand}"  CommandParameter="{Binding SelectedGroup}" />
-                    </i:EventTrigger>-->
                 </ComboBox>
                 <Button
                     Grid.Column="2"
@@ -116,9 +113,9 @@
             </TreeView.ItemContainerStyle>
         </TreeView>
 
-        <TextBlock
+        <!--<TextBlock
             Grid.Row="3"
             FontSize="50"
-            Text="{Binding CurrentNode.NodeName}" />
+            Text="{Binding CurrentNode.NodeName}" />-->
     </Grid>
 </UserControl>
