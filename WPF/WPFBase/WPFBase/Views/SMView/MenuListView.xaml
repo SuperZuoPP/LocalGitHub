@@ -12,7 +12,15 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-
+    <UserControl.Resources>
+        <Style x:Key="CommonPackIconStyle" TargetType="md:PackIcon">
+            <Setter Property="Margin" Value="0,0,2,2" />
+            <Setter Property="Width" Value="30" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+    </UserControl.Resources>
     <md:DialogHost>
         <md:DrawerHost IsRightDrawerOpen="{Binding IsRightDrawerOpen}">
             <md:DrawerHost.RightDrawerContent>
@@ -104,20 +112,70 @@
                         Margin="20,15,0,0"
                         DockPanel.Dock="Top"
                         Orientation="Horizontal">
+
                         <TextBlock
                             Margin="0,0,20,0"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Top"
                             Text="图标" />
-                        <md:PackIcon
-                            Width="30"
-                            Height="30"
-                            Margin="15,0,10,0"
-                            HorizontalAlignment="Center"
+                        <Border
+                            Width="35"
+                            Height="35"
+                            Margin="0,0,3,0"
                             VerticalAlignment="Top"
-                            BorderBrush="LightBlue"
+                            BorderBrush="LightGray"
                             BorderThickness="1"
-                            Kind="Account" />
+                            CornerRadius="3">
+                            <md:PackIcon
+                                x:Name="test"
+                                Width="30"
+                                Height="30"
+                                Margin="2"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top"
+                                BorderBrush="LightBlue"
+                                BorderThickness="1"
+                                Kind="Account" />
+                        </Border>
+                        <!--<ListBox
+                            Width="200"
+                            Height="200"
+                            ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="Margin" Value="2"/>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate> 
+                                    <Border
+                                        Margin="3,2"
+                                        BorderBrush="LightBlue"
+                                        BorderThickness="0">
+                                        <TextBlock
+                                            x:Name="tblmg"
+                                            Foreground="#FF1978AE"
+                                            Text="{Binding}" />
+                                    </Border>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem, Mode=FindAncestor}, Path=IsSelected}" Value="true">
+                                            <Setter TargetName="tblmg" Property="Foreground" Value="White" />
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding SelectIconCmd}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ListBox>-->
                         <ItemsControl
                             Width="200"
                             Height="200"
@@ -132,60 +190,16 @@
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
 
-                            <md:PackIcon
-                                Width="30"
-                                Height="30"
-                                BorderBrush="Black"
-                                BorderThickness="1"
-                                Kind="Cog" />
-                            <md:PackIcon
-                                Width="30"
-                                Height="30"
-                                BorderBrush="Black"
-                                BorderThickness="1"
-                                Kind="Account" />
-                            <md:PackIcon
-                                Width="30"
-                                Height="30"
-                                BorderBrush="Black"
-                                BorderThickness="1"
-                                Kind="Palette" />
-                            <md:PackIcon
-                                Width="30"
-                                Height="30"
-                                BorderBrush="Black"
-                                BorderThickness="1"
-                                Kind="AccountMultiple" />
-                            <md:PackIcon
-                                Width="30"
-                                Height="30"
-                                BorderBrush="Black"
-                                BorderThickness="1"
-                                Kind="ShieldLock" />
-                            <md:PackIcon
-                                Width="30"
-                                Height="30"
-                                BorderBrush="Black"
-                                BorderThickness="1"
-                                Kind="Alert" />
-                            <md:PackIcon
-                                Width="30"
-                                Height="30"
-                                BorderBrush="Black"
-                                BorderThickness="1"
-                                Kind="Alarm" />
-                            <md:PackIcon
-                                Width="30"
-                                Height="30"
-                                BorderBrush="Black"
-                                BorderThickness="1"
-                                Kind="AlignHorizontalLeft" />
-                            <md:PackIcon
-                                Width="30"
-                                Height="30"
-                                BorderBrush="Black"
-                                BorderThickness="1"
-                                Kind="Wifi" />
+                            <md:PackIcon Kind="Cog" Style="{StaticResource CommonPackIconStyle}" />
+                            <md:PackIcon Kind="Account" Style="{StaticResource CommonPackIconStyle}" />
+                            <md:PackIcon Kind="Palette" Style="{StaticResource CommonPackIconStyle}" />
+                            <md:PackIcon Kind="AccountMultiple" Style="{StaticResource CommonPackIconStyle}" />
+                            <md:PackIcon Kind="ShieldLock" Style="{StaticResource CommonPackIconStyle}" />
+                            <md:PackIcon Kind="Alert" Style="{StaticResource CommonPackIconStyle}" />
+                            <md:PackIcon Kind="Alarm" Style="{StaticResource CommonPackIconStyle}" />
+                            <md:PackIcon Kind="AlignHorizontalLeft" Style="{StaticResource CommonPackIconStyle}" />
+                            <md:PackIcon Kind="Wifi" Style="{StaticResource CommonPackIconStyle}" />
+
                         </ItemsControl>
                     </StackPanel>
 
