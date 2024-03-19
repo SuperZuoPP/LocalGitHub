@@ -24,6 +24,9 @@ namespace WPFBase.ViewModels.SMViewModel
 
         public MenuListViewModel(IContainerProvider provider, IMenuService service) : base(provider)
         {
+            ListKind = new ObservableCollection<string>() { "Cog", "Account", "AccountCog", "AccountMultiple", "Airplane", "Alarm", "Alert", "AlertCircleOutline"
+            ,"AlignHorizontalLeft","AlphaZCircle","Antenna","AppleKeyboardCommand","Apps","ArrowDownDropCircleOutline","ArrowUPDropCircleOutline","BarcodeScan"
+            ,"BadgeAccountHorizontalOutline","BellOutline","BoomGate","BoomGateDown","BoomGateUp","Brightness4","Brightness5","Bus"};
             MenuListsDtos = new ObservableCollection<TbWeighMenuDto>();
             MenuListsCombobox = new ObservableCollection<TbWeighMenuDto>();  
             this.regionManager = provider.Resolve<IRegionManager>();
@@ -35,14 +38,10 @@ namespace WPFBase.ViewModels.SMViewModel
             EditCommand = new DelegateCommand<TbWeighMenuDto>(Edit);
             DeleteCommand = new DelegateCommand<TbWeighMenuDto>(Delete);
             SelectedGroupCommand = new DelegateCommand<TbWeighMenuDto>(SelectComboBoxItem);
+            SelectIconCmd = new DelegateCommand<string>(SelectListBoxItem);
         }
 
-        private void SelectComboBoxItem(TbWeighMenuDto item)
-        {
-            if (item == null) return;
-            CurrentMenuDto.Attribute1 = item.MenuName;
-            currentMenuDto.MenuNumber = item.Id.ToString();
-        }
+     
 
 
 
@@ -101,12 +100,29 @@ namespace WPFBase.ViewModels.SMViewModel
             set { SetProperty<string>(ref pageSum, value); }
         }
 
+        private string selectKind;
+
+        public string SelectKind
+        {
+            get { return selectKind; }
+            set { SetProperty<string>(ref selectKind, value); }
+        }
+        
+
         private ObservableCollection<TbWeighMenuDto> menuListsDtos;
 
         public ObservableCollection<TbWeighMenuDto> MenuListsDtos
         {
             get { return menuListsDtos; }
             set { SetProperty<ObservableCollection<TbWeighMenuDto>>(ref menuListsDtos, value); }
+        }
+        
+        private ObservableCollection<string> listKind;
+
+        public ObservableCollection<string> ListKind
+        {
+            get { return listKind; }
+            set { SetProperty<ObservableCollection<string>>(ref listKind, value); }
         }
 
         private ObservableCollection<TbWeighMenuDto> menuListsCombobox;
@@ -154,6 +170,9 @@ namespace WPFBase.ViewModels.SMViewModel
         public DelegateCommand<TbWeighMenuDto> DeleteCommand { get; set; }
          
         public DelegateCommand<TbWeighMenuDto> SelectedGroupCommand { get; set; }
+
+        public DelegateCommand<string> SelectIconCmd { get; set; }
+        
 
         #endregion
 
@@ -291,7 +310,8 @@ namespace WPFBase.ViewModels.SMViewModel
                             model.MenuCode = CurrentMenuDto.MenuCode;
                             model.MenuNumber = CurrentMenuDto.MenuNumber;
                             model.MenuName = CurrentMenuDto.MenuName;
-                            model.Attribute1 = CurrentMenuDto.Attribute1;
+                            model.Attribute1 = CurrentMenuDto.Attribute1;//父菜单名称
+                            model.Attribute2 = CurrentMenuDto.Attribute2;//菜单图标
                             model.Status = CurrentMenuDto.Status; 
                             Growl.SuccessGlobal("修改成功！");
                         }
@@ -316,6 +336,29 @@ namespace WPFBase.ViewModels.SMViewModel
                 Growl.ErrorGlobal("添加失败！"); 
             }
         }
+
+        /// <summary>
+        /// 当前选中图标
+        /// </summary>
+        /// <param name="item"></param>
+        private void SelectListBoxItem(string item)
+        {
+            SelectKind = item;
+            CurrentMenuDto.Attribute2 = item; //图标
+        }
+
+
+        /// <summary>
+        /// 当前选中菜单
+        /// </summary>
+        /// <param name="item"></param>
+        private void SelectComboBoxItem(TbWeighMenuDto item)
+        {
+            if (item == null) return;
+            CurrentMenuDto.Attribute1 = item.MenuName;
+            currentMenuDto.MenuNumber = item.Id.ToString();
+        }
+
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
             base.OnNavigatedTo(navigationContext);

@@ -17,7 +17,7 @@
             <Setter Property="Margin" Value="0,0,2,2" />
             <Setter Property="Width" Value="30" />
             <Setter Property="Height" Value="30" />
-            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="BorderBrush" Value="LightBlue" />
             <Setter Property="BorderThickness" Value="1" />
         </Style>
     </UserControl.Resources>
@@ -135,28 +135,30 @@
                                 VerticalAlignment="Top"
                                 BorderBrush="LightBlue"
                                 BorderThickness="1"
-                                Kind="Account" />
+                                Kind="{Binding SelectKind}" />
                         </Border>
-                        <!--<ListBox
+                        <ListBox
                             Width="200"
                             Height="200"
+                            ItemsSource="{Binding ListKind}"
                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
-                                    <Setter Property="Padding" Value="0"/>
-                                    <Setter Property="Margin" Value="2"/>
+                                    <Setter Property="Padding" Value="0" />
+                                    <Setter Property="Margin" Value="2" />
                                 </Style>
                             </ListBox.ItemContainerStyle>
                             <ListBox.ItemTemplate>
-                                <DataTemplate> 
+                                <DataTemplate>
                                     <Border
                                         Margin="3,2"
                                         BorderBrush="LightBlue"
                                         BorderThickness="0">
-                                        <TextBlock
+                                        <md:PackIcon
                                             x:Name="tblmg"
                                             Foreground="#FF1978AE"
-                                            Text="{Binding}" />
+                                            Kind="{Binding}"
+                                            Style="{StaticResource CommonPackIconStyle}" />
                                     </Border>
                                     <DataTemplate.Triggers>
                                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem, Mode=FindAncestor}, Path=IsSelected}" Value="true">
@@ -167,16 +169,16 @@
                             </ListBox.ItemTemplate>
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <WrapPanel Orientation="Horizontal"/>
+                                    <WrapPanel Orientation="Horizontal" />
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="SelectionChanged">
-                                    <i:InvokeCommandAction Command="{Binding SelectIconCmd}" />
+                                    <i:InvokeCommandAction Command="{Binding SelectIconCmd}" CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBox}}}" />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
-                        </ListBox>-->
-                        <ItemsControl
+                        </ListBox>
+                        <!--<ItemsControl
                             Width="200"
                             Height="200"
                             BorderBrush="LightBlue"
@@ -200,7 +202,7 @@
                             <md:PackIcon Kind="AlignHorizontalLeft" Style="{StaticResource CommonPackIconStyle}" />
                             <md:PackIcon Kind="Wifi" Style="{StaticResource CommonPackIconStyle}" />
 
-                        </ItemsControl>
+                        </ItemsControl>-->
                     </StackPanel>
 
 
