@@ -114,16 +114,19 @@ namespace WPFBase.Api.Services.BM
             {
                 var dbmodel = mapper.Map<TbWeighMenu>(parameter);
                 var repository = unitOfWork.GetRepository<TbWeighMenu>();
-                var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(dbmodel.Id));
-                model.MenuCode = dbmodel.MenuCode;
-                model.MenuNumber = dbmodel.MenuNumber;
-                model.MenuName = dbmodel.MenuName;
-                model.Status = dbmodel.Status;
-                model.Attribute1 = dbmodel.Attribute1;
-                model.Attribute2 = dbmodel.Attribute2;
-                model.LastModifiedTime = DateTime.Now;
-                repository.Update(model);
-
+                var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(dbmodel.Id) && !x.Attribute15.Equals("1"));//1系统菜单
+                if (model != null)
+                {
+                    model.MenuCode = dbmodel.MenuCode;
+                    model.MenuNumber = dbmodel.MenuNumber;
+                    model.MenuName = dbmodel.MenuName;
+                    model.Status = dbmodel.Status;
+                    model.Attribute1 = dbmodel.Attribute1;
+                    model.Attribute2 = dbmodel.Attribute2;
+                    model.LastModifiedTime = DateTime.Now;
+                    repository.Update(model);
+                }
+                 
                 if (await unitOfWork.SaveChangesAsync() > 0)
                     return new ApiResponse(true, model);
                 return new ApiResponse(false, "更新数据失败");
@@ -139,7 +142,7 @@ namespace WPFBase.Api.Services.BM
             try
             {
                 var repository = unitOfWork.GetRepository<TbWeighMenu>();
-                var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(id));
+                var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(id) && !x.Attribute15.Equals("1"));
                 repository.Delete(model);
                 if (await unitOfWork.SaveChangesAsync() > 0)
                     return new ApiResponse(true, "");

@@ -211,6 +211,10 @@ namespace WPFBase.ViewModels.SMViewModel
                     if (model != null)
                         MenuListsDtos.Remove(model);
                 }
+                else
+                {
+                    Growl.WarningGlobal("系统菜单无法删除！");
+                }
             }
             catch
             {
