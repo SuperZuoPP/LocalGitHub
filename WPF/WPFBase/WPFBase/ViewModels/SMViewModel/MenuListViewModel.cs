@@ -26,7 +26,11 @@ namespace WPFBase.ViewModels.SMViewModel
         {
             ListKind = new ObservableCollection<string>() { "Cog", "Account", "AccountCog", "AccountMultiple", "Airplane", "Alarm", "Alert", "AlertCircleOutline"
             ,"AlignHorizontalLeft","AlphaZCircle","Antenna","AppleKeyboardCommand","Apps","ArrowDownDropCircleOutline","ArrowUPDropCircleOutline","BarcodeScan"
-            ,"BadgeAccountHorizontalOutline","BellOutline","BoomGate","BoomGateDown","BoomGateUp","Brightness4","Brightness5","Bus"};
+            ,"BadgeAccountHorizontalOutline","BellOutline","BoomGate","BoomGateDown","BoomGateUp","Brightness4","Brightness5","Bus","AppleAirplay","Autorenew","BriefcaseCheck"
+            ,"BusMultiple","Calendar","Camera","CarCog","CardAccountMailOutline","Chat","CheckboxMarkedCircle","Collage","ContactlessPaymentCircle","ContentPaste"
+            ,"ContentSaveEdit","CubeOutline","Database","DotNet","DotsHorizontalCircleOutline","Earth","EmailEditOutline","FileTableBoxMultipleOutline"
+            ,"FileVideo","FocusFieldHorizontal","FormatAlignLeft","HelpBox","ImageMultipleOutline","Shield","TableSearch","TagMultipleOutline"
+            ,"ViewGridPlus","Weight"};
             MenuListsDtos = new ObservableCollection<TbWeighMenuDto>();
             MenuListsCombobox = new ObservableCollection<TbWeighMenuDto>();  
             this.regionManager = provider.Resolve<IRegionManager>();

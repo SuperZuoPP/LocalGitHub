@@ -10,6 +10,7 @@
     d:DesignWidth="1200"
     mc:Ignorable="d">
     <Grid>
+
         <Canvas
             Background="Transparent"
             MouseLeftButtonDown="Canvas_MouseLeftButtonDown"
@@ -22,16 +23,14 @@
                 Canvas.Top="340">
                 <Grid>
                     <Polygon
+                        Margin="10,0,-10,-75"
                         VerticalAlignment="Bottom"
                         Fill="LightGray"
                         Points="0,200 150,0 1000,0 1200 200 0,200"
                         Stroke="#DDDFFDFF"
                         StrokeThickness="2" />
-
-                    <!--  冷却塔  -->
-
-
                 </Grid>
+
             </Viewbox>
         </Canvas>
 

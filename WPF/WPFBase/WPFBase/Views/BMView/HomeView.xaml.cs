@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,9 +10,11 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPFBase.Components;
 
 namespace WPFBase.Views.BMView
 {
@@ -22,7 +25,7 @@ namespace WPFBase.Views.BMView
     {
         public HomeView()
         {
-            InitializeComponent();
+            InitializeComponent(); 
         }
         private void Canvas_MouseWheel(object sender, MouseWheelEventArgs e)
         {
@@ -45,17 +48,17 @@ namespace WPFBase.Views.BMView
         private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _isMoving = true;
-            _downPonit = e.GetPosition(sender as Canvas);
+            _downPonit = e.GetPosition(sender as Viewbox);
             left = double.Parse(this.mainView.GetValue(Canvas.LeftProperty).ToString());
             top = double.Parse(this.mainView.GetValue(Canvas.TopProperty).ToString());
-            (sender as Canvas).CaptureMouse();
+            (sender as Viewbox).CaptureMouse();
             e.Handled = true;
         }
 
         private void Canvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             _isMoving = false;
-            (sender as Canvas).ReleaseMouseCapture();
+            (sender as Viewbox).ReleaseMouseCapture();
             e.Handled = true;
         }
 
@@ -69,5 +72,7 @@ namespace WPFBase.Views.BMView
                 e.Handled = true;
             }
         }
+
+ 
     }
 }
