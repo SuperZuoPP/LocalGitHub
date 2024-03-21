@@ -66,7 +66,7 @@ namespace WPFBase.ViewModels
             set { menuBars = value; RaisePropertyChanged(); }
         }
 
-        private string userName=AppSession.UserName;
+        private string userName;
 
         public string UserName
         {
@@ -74,7 +74,7 @@ namespace WPFBase.ViewModels
             set { userName = value; RaisePropertyChanged(); }
         }
 
-        private string loginTime = DateTime.Now.ToString();
+        private string loginTime = "登录时间:["+DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")+"]";
 
         public string LoginTime
         {
@@ -92,7 +92,8 @@ namespace WPFBase.ViewModels
         }
        
         public void Configure()
-        { 
+        {
+            UserName = "用户:[" + AppSession.UserName + "]";
             CreateMenuBar();
             regionManager.Regions[PrismManager.MainViewRegionName].RequestNavigate("HomeView");
         }

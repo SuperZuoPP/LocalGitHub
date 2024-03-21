@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using WPFBase.Api.Context.Model;
 using WPFBase.Api.Context.Model.BM;
@@ -204,7 +206,7 @@ namespace WPFBase.Api.Services.BM
             {
                 var repository = unitOfWork.GetRepository<TbWeighOperator>();
                 var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(id));
-                repository.Delete(model);
+                repository.Delete(model); 
                 if (await unitOfWork.SaveChangesAsync() > 0)
                     return new ApiResponse(true, "");
                 return new ApiResponse("删除数据失败");
@@ -215,6 +217,35 @@ namespace WPFBase.Api.Services.BM
             }
         }
 
-        
+        public async Task<ApiResponse> MenuAuthority(string usercode)
+        {
+            try
+            {
+                var repository1 = unitOfWork.GetRepository<TbWeighGroupauthority>();
+                var repository2 = unitOfWork.GetRepository<TbWeighGroupauthorityuser>();
+                var repository3 = unitOfWork.GetRepository<TbWeighMenu>(); 
+                var query = from ga in repository1.GetAll()
+                            join gau in repository2.GetAll() on ga.UserGroupCode equals gau.UserGroupCode
+                            join m in repository3.GetAll() on ga.AuthorityCode equals m.MenuCode
+                            where  gau.UserCode == usercode
+                            select new
+                            {
+                                Icon = m.Attribute2,
+                                Title = m.MenuName,
+                                NameSpace = ga.AuthorityCode 
+                            };
+                //  MenuIcon =Icon
+                // Title = MenuName
+                // MenuCode = NameSpace 
+                var models = await query.ToListAsync(); 
+                return new ApiResponse(true, models);
+
+                 
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse(ex.Message);
+            }
+        } 
     }
 }

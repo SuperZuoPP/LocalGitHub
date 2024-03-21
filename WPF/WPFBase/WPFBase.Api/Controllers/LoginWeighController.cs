@@ -47,5 +47,8 @@ namespace WPFBase.Api.Controllers
 
         [HttpDelete]
         public async Task<ApiResponse> Delete(int id) => await service.DeleteAsync(id);
+
+        [HttpGet]
+        public async Task<ApiResponse> MenuAuthority(string usercode) => await service.MenuAuthority(usercode);
     }
 }

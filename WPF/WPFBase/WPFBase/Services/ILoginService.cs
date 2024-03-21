@@ -21,5 +21,8 @@ namespace WPFBase.Services
         Task<ApiResponse<PagedList<TbWeighOperatorDto>>> GetAllFilterAsync(TbWeighOperatorDtoParameter parameter);
 
         Task<ApiResponse> Summary();
+
+        Task<ApiResponse> MenuAuthority(string usercode);
+        
     }
 }

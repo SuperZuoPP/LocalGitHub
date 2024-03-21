@@ -17,6 +17,8 @@ namespace WPFBase.Api.Services.BM
         Task<ApiResponse> GetAllFilterAsync(TbWeighOperatorDtoParameter patameter);
 
         Task<ApiResponse> Summary();
+
+        Task<ApiResponse> MenuAuthority(string usercode);
     }
 }
 

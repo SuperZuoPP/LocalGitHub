@@ -59,6 +59,14 @@ namespace WPFBase.Services
             baseRequest.Parameter = "";
             return await client.ExecuteAsync(baseRequest);
         }
-        
+
+        public async Task<ApiResponse> MenuAuthority(string usercode)
+        {
+            BaseRequest baseRequest = new BaseRequest();
+            baseRequest.Method = RestSharp.Method.GET;
+            baseRequest.Route = $"api/{serviceName}/MenuAuthority?usercode={usercode}";
+            baseRequest.Parameter = usercode;
+            return await client.ExecuteAsync(baseRequest);
+        }
     }
 }

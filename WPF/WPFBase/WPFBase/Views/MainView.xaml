@@ -85,7 +85,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition />
-                    <RowDefinition Height="40" />
+                    <RowDefinition Height="26" />
                 </Grid.RowDefinitions>
 
                 <materialDesign:Snackbar
@@ -186,7 +186,15 @@
 
                 <ContentControl Grid.Row="1" prism:RegionManager.RegionName="{x:Static ext:PrismManager.MainViewRegionName}" />
                 <StackPanel Grid.Row="2" Orientation="Horizontal">
-                    <TextBlock Text="{Binding UserName}" />
+                    <TextBlock
+                        Margin="3,0,10,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="{Binding UserName}" />
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="{Binding LoginTime}" />
                 </StackPanel>
             </Grid>
         </materialDesign:DrawerHost>

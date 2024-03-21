@@ -1,15 +1,19 @@
 ﻿using HandyControl.Controls;
+using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WPFBase.Models;
 using WPFBase.Services;
+using WPFBase.Shared;
+using WPFBase.Shared.DTO.BM;
 
 namespace WPFBase.ViewModels.Dialogs
 {
@@ -41,7 +45,7 @@ namespace WPFBase.ViewModels.Dialogs
             set { SetProperty<string>(ref userName, value); }
         }
 
-        private string userNumber;
+        private string userNumber = "zuochao";
 
         public string UserNumber
         {
@@ -49,7 +53,7 @@ namespace WPFBase.ViewModels.Dialogs
             set { SetProperty<string>(ref userNumber, value); }
         }
 
-        private string passWord;
+        private string passWord="111";
 
         public string PassWord
         {
@@ -93,6 +97,14 @@ namespace WPFBase.ViewModels.Dialogs
             {
                 AppSession.UserName = loginResult.Result.UserName;
                 AppSession.UserCode = loginResult.Result.UserCode;
+
+                var menulist = await loginService.MenuAuthority(loginResult.Result.UserCode);
+                if (menulist.Status)
+                {
+                   var resultjson = menulist.Result.ToString(); ;
+                   var result = JsonConvert.DeserializeObject<ObservableCollection<MenuBar>>(resultjson);
+                    AuthorityMenu.AuthorityMenus = result; 
+                }
                 RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
                 return;
             }

@@ -245,9 +245,7 @@ namespace WPFBase.ViewModels.SMViewModel
                     }
                 }
                     
-            }
-           
-
+            } 
         }
 
         private async void GetDataAsync() 
