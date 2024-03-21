@@ -11,6 +11,7 @@
     <None Remove="Views\BMView\car.jpg" />
     <None Remove="Views\BMView\truck.jpg" />
     <None Remove="Views\BMView\user.jpg" />
+    <None Remove="Views\SMView\login.png" />
     <None Remove="Views\SMView\user.jpg" />
     <None Remove="Views\wxzc.jpg" />
   </ItemGroup>
@@ -40,6 +41,7 @@
     <Resource Include="Assets\Fonts\iconfont.ttf" />
     <Resource Include="Views\BMView\truck.jpg" />
     <Resource Include="Views\BMView\user.jpg" />
+    <Resource Include="Views\SMView\login.png" />
     <Resource Include="Views\SMView\user.jpg" />
     <Resource Include="Views\wxzc.jpg" />
   </ItemGroup>

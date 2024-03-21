@@ -17,7 +17,7 @@ namespace WPFBase.ViewModels
     public class MainViewModel : BindableBase, IConfigureService
     {
         public MainViewModel(IRegionManager regionManager)
-        {
+        { 
             MenuBars = new ObservableCollection<MenuBar>();
             this.regionManager = regionManager;
             NavigateCommand = new DelegateCommand<MenuBar>(Nagvigate); 
@@ -66,7 +66,7 @@ namespace WPFBase.ViewModels
             set { menuBars = value; RaisePropertyChanged(); }
         }
 
-        private string userName="Hello";
+        private string userName=AppSession.UserName;
 
         public string UserName
         {
@@ -74,6 +74,14 @@ namespace WPFBase.ViewModels
             set { userName = value; RaisePropertyChanged(); }
         }
 
+        private string loginTime = DateTime.Now.ToString();
+
+        public string LoginTime
+        {
+            get { return loginTime; }
+            set { loginTime = value; RaisePropertyChanged(); }
+        }
+        
 
         void CreateMenuBar()
         {

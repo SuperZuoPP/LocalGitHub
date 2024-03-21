@@ -48,17 +48,17 @@ namespace WPFBase.Views.BMView
         private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _isMoving = true;
-            _downPonit = e.GetPosition(sender as Viewbox);
+            _downPonit = e.GetPosition(sender as Canvas);
             left = double.Parse(this.mainView.GetValue(Canvas.LeftProperty).ToString());
             top = double.Parse(this.mainView.GetValue(Canvas.TopProperty).ToString());
-            (sender as Viewbox).CaptureMouse();
+            (sender as Canvas).CaptureMouse();
             e.Handled = true;
         }
 
         private void Canvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             _isMoving = false;
-            (sender as Viewbox).ReleaseMouseCapture();
+            (sender as Canvas).ReleaseMouseCapture();
             e.Handled = true;
         }
 

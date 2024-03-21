@@ -1,0 +1,123 @@
+﻿using HandyControl.Controls;
+using Prism.Commands;
+using Prism.Events;
+using Prism.Mvvm;
+using Prism.Services.Dialogs;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using WPFBase.Models;
+using WPFBase.Services;
+
+namespace WPFBase.ViewModels.Dialogs
+{
+    public class LoginViewModel : BindableBase, IDialogAware
+    {
+        
+        private readonly ILoginService loginService;
+
+       
+
+
+        public LoginViewModel(ILoginService loginService)
+        { 
+            ExecuteCommand = new DelegateCommand<string>(Execute);
+            this.loginService = loginService;
+            //ToDoDto todo = new ToDoDto() { Title="test",Content= "test", Status=1 };
+            //SqliteHelper.InsertData1<ToDoDto,ToDo>(todo);
+        }
+
+        #region 属性
+
+
+        public string Title { get; set; } = "SuperZuo";
+        private string userName;
+
+        public string UserName
+        {
+            get { return userName; }
+            set { SetProperty<string>(ref userName, value); }
+        }
+
+        private string userNumber;
+
+        public string UserNumber
+        {
+            get { return userNumber; }
+            set { SetProperty<string>(ref userNumber, value); }
+        }
+
+        private string passWord;
+
+        public string PassWord
+        {
+            get { return passWord; }
+            set { SetProperty<string>(ref passWord, value); }
+        }
+        #endregion
+
+
+        #region 命令
+        public DelegateCommand<string> ExecuteCommand { get; private set; }
+        #endregion
+
+        private void Execute(string obj)
+        {
+            switch (obj)
+            {
+                case "Login": Login(); break;
+                    // case "LoginOut": LoginOut(); break;
+                    // case "Resgiter": Resgiter(); break;
+                    // case "ResgiterPage": SelectIndex = 1; break;
+                    //case "Return": SelectIndex = 0; break;
+            }
+        }
+
+        async void Login()
+        {
+            if (string.IsNullOrWhiteSpace(UserNumber) ||
+               string.IsNullOrWhiteSpace(PassWord))
+            {
+                return;
+            }
+
+            var loginResult = await loginService.Login(new Shared.DTO.BM.TbWeighOperatorDto
+            {
+                UserNumber = UserNumber,
+                PassWord = PassWord
+            });
+
+            if (loginResult != null && loginResult.Status)
+            {
+                AppSession.UserName = loginResult.Result.UserName;
+                AppSession.UserCode = loginResult.Result.UserCode;
+                RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
+                return;
+            }
+            else
+            {
+                //登录失败提示...
+                Growl.WarningGlobal(loginResult.Message); 
+            }
+        }
+
+        public event Action<IDialogResult> RequestClose;
+
+        public bool CanCloseDialog()
+        {
+            return true;
+        }
+
+        public void OnDialogClosed()
+        {
+
+        }
+
+        public void OnDialogOpened(IDialogParameters parameters)
+        {
+
+        }
+    }
+}

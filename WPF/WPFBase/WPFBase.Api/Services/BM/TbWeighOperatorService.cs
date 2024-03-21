@@ -63,6 +63,7 @@ namespace WPFBase.Api.Services.BM
 
                 return new ApiResponse(true, new OperatorDto()
                 {
+                    UserCode = model.UserCode,
                     UserNumber = model.UserNumber,
                     UserName = model.UserName,
                     Id = model.Id

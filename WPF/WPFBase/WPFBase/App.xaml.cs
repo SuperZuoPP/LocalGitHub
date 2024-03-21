@@ -18,6 +18,7 @@ using WPFBase.Services.ServiceBase;
 using WPFBase.Services;
 using WPFBase.Views.BMView;
 using WPFBase.ViewModels;
+using Prism.Services.Dialogs;
 
 namespace WPFBase
 {
@@ -33,10 +34,25 @@ namespace WPFBase
 
         protected override void OnInitialized()
         {
-            var service = App.Current.MainWindow.DataContext as IConfigureService;
-            if (service != null)
-                service.Configure();
-            base.OnInitialized();
+            //var service = App.Current.MainWindow.DataContext as IConfigureService;
+            //if (service != null)
+            //    service.Configure();
+            //base.OnInitialized();
+            var dialog = Container.Resolve<IDialogService>();
+
+            dialog.ShowDialog("LoginView", callback =>
+            {
+                if (callback.Result != ButtonResult.OK)
+                {
+                    Environment.Exit(0);
+                    return;
+                }
+
+                var service = App.Current.MainWindow.DataContext as IConfigureService;
+                if (service != null)
+                    service.Configure();
+                base.OnInitialized();
+            });
         }
 
 
@@ -52,10 +68,10 @@ namespace WPFBase
             containerRegistry.Register<ILoginService, LoginService>(); 
             containerRegistry.Register<IDialogHostService, DialogHostService>();
             containerRegistry.Register<IUserGroupService, UserGroupService>();
-            containerRegistry.Register<IMenuService, MenuService>(); 
+            containerRegistry.Register<IMenuService, MenuService>();
 
 
-
+            containerRegistry.RegisterForNavigation<LoginView, LoginViewModel>();
             containerRegistry.RegisterForNavigation<TreeDemoView,TreeDemoViewModel>();
             containerRegistry.RegisterForNavigation<HomeView>();
             containerRegistry.RegisterForNavigation<AboutView>(); 
