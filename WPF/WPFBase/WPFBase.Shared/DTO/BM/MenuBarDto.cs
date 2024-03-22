@@ -1,21 +1,14 @@
-﻿using Prism.Mvvm;
-using Prism.Regions;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using WPFBase.Shared.Extensions;
 
-namespace WPFBase.Models
+namespace WPFBase.Shared.DTO.BM
 {
-    /// <summary>
-    /// 系统导航菜单实体类
-    /// </summary>
-    public class MenuBar : BindableBase
+    public class MenuBarDto : BaseNotifyPropertyChanged
     {
         private int id;
-        private string parentid;
+        private string parentId;
         private string icon;
         private string title;
         private string nameSpace;
@@ -23,31 +16,31 @@ namespace WPFBase.Models
         public int Id
         {
             get { return id; }
-            set { id = value; }
+            set { SetProperty<int>(ref id, value); }
         }
 
         public string ParentId
         {
-            get { return parentid; }
-            set { parentid = value; }
+            get { return parentId; }
+            set { SetProperty<string>(ref parentId, value); }
         }
+
         public string Icon
         {
             get { return icon; }
-            set { icon = value; }
+            set { SetProperty<string>(ref icon, value); }
         }
-         
+
         public string Title
         {
             get { return title; }
-            set { title = value; }
+            set { SetProperty<string>(ref title, value); }
         }
-         
+
         public string NameSpace
         {
             get { return nameSpace; }
-            set { nameSpace = value; }
+            set { SetProperty<string>(ref nameSpace, value); }
         }
-  
     }
 }

@@ -223,24 +223,21 @@ namespace WPFBase.Api.Services.BM
             {
                 var repository1 = unitOfWork.GetRepository<TbWeighGroupauthority>();
                 var repository2 = unitOfWork.GetRepository<TbWeighGroupauthorityuser>();
-                var repository3 = unitOfWork.GetRepository<TbWeighMenu>(); 
+                var repository3 = unitOfWork.GetRepository<TbWeighMenu>();
                 var query = from ga in repository1.GetAll()
                             join gau in repository2.GetAll() on ga.UserGroupCode equals gau.UserGroupCode
                             join m in repository3.GetAll() on ga.AuthorityCode equals m.MenuCode
-                            where  gau.UserCode == usercode
-                            select new
+                            where gau.UserCode == usercode
+                            select new MenuBarDto
                             {
+                                Id = m.Id, 
+                                ParentId = m.MenuNumber,
                                 Icon = m.Attribute2,
                                 Title = m.MenuName,
                                 NameSpace = ga.AuthorityCode 
-                            };
-                //  MenuIcon =Icon
-                // Title = MenuName
-                // MenuCode = NameSpace 
-                var models = await query.ToListAsync(); 
-                return new ApiResponse(true, models);
-
-                 
+                            }; 
+                var models = await query.Distinct().ToListAsync(); 
+                return new ApiResponse(true, models); 
             }
             catch (Exception ex)
             {
