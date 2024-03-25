@@ -29,6 +29,25 @@
                         Points="0,200 150,0 1000,0 1200 200 0,200"
                         Stroke="#DDDFFDFF"
                         StrokeThickness="2" />
+
+                    <components:Truck
+                        Width="100"
+                        Height="120"
+                        Margin="120,0,0,40"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom"
+                        Command="{Binding ComponentCommand}"
+                        CommandParameter="{Binding}" />
+
+                    <components:PipeLine
+                        Width="500"
+                        Height="10"
+                        Margin="-280,20,0,10"
+                        CapRadius="3"
+                        Direction="2"
+                        LiguidColor="red" />
+
+
                 </Grid>
 
             </Viewbox>

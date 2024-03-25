@@ -19,6 +19,7 @@ using WPFBase.Services;
 using WPFBase.Views.BMView;
 using WPFBase.ViewModels;
 using Prism.Services.Dialogs;
+using WPFBase.ViewModels.BMViewModel;
 
 namespace WPFBase
 {
@@ -73,7 +74,7 @@ namespace WPFBase
 
             containerRegistry.RegisterForNavigation<LoginView, LoginViewModel>();
             containerRegistry.RegisterForNavigation<TreeDemoView,TreeDemoViewModel>();
-            containerRegistry.RegisterForNavigation<HomeView>();
+            containerRegistry.RegisterForNavigation<HomeView,HomeViewModel>();
             containerRegistry.RegisterForNavigation<AboutView>(); 
             containerRegistry.RegisterForNavigation<SettingsView, SettingsViewModel>();
             containerRegistry.RegisterForNavigation<MsgView, MsgViewModel>();
@@ -82,7 +83,9 @@ namespace WPFBase
             containerRegistry.RegisterForNavigation<UserGroupView, UserGroupViewModel>();
             containerRegistry.RegisterForNavigation<UserCreateView,UserCreateViewModel>();
             containerRegistry.RegisterForNavigation<SkinView, SkinViewModel>();
-            containerRegistry.RegisterForNavigation<MenuListView, MenuListViewModel>(); 
+            containerRegistry.RegisterForNavigation<MenuListView, MenuListViewModel>();
+            containerRegistry.RegisterForNavigation<WeightSiteView>();
+
         }
     }
 }

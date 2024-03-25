@@ -13,7 +13,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="150" />
             <RowDefinition Height="300" />
-            <RowDefinition Height="auto" />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <Border
             BorderBrush="LightCyan"
@@ -29,30 +29,35 @@
                         <RowDefinition />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal">
-                        <md:PackIcon
-                            Width="30"
-                            Height="30"
+                    <Border Margin="10,0" CornerRadius="5" BorderThickness="1" BorderBrush="Black">
+                        <StackPanel  Orientation="Horizontal">
+                            <md:PackIcon
+                            Width="40"
+                            Height="40"
                             Margin="5,5"
                             VerticalAlignment="Center"
                             Foreground="GreenYellow"
                             Kind="CheckboxBlankCircle" />
-                        <TextBlock
-                            Width="200"
-                            Height="40"
+                            <TextBlock
+                            Width="350"
+                            Height="60"
                             Background="Black"
-                            FontSize="30"
+                            FontSize="50"
                             Foreground="GreenYellow"
-                            Text="0" />
-                        <TextBlock
-                            Width="40"
-                            Height="40"
+                            Text="0"
+                            TextAlignment="Right" />
+                            <TextBlock
+                            Width="80"
+                            Height="60"
                             Margin="2,0"
                             Background="Black"
-                            FontSize="30"
+                            FontSize="50"
                             Foreground="GreenYellow"
-                            Text="KG" />
-                    </StackPanel>
+                            Text="KG"
+                            TextAlignment="Center" />
+                        </StackPanel>
+                    </Border> 
+                    <StackPanel Background="Black" Grid.Row="1"/>
                 </Grid>
 
 
@@ -66,8 +71,9 @@
                 <ColumnDefinition Width="300" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <DockPanel>
+            <DockPanel Margin="10,5,5,5">
                 <TextBlock
+                    Height="30"
                     Background="LightGray"
                     DockPanel.Dock="Top"
                     FontWeight="Bold"

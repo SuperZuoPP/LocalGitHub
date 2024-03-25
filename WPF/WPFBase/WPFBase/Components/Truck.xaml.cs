@@ -18,7 +18,7 @@ namespace WPFBase.Components
     /// <summary>
     /// Truck.xaml 的交互逻辑
     /// </summary>
-    public partial class Truck : UserControl
+    public partial class Truck : ControlsBase
     {
         public Truck()
         {
