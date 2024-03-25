@@ -84,7 +84,7 @@ namespace WPFBase
             containerRegistry.RegisterForNavigation<UserCreateView,UserCreateViewModel>();
             containerRegistry.RegisterForNavigation<SkinView, SkinViewModel>();
             containerRegistry.RegisterForNavigation<MenuListView, MenuListViewModel>();
-            containerRegistry.RegisterForNavigation<WeightSiteView>();
+            containerRegistry.RegisterForNavigation<WeightSiteView,WeightSiteViewModel>();
 
         }
     }

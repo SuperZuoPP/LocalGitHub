@@ -49,7 +49,7 @@ namespace WPFBase.ViewModels.SMViewModel
             // Title = MenuName
             // MenuCode = NameSpace 
             //1系统管理
-            var menus = AuthorityMenu.AuthorityMenus.Where(menu => menu.ParentId == "1").ToList().OrderBy(i=>i.Id);
+            var menus = AuthorityMenu.AuthorityMenus.Where(menu => menu.ParentId == "1").ToList().OrderBy(i => i.Id);
             MenuBars = new ObservableCollection<MenuBar>(menus);
             //MenuBars.Add(new MenuBar() { Icon = "Palette", Title = "个性化", NameSpace = "SkinView" });
             //MenuBars.Add(new MenuBar() { Icon = "MicrosoftXboxControllerMenu", Title = "菜单管理", NameSpace = "MenuListView" });

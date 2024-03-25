@@ -18,6 +18,11 @@ namespace WPFBase.Extensions
         /// </summary>
         public static readonly string SettingsViewRegionName = "SettingsViewRegion";
 
+
+        /// <summary>
+        /// 设置页区域
+        /// </summary>
+        public static readonly string WeighSiteViewRegionName = "WeighSiteViewRegion";
     }
 }
 
