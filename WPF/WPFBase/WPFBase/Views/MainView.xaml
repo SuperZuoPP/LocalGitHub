@@ -169,9 +169,10 @@
                                 Command="{Binding GoHomeCommand}"
                                 Content="{materialDesign:PackIcon Kind=HomeCircle,
                                                                   Size=24}"
+                                Cursor="Hand"
                                 Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"
                                 Style="{DynamicResource MaterialDesignToolButton}"
-                                ToolTip="主页" Cursor="Hand" />
+                                ToolTip="主页" />
 
                             <TextBlock
                                 Margin="16,0"
@@ -187,7 +188,7 @@
                 <ContentControl Grid.Row="1" prism:RegionManager.RegionName="{x:Static ext:PrismManager.MainViewRegionName}" />
                 <StackPanel Grid.Row="2" Orientation="Horizontal">
                     <TextBlock
-                        Margin="3,0,10,0"
+                        Margin="3,0,10,5"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Text="{Binding UserName}" />

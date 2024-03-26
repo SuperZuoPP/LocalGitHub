@@ -179,7 +179,7 @@
                     Margin="1"
                     DockPanel.Dock="Top"
                     Header="提示内容">
-                    <TextBlock Height="400" Text="My Content" />
+                    <TextBlock Text="My Content" />
                 </GroupBox>
                 <GroupBox Margin="1" Header="预警提示">
                     <TextBlock Text="预警提示..." />
