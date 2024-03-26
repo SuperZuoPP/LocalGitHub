@@ -202,7 +202,7 @@
                             Content="用户组管理" />
                         <Button
                             Command="{Binding ViewSelectCmd}"
-                            CommandParameter="MenuListView"
+                            CommandParameter="DataInfoView"
                             Content="菜单管理" />
 
                     </StackPanel>
