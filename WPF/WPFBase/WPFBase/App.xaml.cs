@@ -87,7 +87,10 @@ namespace WPFBase
             containerRegistry.RegisterForNavigation<WeightSiteView,WeightSiteViewModel>();
 
             containerRegistry.RegisterForNavigation<DataInfoView>();
+            containerRegistry.RegisterForNavigation<QueryDataLineView>();
             
+
+
         }
     }
 }

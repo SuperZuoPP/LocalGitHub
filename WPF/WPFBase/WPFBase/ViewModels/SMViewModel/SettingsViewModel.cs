@@ -17,7 +17,7 @@ namespace WPFBase.ViewModels.SMViewModel
     {
         public SettingsViewModel(IRegionManager regionManager)
         {
-            //MenuBars = new ObservableCollection<MenuBar>();
+           // MenuBars = new ObservableCollection<MenuBar>();
             CreateMenuBar();
             this.regionManager = regionManager;
             NavigateCommand = new DelegateCommand<MenuBar>(Navigate);
