@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FastReport;
+using FastReport.Export.Dbf;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -29,15 +31,18 @@ namespace WPFBase.Views.BMView
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var reportFile = System.IO.Path.Join(Environment.CurrentDirectory, "Simple List.frx");
-            using (var report = new Report())
-            {
-                report.Load(reportFile);
-                var ds = TestData();
-                report.RegisterData(ds, "NorthWind");
-                //report.PrepareAsync(previewControl);
-                //report.ShowPrepared();
-                report.ShowAsync();
-            }
+            var report = new Report();
+            report.Load(reportFile);
+            var ds = TestData();
+            report.RegisterData(ds, "NorthWind");
+            report.PrepareAsync(previewControl);
+            //using (var report = new Report())
+            //{
+            //    report.Load(reportFile);
+            //    var ds = TestData();
+            //    report.RegisterData(ds, "NorthWind");
+            //    report.PrepareAsync(previewControl); 
+            //}
         }
 
         private DataSet TestData()
@@ -53,7 +58,7 @@ namespace WPFBase.Views.BMView
             table.Columns.Add("FirstName", typeof(string));
 
             // 添加测试数据
-            table.Rows.Add(1, "Name1", "zw");
+            table.Rows.Add(1, "Name1", "zuochao");
             table.Rows.Add(2, "Name2", "zc");
             table.Rows.Add(3, "Name3", "pp");
 

@@ -6,6 +6,8 @@
     xmlns:hc="https://handyorg.github.io/handycontrol"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:WPFBase.Views.BMView"
+    xmlns:frdesign="clr-namespace:FastReport.Design;assembly=FastReport.WPF"
+    xmlns:frpreview="clr-namespace:FastReport.Preview;assembly=FastReport.WPF"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:prsim="http://prismlibrary.com/"
@@ -15,14 +17,13 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="120" />
-            <RowDefinition />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="*"/> 
         </Grid.RowDefinitions>
 
-        <Border
-            Margin="10"
-            Background="#F0F0F0"
-            CornerRadius="20">
+        <Border  
+Margin="10"
+Background="#F0F0F0"
+CornerRadius="20">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition />
@@ -30,48 +31,48 @@
                 </Grid.RowDefinitions>
                 <StackPanel Margin="15,0,0,0" Orientation="Horizontal">
                     <TextBox
-                        Width="200"
-                        VerticalAlignment="Center"
-                        hc:InfoElement.Title="车牌号"
-                        hc:InfoElement.TitlePlacement="Left"
-                        Style="{StaticResource TextBoxExtend}" />
+            Width="200"
+            VerticalAlignment="Center"
+            hc:InfoElement.Title="车牌号"
+            hc:InfoElement.TitlePlacement="Left"
+            Style="{StaticResource TextBoxExtend}" />
                     <TextBox
-                        Width="200"
-                        Margin="10,0"
-                        VerticalAlignment="Center"
-                        hc:InfoElement.Title="物料名称"
-                        hc:InfoElement.TitlePlacement="Left"
-                        Style="{StaticResource TextBoxExtend}" />
+            Width="200"
+            Margin="10,0"
+            VerticalAlignment="Center"
+            hc:InfoElement.Title="物料名称"
+            hc:InfoElement.TitlePlacement="Left"
+            Style="{StaticResource TextBoxExtend}" />
                     <DatePicker
-                        Width="200"
-                        md:HintAssist.Hint="日期"
-                        xml:lang="zh-CN"
-                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+            Width="200"
+            md:HintAssist.Hint="日期"
+            xml:lang="zh-CN"
+            Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
                     <Button
-                        Width="100"
-                        Margin="50,0"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        Click="Button_Click"
-                        Content="查询" />
+            Width="100"
+            Margin="50,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Click="Button_Click"
+            Content="查询" />
                 </StackPanel>
                 <StackPanel
-                    Grid.Row="1"
-                    Margin="15,0,0,0"
-                    Orientation="Horizontal">
+        Grid.Row="1"
+        Margin="15,0,0,0"
+        Orientation="Horizontal">
                     <TextBox
-                        Width="200"
-                        VerticalAlignment="Center"
-                        hc:InfoElement.Title="供货商"
-                        hc:InfoElement.TitlePlacement="Left"
-                        Style="{StaticResource TextBoxExtend}" />
+            Width="200"
+            VerticalAlignment="Center"
+            hc:InfoElement.Title="供货商"
+            hc:InfoElement.TitlePlacement="Left"
+            Style="{StaticResource TextBoxExtend}" />
                     <TextBox
-                        Width="200"
-                        Margin="10,0"
-                        VerticalAlignment="Center"
-                        hc:InfoElement.Title="收货商"
-                        hc:InfoElement.TitlePlacement="Left"
-                        Style="{StaticResource TextBoxExtend}" />
+            Width="200"
+            Margin="10,0"
+            VerticalAlignment="Center"
+            hc:InfoElement.Title="收货商"
+            hc:InfoElement.TitlePlacement="Left"
+            Style="{StaticResource TextBoxExtend}" />
                     <ComboBox Width="200" md:HintAssist.Hint="所属磅房">
                         <ComboBoxItem>
                             Android
@@ -92,14 +93,13 @@
 
         </Border>
 
-        <StackPanel Grid.Row="1" Margin="5">
+
+         
             <!--<fastreportdesign:WpfDesignerControl Height="287" />-->
-            <!--<fr:ReportPreviewControl
-                x:Name="previewControl"
-                Height="287"
-                ToolbarVisible="False" />-->
-        </StackPanel>
-
-
+            <frpreview:WpfPreviewControl Grid.Row="1"  
+                x:Name="previewControl" 
+                Margin="10" 
+                ToolbarVisible="True" />
+       
     </Grid>
 </UserControl>
