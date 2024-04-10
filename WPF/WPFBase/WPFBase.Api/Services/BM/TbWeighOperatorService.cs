@@ -224,18 +224,35 @@ namespace WPFBase.Api.Services.BM
                 var repository1 = unitOfWork.GetRepository<TbWeighGroupauthority>();
                 var repository2 = unitOfWork.GetRepository<TbWeighGroupauthorityuser>();
                 var repository3 = unitOfWork.GetRepository<TbWeighMenu>();
-                var query = from ga in repository1.GetAll()
-                            join gau in repository2.GetAll() on ga.UserGroupCode equals gau.UserGroupCode
-                            join m in repository3.GetAll() on ga.AuthorityCode equals m.MenuCode
-                            where gau.UserCode == usercode
+                //var query = from ga in repository1.GetAll()
+                //            join gau in repository2.GetAll() on ga.UserGroupCode equals gau.UserGroupCode
+                //            join m in repository3.GetAll() on ga.AuthorityCode equals m.MenuCode
+                //            where gau.UserCode == usercode
+                //            select new MenuBarDto
+                //            {
+                //                Id = m.Id, 
+                //                ParentId = m.MenuNumber,
+                //                Icon = m.Attribute2,
+                //                Title = m.MenuName,
+                //                NameSpace = ga.AuthorityCode 
+                //            }; 
+                // Step 1: Query data from repository1 based on usercode
+                var groupAuthorities = await repository1.GetAll()
+                    .Where(ga => repository2.GetAll().Any(gau => gau.UserCode == usercode && gau.UserGroupCode == ga.UserGroupCode))
+                    .Select(ga => ga.AuthorityCode)
+                    .ToListAsync();
+
+                // Step 2: Join the filtered data from repository1 with repository3
+                var query = from m in repository3.GetAll()
+                            where groupAuthorities.Contains(m.MenuCode)
                             select new MenuBarDto
                             {
-                                Id = m.Id, 
+                                Id = m.Id,
                                 ParentId = m.MenuNumber,
                                 Icon = m.Attribute2,
                                 Title = m.MenuName,
-                                NameSpace = ga.AuthorityCode 
-                            }; 
+                                NameSpace = m.MenuCode
+                            };
                 var models = await query.Distinct().ToListAsync(); 
                 return new ApiResponse(true, models); 
             }

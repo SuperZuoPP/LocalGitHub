@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
 
 namespace WPFBase.Api.Context.Model.BM
 {
+    [Table("tb_weigh_plan")]
     public partial class TbWeighPlan
     {
         public int Id { get; set; }
+        [Key]
         public string PlanCode { get; set; }
         public string PlanNumber { get; set; }
         public string OrganizationCode { get; set; }

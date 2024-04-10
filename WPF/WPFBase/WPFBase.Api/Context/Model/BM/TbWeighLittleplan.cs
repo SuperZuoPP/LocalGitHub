@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
 
 namespace WPFBase.Api.Context.Model.BM
 {
+    [Table("tb_weigh_littleplan")]
     public partial class TbWeighLittleplan
     {
         public int IntId { get; set; }
@@ -13,6 +16,8 @@ namespace WPFBase.Api.Context.Model.BM
         public string ApplDate { get; set; }
         public string PlanCode { get; set; }
         public string WeighHouseCodes { get; set; }
+
+        [Key]
         public string QrCode { get; set; }
         public string HeadreMark { get; set; }
         public string Eid { get; set; }
@@ -24,12 +29,23 @@ namespace WPFBase.Api.Context.Model.BM
         public string IslongPplan { get; set; }
         public string ReturnFlag { get; set; }
         public string LineRemark { get; set; }
+        
+        [Column("contacts_name")]
         public string ContactsName { get; set; }
+
+        [Column("phone_num")]
         public string PhoneNum { get; set; }
+
+        [Column("is_confirm")]
         public string IsConfirm { get; set; }
         public string Source { get; set; }
+
+        [Column("is_weight")]
         public string IsWeight { get; set; }
+        [Column("create_date")] 
         public string CreateDate { get; set; }
+
+        [Column("last_update_date")]
         public string LastUpdateDate { get; set; }
         public int? OperateBit { get; set; }
         public int? UploadBit { get; set; }

@@ -41,7 +41,7 @@ namespace WPFBase.Api
             {
 
                 //使用sqlserver
-                var connectionString = Configuration.GetConnectionString("SqlServerConnection");
+                var connectionString = Configuration.GetConnectionString("SqlServerConnection1");
                 options.UseSqlServer(connectionString);
 
                 //使用sqlite
@@ -55,14 +55,17 @@ namespace WPFBase.Api
            .AddCustomRepository<TbWeighOperator, TbWeighOperatorRepository>()
            .AddCustomRepository<TbWeighUsergroup, TbWeighUsergroupRepository>()
            .AddCustomRepository<TbWeighGroupauthorityuser, TbWeighGroupauthorityuserRepository>()
-           .AddCustomRepository<TbWeighMenu, TbWeighMenuRepository>();
-
+           .AddCustomRepository<TbWeighMenu, TbWeighMenuRepository>()
+           .AddCustomRepository<TbWeighDatalineinfo, TbWeighDatalineinfoRepository>()
+           .AddCustomRepository<TbWeighPlan, TbWeighPlanRepository>()
+          .AddCustomRepository<TbWeighLittleplan, TbWeighLittleplanRepository>();
 
             services.AddTransient<IToDoService, ToDoService>();
             services.AddTransient<ILoginService, LoginService>();
             services.AddTransient<ITbWeighOperatorService, TbWeighOperatorService>();
             services.AddTransient<ITbWeighUsergroupService, TbWeighUsergroupService>();
-            services.AddTransient<IMenuService, MenuService>();
+            services.AddTransient<IMenuService, MenuService>(); 
+            services.AddTransient<ITbWeighDatalineinfoService, TbWeighDatalineinfoService>();
 
             //添加AutoMapper
             var atuomapperConfig = new MapperConfiguration(config => {

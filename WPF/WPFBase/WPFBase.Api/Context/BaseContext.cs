@@ -24,5 +24,13 @@ namespace WPFBase.Api.Context
         public DbSet<TbWeighMenu> TbWeighMenu { get; set; }
 
         public DbSet<TbWeighGroupauthority> TbWeighGroupauthority { get; set; }
+
+        public DbSet<TbWeighDatalineinfo> TbWeighDatalineinfo { get; set; }
+
+        public DbSet<TbWeighLittleplan> TbWeighLittleplan { get; set; }
+
+        public DbSet<TbWeighPlan> TbWeighPlan { get; set; }
+        
+        
     }
 }

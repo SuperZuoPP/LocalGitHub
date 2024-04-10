@@ -5,7 +5,7 @@ using WPFBase.Shared.DTO.SM;
 
 namespace WPFBase.Shared.DTO.BM
 {
-    public class TbWeighDatalineinfoDTO : BaseDto
+    public class TbWeighDatalineinfoDto : BaseDto
     {
         private string planCode;
         private string planNumber;

@@ -17,7 +17,7 @@ namespace WPFBase.ViewModels.SMViewModel
     {
         public SettingsViewModel(IRegionManager regionManager)
         {
-           // MenuBars = new ObservableCollection<MenuBar>();
+            MenuBars = new ObservableCollection<MenuBar>();
             CreateMenuBar();
             this.regionManager = regionManager;
             NavigateCommand = new DelegateCommand<MenuBar>(Navigate);
@@ -49,15 +49,15 @@ namespace WPFBase.ViewModels.SMViewModel
             // Title = MenuName
             // MenuCode = NameSpace 
             //1系统管理
-            var menus = AuthorityMenu.AuthorityMenus.Where(menu => menu.ParentId == "1").ToList().OrderBy(i => i.Id);
-            MenuBars = new ObservableCollection<MenuBar>(menus);
-            //MenuBars.Add(new MenuBar() { Icon = "Palette", Title = "个性化", NameSpace = "SkinView" });
-            //MenuBars.Add(new MenuBar() { Icon = "MicrosoftXboxControllerMenu", Title = "菜单管理", NameSpace = "MenuListView" });
-            //MenuBars.Add(new MenuBar() { Icon = "Account", Title = "用户管理", NameSpace = "UserView" });
-            //MenuBars.Add(new MenuBar() { Icon = "AccountMultiple", Title = "用户组管理", NameSpace = "UserGroupView" });
-            //MenuBars.Add(new MenuBar() { Icon = "ShieldLock", Title = "权限管理", NameSpace = "AuthorityView" });
-            //MenuBars.Add(new MenuBar() { Icon = "Cog", Title = "系统设置", NameSpace = "" });
-            //MenuBars.Add(new MenuBar() { Icon = "Palette", Title = "关于更多", NameSpace = "AboutView" });
+            //var menus = AuthorityMenu.AuthorityMenus.Where(menu => menu.ParentId == "1").ToList().OrderBy(i => i.Id);
+            //MenuBars = new ObservableCollection<MenuBar>(menus);
+            MenuBars.Add(new MenuBar() { Icon = "Palette", Title = "个性化", NameSpace = "SkinView" });
+            MenuBars.Add(new MenuBar() { Icon = "MicrosoftXboxControllerMenu", Title = "菜单管理", NameSpace = "MenuListView" });
+            MenuBars.Add(new MenuBar() { Icon = "Account", Title = "用户管理", NameSpace = "UserView" });
+            MenuBars.Add(new MenuBar() { Icon = "AccountMultiple", Title = "用户组管理", NameSpace = "UserGroupView" });
+            MenuBars.Add(new MenuBar() { Icon = "ShieldLock", Title = "权限管理", NameSpace = "AuthorityView" });
+            MenuBars.Add(new MenuBar() { Icon = "Cog", Title = "系统设置", NameSpace = "" });
+            MenuBars.Add(new MenuBar() { Icon = "Palette", Title = "关于更多", NameSpace = "AboutView" });
         }
     }
 }

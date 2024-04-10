@@ -2,6 +2,7 @@
 using WPFBase.Api.Context.Model;
 using WPFBase.Api.Context.Model.BM;
 using WPFBase.Api.Context.Model.SM;
+using WPFBase.Api.Context.UnitOfWork;
 using WPFBase.Shared.DTO.BM;
 using WPFBase.Shared.DTO.SM;
 
@@ -19,7 +20,10 @@ namespace WPFBase.Api.Extensions
             CreateMap<TbWeighUsergroup, TbWeighUsergroupDto>().ReverseMap();
             CreateMap<TbWeighGroupauthorityuser, TbWeighGroupauthorityuserDto>().ReverseMap();
             CreateMap<TbWeighMenu, TbWeighMenuDto>().ReverseMap();
-            CreateMap<TbWeighGroupauthority, TbWeighGroupauthorityDto>().ReverseMap();
+            CreateMap<TbWeighGroupauthority, TbWeighGroupauthorityDto>().ReverseMap(); 
+            CreateMap<TbWeighDatalineinfo, TbWeighDatalineinfoDto>().ReverseMap();
+            CreateMap<TbWeighLittleplan, TbWeighLittleplanDto>().ReverseMap();
+
         }
     }
-}
+} 
