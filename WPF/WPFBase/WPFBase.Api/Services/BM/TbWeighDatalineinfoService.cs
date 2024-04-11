@@ -130,12 +130,12 @@ namespace WPFBase.Api.Services.BM
                 DateTime timein = parameter.WeighTime == default? DateTime.Today : Convert.ToDateTime(parameter.WeighTime.ToString("yyyy-MM-dd"));
                 var repository = unitOfWork.GetRepository<TbWeighDatalineinfo>();
                 var models = await repository.GetPagedListAsync(predicate: x => x.OperateBit !=2
+                    && (x.WeighTime != null && x.WeighTime.Value.Date == timein)
                     && (string.IsNullOrWhiteSpace(parameter.PlanNumber) || x.CarNumber.Contains(parameter.PlanNumber))
                     && (string.IsNullOrWhiteSpace(parameter.CarNumber) || x.CarNumber.Contains(parameter.CarNumber))
                     && (string.IsNullOrWhiteSpace(parameter.SupplierName) || x.SupplierName.Contains(parameter.SupplierName))
                     && (string.IsNullOrWhiteSpace(parameter.RecipientName) || x.RecipientName.Contains(parameter.RecipientName))
-                    && (string.IsNullOrWhiteSpace(parameter.MaterialName) || x.MaterialName.Contains(parameter.MaterialName))
-                    && (x.WeighTime != null && x.WeighTime.Value.Date == timein) 
+                    && (string.IsNullOrWhiteSpace(parameter.MaterialName) || x.MaterialName.Contains(parameter.MaterialName)) 
                     && ((string.IsNullOrWhiteSpace(parameter.WeighHouseCodes) || x.GrossWeighHouseCode.Contains(parameter.WeighHouseCodes)) ||
                     (string.IsNullOrWhiteSpace(parameter.WeighHouseCodes) || x.TareWeighHouseCode.Contains(parameter.WeighHouseCodes)))
                     ,

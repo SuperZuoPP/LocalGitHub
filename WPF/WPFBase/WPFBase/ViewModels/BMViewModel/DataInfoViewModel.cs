@@ -103,6 +103,7 @@ namespace WPFBase.ViewModels.BMViewModel
             set { SetProperty<string>(ref qRecipientName, value); }
         }
 
+  
         private ComboBoxItem comboBoxItemSelected;
 
         public ComboBoxItem ComboBoxItemSelected
