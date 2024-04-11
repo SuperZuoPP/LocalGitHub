@@ -11,6 +11,43 @@
     d:DesignHeight="860"
     d:DesignWidth="1280"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <!--菜单栏样式-->
+            <Style TargetType="{x:Type RadioButton}" x:Key="NavTabButtonStyle">
+                <Setter Property="FontSize" Value="15"/>
+                <Setter Property="Foreground" Value="#000"/>
+                <Setter Property="Padding" Value="10,5"/>
+                <Setter Property="Margin" Value="5,0"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Command" Value="{Binding TabChangeCommand}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type RadioButton}" >
+                            <Border Background="{TemplateBinding Background}" CornerRadius="5,5,0,0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{TemplateBinding Tag}" FontFamily="{StaticResource Iconfont}" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0,0,0"/>
+                                    <ContentPresenter Grid.Column="1" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  Margin="{TemplateBinding Padding}"/>
+                                </Grid>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsChecked" Value="True">
+                        <Setter Property="Background" Value="#FF6800"/>
+                        <Setter Property="Foreground" Value="White"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="150" />
@@ -187,7 +224,7 @@
             </DockPanel>
             <DockPanel Grid.Column="1" LastChildFill="False">
                 <Border DockPanel.Dock="Top">
-                    <StackPanel Orientation="Horizontal">
+                    <!--<StackPanel Orientation="Horizontal">
                         <Button
                             Command="{Binding ViewSelectCmd}"
                             CommandParameter="SkinView"
@@ -205,6 +242,17 @@
                             CommandParameter="DataInfoView"
                             Content="菜单管理" />
 
+                    </StackPanel>-->
+                    <StackPanel VerticalAlignment="Center"> 
+                        <Border Height="45" Background="Transparent" BorderBrush="#FF6800" BorderThickness="0,0,0,1" Margin="10,0,10,0">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Margin="70,0,0,0">
+                                <RadioButton Content="主题"  Command="{Binding ViewSelectCmd}" CommandParameter="SkinView" Style="{StaticResource NavTabButtonStyle}" IsChecked="True"/>
+                                <RadioButton Content="用户管理"  Command="{Binding ViewSelectCmd}" CommandParameter="UserView" Style="{StaticResource NavTabButtonStyle}"/>
+                                <RadioButton Content="用户组管理"  Command="{Binding ViewSelectCmd}" CommandParameter="UserGroupView" Style="{StaticResource NavTabButtonStyle}"/>
+                                <RadioButton Content="称重流水"  Command="{Binding ViewSelectCmd}" CommandParameter="DataInfoView" Style="{StaticResource NavTabButtonStyle}"/>
+
+                            </StackPanel>
+                        </Border>
                     </StackPanel>
                 </Border>
                 <ContentControl

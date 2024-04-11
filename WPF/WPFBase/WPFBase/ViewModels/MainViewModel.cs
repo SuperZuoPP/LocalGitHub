@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using WPFBase.Common;
 using WPFBase.Extensions;
 using WPFBase.Models;
+using WPFBase.Views.BMView;
 
 namespace WPFBase.ViewModels
 {
@@ -84,9 +85,10 @@ namespace WPFBase.ViewModels
         
 
         void CreateMenuBar()
-        {
+        { 
             MenuBars.Add(new MenuBar() { Icon = "Home", Title = "首页", NameSpace = "HomeView" });
             MenuBars.Add(new MenuBar() { Icon = "NotebookOutline", Title = "树结构示例", NameSpace = "TreeDemoView" });
+            MenuBars.Add(new MenuBar() { Icon = "NotebookOutline", Title = "数据综合查询", NameSpace = "DataInfoView" });
             MenuBars.Add(new MenuBar() { Icon = "NotebookOutline", Title = "报表管理", NameSpace = "QueryDataLineView" });
             MenuBars.Add(new MenuBar() { Icon = "NotebookPlusOutline", Title = "备忘录", NameSpace = "MemoView" });
             MenuBars.Add(new MenuBar() { Icon = "Cog", Title = "系统管理", NameSpace = "SettingsView" }); 

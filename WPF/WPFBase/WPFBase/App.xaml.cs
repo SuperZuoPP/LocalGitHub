@@ -70,7 +70,7 @@ namespace WPFBase
             containerRegistry.Register<IDialogHostService, DialogHostService>();
             containerRegistry.Register<IUserGroupService, UserGroupService>();
             containerRegistry.Register<IMenuService, MenuService>();
-
+            containerRegistry.Register<IDataInfoService, DataInfoService>();
 
             containerRegistry.RegisterForNavigation<LoginView, LoginViewModel>();
             containerRegistry.RegisterForNavigation<TreeDemoView,TreeDemoViewModel>();
@@ -86,7 +86,7 @@ namespace WPFBase
             containerRegistry.RegisterForNavigation<MenuListView, MenuListViewModel>();
             containerRegistry.RegisterForNavigation<WeightSiteView,WeightSiteViewModel>();
 
-            containerRegistry.RegisterForNavigation<DataInfoView>();
+            containerRegistry.RegisterForNavigation<DataInfoView, DataInfoViewModel>();
             containerRegistry.RegisterForNavigation<QueryDataLineView>();
             
 

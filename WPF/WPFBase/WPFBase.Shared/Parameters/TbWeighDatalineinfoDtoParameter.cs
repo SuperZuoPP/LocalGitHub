@@ -11,13 +11,13 @@ namespace WPFBase.Shared.Parameters
 
         public string PlanNumber { get; set; }
 
-        public string GrossWeighHouseCode { get; set; }
-
+        public string WeighHouseCodes { get; set; }
+          
         public string MaterialName { get; set; }
         public string SupplierName { get; set; }
         public string RecipientName { get; set; }
         public string CarNumber { get; set; }
-        public DateTime WeighTime { get; set; }= DateTime.Now;
+        public DateTime WeighTime { get; set; }
 
 
     }

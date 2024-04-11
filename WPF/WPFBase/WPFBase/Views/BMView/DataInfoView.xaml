@@ -35,6 +35,7 @@
                         VerticalAlignment="Center"
                         hc:InfoElement.Title="车牌号"
                         hc:InfoElement.TitlePlacement="Left"
+                        Text="{Binding QCarNumber}"
                         Style="{StaticResource TextBoxExtend}" />
                     <TextBox
                         Width="200"
@@ -42,15 +43,19 @@
                         VerticalAlignment="Center"
                         hc:InfoElement.Title="物料名称"
                         hc:InfoElement.TitlePlacement="Left"
+                         Text="{Binding QMaterialName}"
                         Style="{StaticResource TextBoxExtend}" />
                     <DatePicker
                         Width="200"
                         md:HintAssist.Hint="日期"
                         xml:lang="zh-CN"
+                        SelectedDateFormat="Short"
+                        Text="{Binding QueryTime,Mode=TwoWay}"
                         Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
                     <Button
                         Width="100"
                         Margin="50,0"
+                        Command="{Binding SearchCmd}"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         Content="查询" />
@@ -64,6 +69,7 @@
                         VerticalAlignment="Center"
                         hc:InfoElement.Title="供货商"
                         hc:InfoElement.TitlePlacement="Left"
+                        Text="{Binding QSupplierName}"
                         Style="{StaticResource TextBoxExtend}" />
                     <TextBox
                         Width="200"
@@ -71,6 +77,7 @@
                         VerticalAlignment="Center"
                         hc:InfoElement.Title="收货商"
                         hc:InfoElement.TitlePlacement="Left"
+                        Text="{Binding QRecipientName}"
                         Style="{StaticResource TextBoxExtend}" />
                     <ComboBox Width="200" md:HintAssist.Hint="所属磅房">
                         <ComboBoxItem>
@@ -96,28 +103,29 @@
             x:Name="dgUserGroupList"
             Grid.Row="1"
             HorizontalAlignment="Stretch"
+            HorizontalScrollBarVisibility="Auto"
             VerticalAlignment="Stretch"
             BorderThickness="1"
-            ItemsSource="{Binding MenuListsDtos}"
+            ItemsSource="{Binding WeighDataListsDtos}"
             Style="{StaticResource dgStyle}">
             <DataGrid.Columns>
                 <DataGridTextColumn
-                    Binding="{Binding MenuName}"
-                    ElementStyle="{StaticResource textColStyleCenter}"
+                    Binding="{Binding PlanNumber}"
+                    ElementStyle="{StaticResource textColStyleLeft}"
                     Header="计划单号"
                     IsReadOnly="True" />
                 <DataGridTextColumn
-                    Binding="{Binding Attribute1}"
-                    ElementStyle="{StaticResource textColStyleCenter}"
+                    Binding="{Binding SupplierName}"
+                    ElementStyle="{StaticResource textColStyleLeft}"
                     Header="供货商"
                     IsReadOnly="True" />
                 <DataGridTextColumn
-                    Binding="{Binding Attribute2}"
-                    ElementStyle="{StaticResource textColStyleCenter}"
+                    Binding="{Binding RecipientName}"
+                    ElementStyle="{StaticResource textColStyleLeft}"
                     Header="收货商"
                     IsReadOnly="True" />
                 <DataGridTextColumn
-                    Binding="{Binding MenuCode}"
+                    Binding="{Binding MaterialName}"
                     ElementStyle="{StaticResource textColStyleLeft}"
                     Header="物料名称"
                     IsReadOnly="True" />
@@ -127,47 +135,47 @@
                     Header="ID"
                     IsReadOnly="True" />
                 <DataGridTextColumn
-                    Binding="{Binding Id}"
+                    Binding="{Binding BatchNumber}"
                     ElementStyle="{StaticResource textColStyleLeft}"
                     Header="批次号"
                     IsReadOnly="True" />
                 <DataGridTextColumn
-                    Binding="{Binding Id}"
+                    Binding="{Binding CarNumber}"
                     ElementStyle="{StaticResource textColStyleLeft}"
                     Header="车牌号"
                     IsReadOnly="True" />
                 <DataGridTextColumn
-                    Binding="{Binding Id}"
+                    Binding="{Binding GrossWeight}"
                     ElementStyle="{StaticResource textColStyleLeft}"
                     Header="毛重"
                     IsReadOnly="True" />
                 <DataGridTextColumn
-                    Binding="{Binding Id}"
+                    Binding="{Binding TareWeight}"
                     ElementStyle="{StaticResource textColStyleLeft}"
                     Header="皮重"
                     IsReadOnly="True" />
                 <DataGridTextColumn
-                    Binding="{Binding Id}"
+                    Binding="{Binding Suttle}"
                     ElementStyle="{StaticResource textColStyleLeft}"
                     Header="净重"
                     IsReadOnly="True" />
                 <DataGridTextColumn
-                    Binding="{Binding Id}"
+                    Binding="{Binding MasureUnit}"
                     ElementStyle="{StaticResource textColStyleLeft}"
                     Header="单位"
                     IsReadOnly="True" />
                 <DataGridTextColumn
-                    Binding="{Binding Id}"
+                    Binding="{Binding GrossWeighTime,StringFormat='yyyy-MM-dd HH:mm:ss'}"
                     ElementStyle="{StaticResource textColStyleLeft}"
                     Header="毛重时间"
                     IsReadOnly="True" />
                 <DataGridTextColumn
-                    Binding="{Binding Id}"
+                    Binding="{Binding TareWeighTime,StringFormat='yyyy-MM-dd HH:mm:ss'}"
                     ElementStyle="{StaticResource textColStyleLeft}"
                     Header="皮重时间"
                     IsReadOnly="True" />
                 <DataGridTextColumn
-                    Binding="{Binding Id}"
+                    Binding="{Binding Deduction}"
                     ElementStyle="{StaticResource textColStyleLeft}"
                     Header="扣杂"
                     IsReadOnly="True" />
@@ -177,17 +185,17 @@
                     Header="备注"
                     IsReadOnly="True" />
                 <DataGridTextColumn
-                    Binding="{Binding Remark}"
+                    Binding="{Binding Attribute1}"
                     ElementStyle="{StaticResource textColStyleLeft}"
                     Header="称重类型"
                     IsReadOnly="True" />
                 <DataGridTextColumn
-                    Binding="{Binding Remark}"
+                    Binding="{Binding Attribute15}"
                     ElementStyle="{StaticResource textColStyleLeft}"
                     Header="流水号"
                     IsReadOnly="True" />
                 <DataGridTextColumn
-                    Binding="{Binding Remark}"
+                    Binding="{Binding GrossWeighMachineCode}"
                     ElementStyle="{StaticResource textColStyleLeft}"
                     Header="磅房"
                     IsReadOnly="True" />
@@ -229,14 +237,14 @@
 
             <ComboBox
                 Width="80"
-                md:HintAssist.Hint="10"
+                md:HintAssist.Hint="100"
                 md:TextFieldAssist.PrefixText="条/页"
                 SelectedItem="{Binding ComboBoxItemSelected}">
-                <ComboBoxItem Content="10" />
-                <ComboBoxItem Content="20" IsSelected="True" />
-                <ComboBoxItem Content="30" />
-                <ComboBoxItem Content="40" />
                 <ComboBoxItem Content="50" />
+                <ComboBoxItem Content="100" IsSelected="True" />
+                <ComboBoxItem Content="150" />
+                <ComboBoxItem Content="200" />
+                <ComboBoxItem Content="300" />
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <prsim:InvokeCommandAction Command="{Binding PerPageNumSeletedCommand}" CommandParameter="{Binding ComboBoxItemSelected}" />

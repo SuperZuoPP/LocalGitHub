@@ -9,6 +9,7 @@ using WPFBase.Api.Extensions;
 using WPFBase.Api.Services.SM;
 using WPFBase.Shared.DTO.BM;
 using WPFBase.Shared.Parameters;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace WPFBase.Api.Services.BM
 {
@@ -125,79 +126,69 @@ namespace WPFBase.Api.Services.BM
         public async Task<ApiResponse> GetWeightInfoByDay(TbWeighDatalineinfoDtoParameter parameter)
         {
             try
-            {
-                var rplittlrplan = unitOfWork.GetRepository<TbWeighLittleplan>();
-                var rpinfo = unitOfWork.GetRepository<TbWeighDatalineinfo>();
-                var rpplan = unitOfWork.GetRepository<TbWeighPlan>();
-                var query = from little in rplittlrplan.GetAll()
-                            join info in rpinfo.GetAll() on little.QrCode equals info.Attribute2 into infoGroup
-                            from info in infoGroup.DefaultIfEmpty()
-                            join plan in rpplan.GetAll() on info.PlanCode equals plan.PlanCode into planinfoGroup
-                            from plan in planinfoGroup.DefaultIfEmpty()
-                            where info.OperateBit != 2 && (string.IsNullOrWhiteSpace(parameter.CarNumber) ? true : info.CarNumber.Contains(parameter.CarNumber))  
-                            && (string.IsNullOrWhiteSpace(parameter.SupplierName) ? true : info.SupplierName.Contains(parameter.SupplierName))
-                            && (string.IsNullOrWhiteSpace(parameter.RecipientName) ? true : info.RecipientName.Contains(parameter.RecipientName))
-                            && (string.IsNullOrWhiteSpace(parameter.MaterialName) ? true : info.MaterialName.Contains(parameter.MaterialName))
-                            //&& (info.WeighTime?.ToString("yyyy-MM-dd") == parameter.WeighTime.ToString("yyyy-MM-dd"))
-                            && (info.WeighTime != null && info.WeighTime.Value.Date == parameter.WeighTime.Date)
-                            //&& (info.GrossWeighHouseCode.Contains(parameter.GrossWeighHouseCode) || info.TareWeighHouseCode.Contains(parameter.GrossWeighHouseCode))
-                            orderby
-                            (info.GrossWeighTime == null || info.TareWeighTime == null) ? 0 :
-                            (info.GrossWeighTime != null && info.TareWeighTime != null) ? 1 :
-                            0 ascending,
-                            (info.GrossWeighTime == null || info.TareWeighTime == null) ? info.WeighTime :
-                            info.WeighTime descending
-                            select new
-                            {
-                                QrCode = little.QrCode,
-                                CarNumber = little.CarNo,
-                                IsWeight = little.IsWeight,
-                                DriverName = little.DriverName
-                            };
-            
-
-                //// 查询符合条件的 TbWeighDatalineinfo 数据
-                //var filteredInfo = await rpinfo.GetAll()
-                //    .Where(info =>
-                //        info.OperateBit != 2 &&
-                //        info.CarNumber.Contains(parameter.CarNumber) &&
-                //        (string.IsNullOrWhiteSpace(parameter.SupplierName) ? true : info.SupplierName.Contains(parameter.SupplierName)) &&
-                //        (string.IsNullOrWhiteSpace(parameter.RecipientName) ? true : info.RecipientName.Contains(parameter.RecipientName)) &&
-                //        (string.IsNullOrWhiteSpace(parameter.MaterialName) ? true : info.MaterialName.Contains(parameter.MaterialName)))
-                //    .ToListAsync();
-
-                //// 查询符合条件的 TbWeighPlan 数据
-                //var filteredPlans = await rpplan.GetAll()
-                //    .Where(plan =>
-                //        filteredInfo.Select(info => info.PlanCode).Contains(plan.PlanCode))
-                //    .ToListAsync();
-
-                //// 执行 join 操作
-                //var query = from little in rplittlrplan.GetAll().AsEnumerable()
-                //            join info in filteredInfo on little.QrCode equals info.Attribute2 into infoGroup
-                //            from info in infoGroup.DefaultIfEmpty()
-                //            join plan in filteredPlans on info.PlanCode equals plan.PlanCode into planinfoGroup 
-                //            orderby
-                //            (info.GrossWeighTime == null || info.TareWeighTime == null) ? 0 :
-                //            (info.GrossWeighTime != null && info.TareWeighTime != null) ? 1 :
-                //            0 ascending,
-                //            (info.GrossWeighTime == null || info.TareWeighTime == null) ? info.WeighTime :
-                //            info.WeighTime descending
-                //            select new
-                //            {
-                //                QrCode = little.QrCode,
-                //                CarNumber = little.CarNo,
-                //                DriverName = little.DriverName
-                //            };
-
-                //var models = query.ToList();
-                var models = await query.ToListAsync();
-                return new ApiResponse(true, models);
+            { 
+                DateTime timein = parameter.WeighTime == default? DateTime.Today : Convert.ToDateTime(parameter.WeighTime.ToString("yyyy-MM-dd"));
+                var repository = unitOfWork.GetRepository<TbWeighDatalineinfo>();
+                var models = await repository.GetPagedListAsync(predicate: x => x.OperateBit !=2
+                    && (string.IsNullOrWhiteSpace(parameter.PlanNumber) || x.CarNumber.Contains(parameter.PlanNumber))
+                    && (string.IsNullOrWhiteSpace(parameter.CarNumber) || x.CarNumber.Contains(parameter.CarNumber))
+                    && (string.IsNullOrWhiteSpace(parameter.SupplierName) || x.SupplierName.Contains(parameter.SupplierName))
+                    && (string.IsNullOrWhiteSpace(parameter.RecipientName) || x.RecipientName.Contains(parameter.RecipientName))
+                    && (string.IsNullOrWhiteSpace(parameter.MaterialName) || x.MaterialName.Contains(parameter.MaterialName))
+                    && (x.WeighTime != null && x.WeighTime.Value.Date == timein) 
+                    && ((string.IsNullOrWhiteSpace(parameter.WeighHouseCodes) || x.GrossWeighHouseCode.Contains(parameter.WeighHouseCodes)) ||
+                    (string.IsNullOrWhiteSpace(parameter.WeighHouseCodes) || x.TareWeighHouseCode.Contains(parameter.WeighHouseCodes)))
+                    ,
+                pageIndex: parameter.PageIndex,
+                pageSize: parameter.PageSize,
+                    orderBy: source => source.OrderBy(t => t.WeighTime));
+                return new ApiResponse(true, models); 
             }
             catch (Exception ex)
             {
                 return new ApiResponse(ex.Message);
             }
         }
+        //public async Task<ApiResponse> GetWeightInfoByDay(TbWeighDatalineinfoDtoParameter parameter)
+        //{
+        //    try
+        //    {
+        //        var rplittlrplan = unitOfWork.GetRepository<TbWeighLittleplan>();
+        //        var rpinfo = unitOfWork.GetRepository<TbWeighDatalineinfo>();
+        //        var rpplan = unitOfWork.GetRepository<TbWeighPlan>();
+        //        var query = from little in rplittlrplan.GetAll()
+        //                    join info in rpinfo.GetAll() on little.QrCode equals info.Attribute2 into infoGroup
+        //                    from info in infoGroup.DefaultIfEmpty()
+        //                    join plan in rpplan.GetAll() on info.PlanCode equals plan.PlanCode into planinfoGroup
+        //                    from plan in planinfoGroup.DefaultIfEmpty()
+        //                    where info.OperateBit != 2 
+        //                    && (string.IsNullOrWhiteSpace(parameter.CarNumber) || info.CarNumber.Contains(parameter.CarNumber)) 
+        //                    && (string.IsNullOrWhiteSpace(parameter.SupplierName) || info.SupplierName.Contains(parameter.SupplierName)) 
+        //                    && (string.IsNullOrWhiteSpace(parameter.RecipientName) || info.RecipientName.Contains(parameter.RecipientName)) 
+        //                    && (string.IsNullOrWhiteSpace(parameter.MaterialName) || info.MaterialName.Contains(parameter.MaterialName))
+        //                    && (info.WeighTime != null && info.WeighTime.Value.Date == parameter.WeighTime.Date)
+        //                    && (string.IsNullOrWhiteSpace(parameter.GrossWeighHouseCode) || info.GrossWeighHouseCode.Contains(parameter.GrossWeighHouseCode))
+        //                    orderby
+        //                    (info.GrossWeighTime == null || info.TareWeighTime == null) ? 0 :
+        //                    (info.GrossWeighTime != null && info.TareWeighTime != null) ? 1 :
+        //                    0 ascending,
+        //                    (info.GrossWeighTime == null || info.TareWeighTime == null) ? info.WeighTime :
+        //                    info.WeighTime descending
+        //                    select new
+        //                    {
+        //                        QrCode = little.QrCode,
+        //                        CarNumber = little.CarNo,
+        //                        IsWeight = little.IsWeight,
+        //                        DriverName = little.DriverName
+        //                    };
+
+        //        var models = await query.ToListAsync();
+        //        return new ApiResponse(true, models);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new ApiResponse(ex.Message);
+        //    }
+        //}
     }
 }
