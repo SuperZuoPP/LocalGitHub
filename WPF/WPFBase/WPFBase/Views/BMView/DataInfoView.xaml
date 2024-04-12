@@ -12,7 +12,15 @@
     d:DesignHeight="800"
     d:DesignWidth="1240"
     mc:Ignorable="d">
-
+    <UserControl.Resources>
+        <!--  定义一个CollectionViewSource来绑定DataGrid的数据源  -->
+        <CollectionViewSource x:Key="ItemCollectionViewSource" Source="{Binding WeighDataListsDtos}">
+            <!--  根据Category属性分组  -->
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="PlanNumber" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="120" />
@@ -107,9 +115,40 @@
             VerticalAlignment="Stretch"
             BorderThickness="1"
             HorizontalScrollBarVisibility="Auto"
-            ItemsSource="{Binding WeighDataListsDtos}"
+           ItemsSource="{Binding Source={StaticResource ItemCollectionViewSource}}"
             Style="{StaticResource dgStyle}">
-
+            <DataGrid.GroupStyle>
+                <!--  定义分组样式  -->
+                <GroupStyle>
+                    <GroupStyle.ContainerStyle>
+                        <Style TargetType="{x:Type GroupItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                                        <Expander IsExpanded="True">
+                                            <Expander.Header>
+                                                <Border Background="LightGray" Height="30">
+                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                                        <TextBlock FontWeight="Bold" Text="计划单号: "/>
+                                                        <TextBlock FontWeight="Bold" Text="{Binding Name}" />
+                                                        <TextBlock Margin="30,0" Text="{Binding ItemCount,StringFormat='合计车辆数：{0}'}"/> 
+                                                    </StackPanel>
+                                                </Border> 
+                                            </Expander.Header>
+                                            <ItemsPresenter />
+                                        </Expander>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GroupStyle.ContainerStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock FontWeight="Bold" Text="{Binding PlanNumber}"/>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </DataGrid.GroupStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn
                     Binding="{Binding PlanNumber}"
