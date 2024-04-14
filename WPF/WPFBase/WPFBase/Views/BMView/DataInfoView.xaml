@@ -12,15 +12,7 @@
     d:DesignHeight="800"
     d:DesignWidth="1240"
     mc:Ignorable="d">
-    <UserControl.Resources>
-        <!--  定义一个CollectionViewSource来绑定DataGrid的数据源  -->
-        <CollectionViewSource x:Key="ItemCollectionViewSource" Source="{Binding WeighDataListsDtos}">
-            <!--  根据Category属性分组  -->
-            <CollectionViewSource.GroupDescriptions>
-                <PropertyGroupDescription PropertyName="PlanNumber" />
-            </CollectionViewSource.GroupDescriptions>
-        </CollectionViewSource>
-    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="120" />
@@ -102,6 +94,14 @@
                             Windows
                         </ComboBoxItem>
                     </ComboBox>
+                    <CheckBox
+                        Margin="45,0"
+                        md:CheckBoxAssist.CheckBoxSize="40"
+                        Command="{Binding SearchGroupCmd}"
+                        Content="分组统计"
+                        FontWeight="Bold"
+                        IsChecked="{Binding IsCheckedGroup}" />
+
 
                 </StackPanel>
             </Grid>
@@ -115,7 +115,7 @@
             VerticalAlignment="Stretch"
             BorderThickness="1"
             HorizontalScrollBarVisibility="Auto"
-           ItemsSource="{Binding Source={StaticResource ItemCollectionViewSource}}"
+            ItemsSource="{Binding WeighDataListsDtos}"
             Style="{StaticResource dgStyle}">
             <DataGrid.GroupStyle>
                 <!--  定义分组样式  -->
@@ -127,13 +127,16 @@
                                     <ControlTemplate TargetType="{x:Type GroupItem}">
                                         <Expander IsExpanded="True">
                                             <Expander.Header>
-                                                <Border Background="LightGray" Height="30">
-                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                                        <TextBlock FontWeight="Bold" Text="计划单号: "/>
+                                                <Border Height="30" Background="LightGray">
+                                                    <StackPanel
+                                                        HorizontalAlignment="Left"
+                                                        VerticalAlignment="Center"
+                                                        Orientation="Horizontal">
+                                                        <TextBlock FontWeight="Bold" Text="计划单号: " />
                                                         <TextBlock FontWeight="Bold" Text="{Binding Name}" />
-                                                        <TextBlock Margin="30,0" Text="{Binding ItemCount,StringFormat='合计车辆数：{0}'}"/> 
+                                                        <TextBlock Margin="30,0" Text="{Binding ItemCount, StringFormat='合计车辆数：{0}'}" />
                                                     </StackPanel>
-                                                </Border> 
+                                                </Border>
                                             </Expander.Header>
                                             <ItemsPresenter />
                                         </Expander>
@@ -144,7 +147,7 @@
                     </GroupStyle.ContainerStyle>
                     <GroupStyle.HeaderTemplate>
                         <DataTemplate>
-                            <TextBlock FontWeight="Bold" Text="{Binding PlanNumber}"/>
+                            <TextBlock FontWeight="Bold" Text="{Binding PlanNumber}" />
                         </DataTemplate>
                     </GroupStyle.HeaderTemplate>
                 </GroupStyle>
@@ -156,11 +159,13 @@
                     Header="计划单号"
                     IsReadOnly="True" />
                 <DataGridTextColumn
+                    Width="150"
                     Binding="{Binding SupplierName}"
                     ElementStyle="{StaticResource textColStyleLeft}"
                     Header="供货商"
                     IsReadOnly="True" />
                 <DataGridTextColumn
+                    Width="150"
                     Binding="{Binding RecipientName}"
                     ElementStyle="{StaticResource textColStyleLeft}"
                     Header="收货商"
@@ -241,13 +246,13 @@
                     Header="磅房"
                     IsReadOnly="True" />
                 <DataGridTextColumn
+                    Width="100"
                     Binding="{Binding Remark}"
                     ElementStyle="{StaticResource textColStyleLeft}"
                     Header="过磅次数"
                     IsReadOnly="True" />
 
             </DataGrid.Columns>
-
         </DataGrid>
 
         <StackPanel Grid.Row="2" HorizontalAlignment="Right">

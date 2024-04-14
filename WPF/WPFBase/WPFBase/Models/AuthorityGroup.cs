@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WPFBase.Models
 {
-    public class Group : BindableBase
+    public class AuthorityGroup : BindableBase
     {
         private string groupId;
 

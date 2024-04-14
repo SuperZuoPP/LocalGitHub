@@ -88,12 +88,12 @@ namespace WPFBase.ViewModels.SMViewModel
         }
          
 
-        private ObservableCollection<Group> groupList = new ObservableCollection<Group>();
+        private ObservableCollection<AuthorityGroup> groupList = new ObservableCollection<AuthorityGroup>();
 
-        public ObservableCollection<Group> GroupList
+        public ObservableCollection<AuthorityGroup> GroupList
         {
             get { return groupList; }
-            set { SetProperty<ObservableCollection<Group>>(ref groupList, value); }
+            set { SetProperty<ObservableCollection<AuthorityGroup>>(ref groupList, value); }
         }
          
         #endregion
@@ -290,7 +290,7 @@ namespace WPFBase.ViewModels.SMViewModel
                 GroupList.Clear();
                 foreach (var item in grouplists.Result.Items)
                 {
-                    GroupList.Add(new Group()
+                    GroupList.Add(new AuthorityGroup()
                     {
                         GroupId = item.UserGroupCode,
                         GroupName = item.UserGroupName
