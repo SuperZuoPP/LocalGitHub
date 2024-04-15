@@ -30,7 +30,7 @@ namespace WPFBase.Api.Context
         public DbSet<TbWeighLittleplan> TbWeighLittleplan { get; set; }
 
         public DbSet<TbWeighPlan> TbWeighPlan { get; set; }
-        
-        
+
+        public DbSet<TbWeighWeighbridgeoffice> TbWeighOffice { get; set; }
     }
 }

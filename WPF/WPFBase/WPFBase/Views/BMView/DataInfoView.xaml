@@ -80,19 +80,12 @@
                         hc:InfoElement.TitlePlacement="Left"
                         Style="{StaticResource TextBoxExtend}"
                         Text="{Binding QRecipientName}" />
-                    <ComboBox Width="200" md:HintAssist.Hint="所属磅房">
-                        <ComboBoxItem>
-                            Android
-                        </ComboBoxItem>
-                        <ComboBoxItem>
-                            iOS
-                        </ComboBoxItem>
-                        <ComboBoxItem>
-                            Linux
-                        </ComboBoxItem>
-                        <ComboBoxItem>
-                            Windows
-                        </ComboBoxItem>
+                    <ComboBox Width="200" md:HintAssist.Hint="所属磅房"
+                                DisplayMemberPath="GroupName"
+                                ItemsSource="{Binding GroupList}"
+                                SelectedValue="{Binding QSelectedGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedValuePath="GroupId"
+                              > 
                     </ComboBox>
                     <CheckBox
                         Margin="45,0"

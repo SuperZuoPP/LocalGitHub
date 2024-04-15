@@ -71,6 +71,7 @@ namespace WPFBase
             containerRegistry.Register<IUserGroupService, UserGroupService>();
             containerRegistry.Register<IMenuService, MenuService>();
             containerRegistry.Register<IDataInfoService, DataInfoService>();
+            containerRegistry.Register<ITbWeighWeighbridgeofficeService, TbWeighWeighbridgeofficeService>();
 
             containerRegistry.RegisterForNavigation<LoginView, LoginViewModel>();
             containerRegistry.RegisterForNavigation<TreeDemoView,TreeDemoViewModel>();

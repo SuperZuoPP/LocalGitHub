@@ -30,7 +30,8 @@ namespace WPFBase.Services
                 $"&CarNumber={parameter.CarNumber}" +
                 $"&RecipientName={parameter.RecipientName}" +
                 $"&SupplierName={parameter.SupplierName}" +
-                $"&MaterialName={parameter.MaterialName}";
+                $"&MaterialName={parameter.MaterialName}" +
+                $"&WeighHouseCodes={parameter.WeighHouseCodes}";
             request.Parameter = parameter;
             return await client.ExecuteAsync<PagedList<TbWeighDatalineinfoDto>>(request); 
         }

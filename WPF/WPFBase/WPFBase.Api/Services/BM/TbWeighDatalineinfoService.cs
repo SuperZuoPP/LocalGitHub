@@ -135,9 +135,9 @@ namespace WPFBase.Api.Services.BM
                     && (string.IsNullOrWhiteSpace(parameter.CarNumber) || x.CarNumber.Contains(parameter.CarNumber))
                     && (string.IsNullOrWhiteSpace(parameter.SupplierName) || x.SupplierName.Contains(parameter.SupplierName))
                     && (string.IsNullOrWhiteSpace(parameter.RecipientName) || x.RecipientName.Contains(parameter.RecipientName))
-                    && (string.IsNullOrWhiteSpace(parameter.MaterialName) || x.MaterialName.Contains(parameter.MaterialName)) 
-                    //&& ((string.IsNullOrWhiteSpace(parameter.WeighHouseCodes) || x.GrossWeighHouseCode.Contains(parameter.WeighHouseCodes)) ||
-                    //(string.IsNullOrWhiteSpace(parameter.WeighHouseCodes) || x.TareWeighHouseCode.Contains(parameter.WeighHouseCodes)))
+                    && (string.IsNullOrWhiteSpace(parameter.MaterialName) || x.MaterialName.Contains(parameter.MaterialName))
+                    && ((string.IsNullOrWhiteSpace(parameter.WeighHouseCodes) || x.GrossWeighHouseCode.Contains(parameter.WeighHouseCodes)) ||
+                    (string.IsNullOrWhiteSpace(parameter.WeighHouseCodes) || x.TareWeighHouseCode.Contains(parameter.WeighHouseCodes)))
                     ,
                 pageIndex: parameter.PageIndex,
                 pageSize: parameter.PageSize,

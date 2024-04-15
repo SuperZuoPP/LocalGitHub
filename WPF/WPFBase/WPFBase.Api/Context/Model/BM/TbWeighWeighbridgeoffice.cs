@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
 
 namespace WPFBase.Api.Context.Model.BM
 {
+    [Table("tb_weigh_weighbridgeoffice")]
     public partial class TbWeighWeighbridgeoffice
     {
         public int Id { get; set; }
+        [Key]
         public string WeighHouseCode { get; set; }
         public string ErpCode { get; set; }
         public string WeighHouseName { get; set; }

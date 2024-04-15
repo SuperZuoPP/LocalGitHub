@@ -8,9 +8,12 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Threading;
+using WPFBase.Models;
 using WPFBase.Services;
 using WPFBase.Shared.DTO.BM;
 using WPFBase.ViewModels.SMViewModel;
@@ -20,22 +23,24 @@ namespace WPFBase.ViewModels.BMViewModel
     public class DataInfoViewModel : NavigationViewModel
     {
         private readonly IDataInfoService service;
+        private readonly ITbWeighWeighbridgeofficeService officeService;
         private readonly ICollectionView view;
-        public DataInfoViewModel(IContainerProvider containerProvider, IDataInfoService service) : base(containerProvider)
+        private readonly PropertyGroupDescription groupDescription;
+        public DataInfoViewModel(IContainerProvider containerProvider, IDataInfoService service, ITbWeighWeighbridgeofficeService officeService) : base(containerProvider)
         {
-            this.service = service; 
+            this.service = service;
+            this.officeService = officeService;
             WeighDataListsDtos = new ObservableCollection<TbWeighDatalineinfoDto>();
             view = CollectionViewSource.GetDefaultView(WeighDataListsDtos);
+            groupDescription = new PropertyGroupDescription("PlanNumber");
             SearchCmd = new DelegateCommand(Search);
             SearchGroupCmd = new DelegateCommand(SearchGroup);
             PerPageNumSeletedCommand = new DelegateCommand<ComboBoxItem>(PerPageNumSeleted);
             PageUpdatedCommand = new DelegateCommand(PageUpdated);
+            GetGroupList();
         }
 
-      
-
-
-
+       
 
         #region 属性
         private int pageIndex = 1;
@@ -119,7 +124,16 @@ namespace WPFBase.ViewModels.BMViewModel
             set { SetProperty<string>(ref qRecipientName, value); }
         }
 
-  
+
+        private string qSelectedGroup;
+
+        public string QSelectedGroup
+        {
+            get { return qSelectedGroup; }
+            set { SetProperty<string>(ref qSelectedGroup, value); }
+        }
+
+
         private ComboBoxItem comboBoxItemSelected;
 
         public ComboBoxItem ComboBoxItemSelected
@@ -134,6 +148,14 @@ namespace WPFBase.ViewModels.BMViewModel
         {
             get { return weighDataListsDtos; }
             set { SetProperty<ObservableCollection<TbWeighDatalineinfoDto>>(ref weighDataListsDtos, value); }
+        }
+
+        private ObservableCollection<PoundRoomGroup> groupList = new ObservableCollection<PoundRoomGroup>();
+
+        public ObservableCollection<PoundRoomGroup> GroupList
+        {
+            get { return groupList; }
+            set { SetProperty<ObservableCollection<PoundRoomGroup>>(ref groupList, value); }
         }
         #endregion
 
@@ -157,14 +179,14 @@ namespace WPFBase.ViewModels.BMViewModel
 
                 PlanCode = null,
                 PlanNumber = null,
-                WeighHouseCodes = null,
+                WeighHouseCodes = QSelectedGroup,
                 MaterialName = QMaterialName,
                 SupplierName = QSupplierName,
                 RecipientName = QRecipientName,
                 CarNumber = QCarNumber,
                 WeighTime = QueryTime,//DateTime.Today,
                 PageIndex = PageIndex - 1,
-                PageSize = PerPageNum,
+                PageSize = PerPageNum, 
                 Search = null,
             }) ;
 
@@ -200,13 +222,12 @@ namespace WPFBase.ViewModels.BMViewModel
         private void SearchGroup()
         {
             if (IsCheckedGroup)
-            {
-                PropertyGroupDescription groupDescription = new PropertyGroupDescription("PlanNumber");
-                view.GroupDescriptions.Add(groupDescription);
+            { 
+                view.GroupDescriptions.Add(groupDescription);  
             }
             else
             {
-                view.GroupDescriptions.Clear();
+                view.GroupDescriptions.Clear(); 
             } 
         }
 
@@ -220,6 +241,26 @@ namespace WPFBase.ViewModels.BMViewModel
         private void PageUpdated()
         {
             Search();
+        }
+
+
+        private async void GetGroupList()
+        {
+
+            var grouplists = await officeService.GetList();
+
+            if (grouplists.Status)
+            {
+                GroupList.Clear();
+                foreach (var item in grouplists.Result.Items)
+                {
+                    GroupList.Add(new PoundRoomGroup()
+                    {
+                        GroupId = item.WeighHouseCode,
+                        GroupName = item.WeighHouseName
+                    });
+                }
+            }
         }
 
         #endregion
