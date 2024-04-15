@@ -20,5 +20,8 @@ namespace WPFBase.Api.Controllers
         [HttpGet]
         public async Task<ApiResponse> GetWeightInfoByDay([FromQuery] TbWeighDatalineinfoDtoParameter parameter) => await service.GetWeightInfoByDay(parameter);
 
+
+        [HttpGet]
+        public async Task<ApiResponse> GetWeightInfoByDayRange([FromQuery] TbWeighDatalineinfoDtoParameter parameter) => await service.GetWeightInfoByDayRange(parameter);
     }
 }

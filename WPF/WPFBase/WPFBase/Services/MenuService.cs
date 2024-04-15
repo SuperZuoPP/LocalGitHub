@@ -24,7 +24,7 @@ namespace WPFBase.Services
         public async Task<ApiResponse> GetMenuSum()
         {
             BaseRequest baseRequest = new BaseRequest();
-            baseRequest.Method = RestSharp.Method.GET;
+            baseRequest.Method = RestSharp.Method.Get;
             baseRequest.Route = $"api/{serviceName}/GetMenuSum";
             baseRequest.Parameter = "";
             return await client.ExecuteAsync(baseRequest);
@@ -33,7 +33,7 @@ namespace WPFBase.Services
         public async Task<ApiResponse<PagedList<TbWeighMenuDto>>> GetAllFilterAsync(TbWeighMenuDtoParameter parameter)
         {
             BaseRequest request = new BaseRequest();
-            request.Method = RestSharp.Method.GET;
+            request.Method = RestSharp.Method.Get;
             request.Route = $"api/{serviceName}/GetAllFilter?pageIndex={parameter.PageIndex}" +
                 $"&pageSize={parameter.PageSize}" +
                 $"&search={parameter.Search}" +

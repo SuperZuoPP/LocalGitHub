@@ -1,4 +1,5 @@
-﻿using AutoMapper.Configuration;
+﻿using AutoMapper;
+using AutoMapper.Configuration;
 using WPFBase.Api.Context.Model;
 using WPFBase.Api.Context.Model.BM;
 using WPFBase.Api.Context.Model.SM;
@@ -8,7 +9,7 @@ using WPFBase.Shared.DTO.SM;
 
 namespace WPFBase.Api.Extensions
 {
-    public class AutoMapperProFile : MapperConfigurationExpression
+    public class AutoMapperProFile : Profile
     {
         public AutoMapperProFile()
         {

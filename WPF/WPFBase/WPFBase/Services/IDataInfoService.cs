@@ -15,7 +15,10 @@ namespace WPFBase.Services
     public interface IDataInfoService : IBaseService<TbWeighDatalineinfoDto>
     {
        
-        Task<ApiResponse<PagedList<TbWeighDatalineinfoDto>>> GetWeightInfoByDay(TbWeighDatalineinfoDtoParameter parameter); 
+        Task<ApiResponse<PagedList<TbWeighDatalineinfoDto>>> GetWeightInfoByDay(TbWeighDatalineinfoDtoParameter parameter);
+
+
+        Task<ApiResponse<PagedList<TbWeighDatalineinfoDto>>> GetWeightInfoByDayRange(TbWeighDatalineinfoDtoParameter parameter);
 
     }
 }

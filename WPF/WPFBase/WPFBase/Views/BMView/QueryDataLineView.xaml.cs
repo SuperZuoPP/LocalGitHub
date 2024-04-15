@@ -22,10 +22,10 @@ namespace WPFBase.Views.BMView
     /// QueryDataLineView.xaml 的交互逻辑
     /// </summary>
     public partial class QueryDataLineView : UserControl
-    {
+    { 
         public QueryDataLineView()
         {
-            InitializeComponent();
+            InitializeComponent(); 
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -35,14 +35,7 @@ namespace WPFBase.Views.BMView
             report.Load(reportFile);
             var ds = TestData();
             report.RegisterData(ds, "NorthWind");
-            report.PrepareAsync(previewControl);
-            //using (var report = new Report())
-            //{
-            //    report.Load(reportFile);
-            //    var ds = TestData();
-            //    report.RegisterData(ds, "NorthWind");
-            //    report.PrepareAsync(previewControl); 
-            //}
+            report.PrepareAsync(previewControl); 
         }
 
         private DataSet TestData()

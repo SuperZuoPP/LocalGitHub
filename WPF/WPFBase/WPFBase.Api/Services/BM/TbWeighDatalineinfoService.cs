@@ -149,6 +149,35 @@ namespace WPFBase.Api.Services.BM
                 return new ApiResponse(ex.Message);
             }
         }
+
+
+        public async Task<ApiResponse> GetWeightInfoByDayRange(TbWeighDatalineinfoDtoParameter parameter)
+        {
+            try
+            {
+                DateTime timebegin = parameter.BeginWeighTime == default ? DateTime.Today : Convert.ToDateTime(parameter.BeginWeighTime.ToString("yyyy-MM-dd"));
+                DateTime timeend = parameter.EndWeighTime == default ? DateTime.Today : Convert.ToDateTime(parameter.EndWeighTime.ToString("yyyy-MM-dd"));
+                var repository = unitOfWork.GetRepository<TbWeighDatalineinfo>();
+                var models = await repository.GetPagedListAsync(predicate: x => x.OperateBit != 2
+                    && (x.WeighTime != null && x.WeighTime.Value.Date >= timebegin && x.WeighTime.Value.Date <= timeend)
+                    && (string.IsNullOrWhiteSpace(parameter.PlanNumber) || x.CarNumber.Contains(parameter.PlanNumber))
+                    && (string.IsNullOrWhiteSpace(parameter.CarNumber) || x.CarNumber.Contains(parameter.CarNumber))
+                    && (string.IsNullOrWhiteSpace(parameter.SupplierName) || x.SupplierName.Contains(parameter.SupplierName))
+                    && (string.IsNullOrWhiteSpace(parameter.RecipientName) || x.RecipientName.Contains(parameter.RecipientName))
+                    && (string.IsNullOrWhiteSpace(parameter.MaterialName) || x.MaterialName.Contains(parameter.MaterialName))
+                    && ((string.IsNullOrWhiteSpace(parameter.WeighHouseCodes) || x.GrossWeighHouseCode.Contains(parameter.WeighHouseCodes)) ||
+                    (string.IsNullOrWhiteSpace(parameter.WeighHouseCodes) || x.TareWeighHouseCode.Contains(parameter.WeighHouseCodes)))
+                    ,
+                pageIndex: parameter.PageIndex,
+                pageSize: parameter.PageSize,
+                    orderBy: source => source.OrderBy(t => t.WeighTime));
+                return new ApiResponse(true, models);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse(ex.Message);
+            }
+        }
         //public async Task<ApiResponse> GetWeightInfoByDay(TbWeighDatalineinfoDtoParameter parameter)
         //{
         //    try

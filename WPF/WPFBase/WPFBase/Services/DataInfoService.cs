@@ -23,7 +23,7 @@ namespace WPFBase.Services
         public async Task<ApiResponse<PagedList<TbWeighDatalineinfoDto>>> GetWeightInfoByDay(TbWeighDatalineinfoDtoParameter parameter)
         {
             BaseRequest request = new BaseRequest();
-            request.Method = RestSharp.Method.GET;
+            request.Method = RestSharp.Method.Get;
             request.Route = $"api/{serviceName}/GetWeightInfoByDay?pageIndex={parameter.PageIndex}" +
                 $"&pageSize={parameter.PageSize}" +
                 $"&WeighTime={parameter.WeighTime}" +
@@ -34,6 +34,23 @@ namespace WPFBase.Services
                 $"&WeighHouseCodes={parameter.WeighHouseCodes}";
             request.Parameter = parameter;
             return await client.ExecuteAsync<PagedList<TbWeighDatalineinfoDto>>(request); 
+        }
+
+        public async Task<ApiResponse<PagedList<TbWeighDatalineinfoDto>>> GetWeightInfoByDayRange(TbWeighDatalineinfoDtoParameter parameter)
+        {
+            BaseRequest request = new BaseRequest();
+            request.Method = RestSharp.Method.Get;
+            request.Route = $"api/{serviceName}/GetWeightInfoByDayRange?pageIndex={parameter.PageIndex}" +
+                $"&pageSize={parameter.PageSize}" +
+                $"&BeginWeighTime={parameter.BeginWeighTime}" +
+                $"&EndWeighTime={parameter.EndWeighTime}" +
+                $"&CarNumber={parameter.CarNumber}" +
+                $"&RecipientName={parameter.RecipientName}" +
+                $"&SupplierName={parameter.SupplierName}" +
+                $"&MaterialName={parameter.MaterialName}" +
+                $"&WeighHouseCodes={parameter.WeighHouseCodes}";
+            request.Parameter = parameter;
+            return await client.ExecuteAsync<PagedList<TbWeighDatalineinfoDto>>(request);
         }
     }
 }

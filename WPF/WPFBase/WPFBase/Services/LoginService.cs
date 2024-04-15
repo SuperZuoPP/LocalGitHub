@@ -25,7 +25,7 @@ namespace WPFBase.Services
         public async Task<ApiResponse<TbWeighOperatorDto>> Login(TbWeighOperatorDto tbWeighOperatorDto)
         {
             BaseRequest baseRequest = new BaseRequest();
-            baseRequest.Method = RestSharp.Method.POST;
+            baseRequest.Method = RestSharp.Method.Post;
             baseRequest.Route = $"api/{serviceName}/Login";
             baseRequest.Parameter = tbWeighOperatorDto;
             return await client.ExecuteAsync<TbWeighOperatorDto>(baseRequest);
@@ -34,7 +34,7 @@ namespace WPFBase.Services
         public async Task<ApiResponse> Resgiter(TbWeighOperatorDto tbWeighOperatorDto)
         {
             BaseRequest baseRequest = new BaseRequest();
-            baseRequest.Method = RestSharp.Method.POST;
+            baseRequest.Method = RestSharp.Method.Post;
             baseRequest.Route = $"api/{serviceName}/Resgiter";
             baseRequest.Parameter = tbWeighOperatorDto;
             return await client.ExecuteAsync(baseRequest);
@@ -43,7 +43,7 @@ namespace WPFBase.Services
         public async Task<ApiResponse<PagedList<TbWeighOperatorDto>>> GetAllFilterAsync(TbWeighOperatorDtoParameter parameter)
         {
             BaseRequest request = new BaseRequest();
-            request.Method = RestSharp.Method.GET;
+            request.Method = RestSharp.Method.Get;
             request.Route = $"api/{serviceName}/GetAllFilter?pageIndex={parameter.PageIndex}" +
                 $"&pageSize={parameter.PageSize}" +
                 $"&search={parameter.Search}" +
@@ -54,7 +54,7 @@ namespace WPFBase.Services
         public async Task<ApiResponse> Summary( )
         {
             BaseRequest baseRequest = new BaseRequest();
-            baseRequest.Method = RestSharp.Method.GET;
+            baseRequest.Method = RestSharp.Method.Get;
             baseRequest.Route = $"api/{serviceName}/Summary";
             baseRequest.Parameter = "";
             return await client.ExecuteAsync(baseRequest);
@@ -63,7 +63,7 @@ namespace WPFBase.Services
         public async Task<ApiResponse> MenuAuthority(string usercode)
         {
             BaseRequest baseRequest = new BaseRequest();
-            baseRequest.Method = RestSharp.Method.GET;
+            baseRequest.Method = RestSharp.Method.Get;
             baseRequest.Route = $"api/{serviceName}/MenuAuthority?usercode={usercode}";
             baseRequest.Parameter = usercode;
             return await client.ExecuteAsync(baseRequest);

@@ -24,7 +24,7 @@ namespace WPFBase.Services
         public async Task<ApiResponse<PagedList<TbWeighWeighbridgeofficeDTO>>> GetList()
         {
             BaseRequest baseRequest = new BaseRequest();
-            baseRequest.Method = RestSharp.Method.GET;
+            baseRequest.Method = RestSharp.Method.Get;
             baseRequest.Route = $"api/{serviceName}/GetList";
             baseRequest.Parameter = "";
             return await client.ExecuteAsync<PagedList<TbWeighWeighbridgeofficeDTO>>(baseRequest);

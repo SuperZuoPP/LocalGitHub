@@ -19,6 +19,8 @@ namespace WPFBase.Shared.Parameters
         public string CarNumber { get; set; }
         public DateTime WeighTime { get; set; }
 
+        public DateTime BeginWeighTime { get; set; }
 
+        public DateTime EndWeighTime { get; set; }
     }
 }
