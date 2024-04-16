@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPFBase.ViewModels.BMViewModel;
 
 namespace WPFBase.Views.BMView
 {
@@ -22,7 +23,8 @@ namespace WPFBase.Views.BMView
     /// QueryDataLineView.xaml 的交互逻辑
     /// </summary>
     public partial class QueryDataLineView : UserControl
-    { 
+    {
+        private QueryDataLineViewModel viewModel;
         public QueryDataLineView()
         {
             InitializeComponent(); 
@@ -33,7 +35,7 @@ namespace WPFBase.Views.BMView
             var reportFile = System.IO.Path.Join(Environment.CurrentDirectory, "Simple List.frx");
             var report = new Report();
             report.Load(reportFile);
-            var ds = TestData();
+            var ds = viewModel.WeighDataListsDtos;
             report.RegisterData(ds, "NorthWind");
             report.PrepareAsync(previewControl); 
         }

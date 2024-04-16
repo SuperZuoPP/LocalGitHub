@@ -109,14 +109,14 @@
 
         </Border>
 
-
-
+ 
         <!--<fastreportdesign:WpfDesignerControl Height="287" />-->
-        <frpreview:WpfPreviewControl
-            x:Name="previewControl"
+        <frpreview:WpfPreviewControl  
+            x:Name="previewControl" 
             Grid.Row="1"
-            Margin="10"
+            Margin="10" 
+            DataContext="{Binding PreviewControl}"
             ToolbarVisible="True" />
-
+        
     </Grid>
 </UserControl>

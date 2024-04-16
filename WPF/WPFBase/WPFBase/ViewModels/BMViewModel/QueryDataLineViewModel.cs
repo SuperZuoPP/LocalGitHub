@@ -36,10 +36,19 @@ namespace WPFBase.ViewModels.BMViewModel
             GetGroupList();
         }
 
-       
+
 
         #region 属性
         
+        private WpfPreviewControl previewControl;
+
+        public WpfPreviewControl PreviewControl
+        {
+            get { return previewControl; }
+            set { SetProperty<WpfPreviewControl>(ref previewControl, value); }
+        }
+
+
         private string qPlanNumber;
 
         public string QPlanNumber
@@ -161,9 +170,8 @@ namespace WPFBase.ViewModels.BMViewModel
             var report = new Report();
             report.Load(reportFile);
             var ds = WeighDataListsDtos;
-            report.RegisterData(ds, "WeighDataListsDtos");
-           
-            //report.PrepareAsync(previewControl);
+            report.RegisterData(ds, "WeighDataListsDtos"); 
+            report.PrepareAsync(PreviewControl);
         }
           
         private async void GetGroupList()
