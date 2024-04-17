@@ -20,6 +20,7 @@ using WPFBase.Services;
 using WPFBase.Shared.DTO.BM;
 using WPFBase.ViewModels.SMViewModel;
 using FastReport.Dialog;
+using System.Data;
 
 namespace WPFBase.ViewModels.BMViewModel
 { 
@@ -31,24 +32,17 @@ namespace WPFBase.ViewModels.BMViewModel
         {
             this.service = service;
             this.officeService = officeService;
-            WeighDataListsDtos = new ObservableCollection<TbWeighDatalineinfoDto>(); 
+            WeighDataListsDtos = new ObservableCollection<TbWeighDatalineinfoDto>();
+            DataInfos = new List<TbWeighDatalineinfoDto>();
             SearchCmd = new DelegateCommand(Search);  
-            GetGroupList();
+            GetGroupList(); 
         }
 
 
 
         #region 属性
         
-        private WpfPreviewControl previewControl;
-
-        public WpfPreviewControl PreviewControl
-        {
-            get { return previewControl; }
-            set { SetProperty<WpfPreviewControl>(ref previewControl, value); }
-        }
-
-
+         
         private string qPlanNumber;
 
         public string QPlanNumber
@@ -73,7 +67,7 @@ namespace WPFBase.ViewModels.BMViewModel
             set { SetProperty<string>(ref qMaterialName, value); }
         }
 
-        private DateTime queryBeginTime = DateTime.Today;
+        private DateTime queryBeginTime = Convert.ToDateTime( "2024-01-01");
 
         public DateTime QueryBeginTime
         {
@@ -81,7 +75,7 @@ namespace WPFBase.ViewModels.BMViewModel
             set { SetProperty<DateTime>(ref queryBeginTime, value); }
         }
 
-        private DateTime queryEndTime = DateTime.Today;
+        private DateTime queryEndTime = Convert.ToDateTime("2024-01-01");
 
         public DateTime QueryEndTime
         {
@@ -122,6 +116,14 @@ namespace WPFBase.ViewModels.BMViewModel
             set { SetProperty<ObservableCollection<TbWeighDatalineinfoDto>>(ref weighDataListsDtos, value); }
         }
 
+        private List<TbWeighDatalineinfoDto> dataInfos;
+
+        public List<TbWeighDatalineinfoDto> DataInfos
+        {
+            get { return dataInfos; }
+            set { dataInfos = value; }
+        }
+         
         private ObservableCollection<PoundRoomGroup> groupList = new ObservableCollection<PoundRoomGroup>();
 
         public ObservableCollection<PoundRoomGroup> GroupList
@@ -139,7 +141,7 @@ namespace WPFBase.ViewModels.BMViewModel
 
 
         #region 方法
-        private async void Search()
+        public async void Search()
         { 
             var results = await service.GetWeightInfoByDayRange(new Shared.Parameters.TbWeighDatalineinfoDtoParameter()
             {
@@ -166,14 +168,44 @@ namespace WPFBase.ViewModels.BMViewModel
                     WeighDataListsDtos.Add(item);
                 } 
             }
-            var reportFile = System.IO.Path.Join(Environment.CurrentDirectory, "Simple List.frx");
-            var report = new Report();
-            report.Load(reportFile);
-            var ds = WeighDataListsDtos;
-            report.RegisterData(ds, "WeighDataListsDtos"); 
-            report.PrepareAsync(PreviewControl);
+
+            //var reportFile = System.IO.Path.Join(Environment.CurrentDirectory, "Simple List.frx");
+            //var report = new Report();
+            //report.Load(reportFile);
+            //var ds = WeighDataListsDtos;
+            //report.RegisterData(ds, "WeighDataListsDtos"); 
+            //report.PrepareAsync(PreviewControl);
         }
-          
+
+        public async Task SearchAsync()
+        {
+            var results = await service.GetWeightInfoByDayRange(new Shared.Parameters.TbWeighDatalineinfoDtoParameter()
+            {
+
+                PlanCode = null,
+                PlanNumber = QPlanNumber,
+                WeighHouseCodes = QSelectedGroup,
+                MaterialName = QMaterialName,
+                SupplierName = QSupplierName,
+                RecipientName = QRecipientName,
+                CarNumber = QCarNumber,
+                BeginWeighTime = QueryBeginTime,//DateTime.Today,
+                EndWeighTime = QueryEndTime,
+                PageIndex = 0,
+                PageSize = 10000,
+                Search = null,
+            });
+
+            if (results.Status)
+            {
+                WeighDataListsDtos.Clear();
+                foreach (var item in results.Result.Items)
+                {
+                    WeighDataListsDtos.Add(item);
+                }
+            }  
+        }
+        
         private async void GetGroupList()
         {
 

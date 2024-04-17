@@ -66,7 +66,8 @@
                         Margin="50,0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        Command="{Binding SearchCmd}"
+                        Click="Button_Click"
+                        
                         Content="查询" />
                 </StackPanel>
                 <StackPanel
@@ -109,14 +110,13 @@
 
         </Border>
 
- 
+
         <!--<fastreportdesign:WpfDesignerControl Height="287" />-->
-        <frpreview:WpfPreviewControl  
-            x:Name="previewControl" 
+        <frpreview:WpfPreviewControl
+            x:Name="previewControl"
             Grid.Row="1"
-            Margin="10" 
-            DataContext="{Binding PreviewControl}"
+            Margin="10"
             ToolbarVisible="True" />
-        
+
     </Grid>
 </UserControl>
