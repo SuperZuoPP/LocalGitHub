@@ -4,6 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows7.0</TargetFramework>
     <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FastReport.WPF.Demo" Version="2024.2.0" />
+    <PackageReference Include="FastReport.WPF.Demo" Version="2023.2.1" />
     <PackageReference Include="HandyControl" Version="3.5.0" />
     <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -50,6 +51,12 @@
     <Resource Include="Views\SMView\login.png" />
     <Resource Include="Views\SMView\user.jpg" />
     <Resource Include="Views\wxzc.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\BMView\QueryDataLineWinfromView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
 </Project>

@@ -89,7 +89,7 @@ namespace WPFBase
 
             containerRegistry.RegisterForNavigation<DataInfoView, DataInfoViewModel>();
             containerRegistry.RegisterForNavigation<QueryDataLineView,QueryDataLineViewModel>();
-            
+            containerRegistry.RegisterForNavigation<QueryDataLineWinfromView>();
 
 
         }
