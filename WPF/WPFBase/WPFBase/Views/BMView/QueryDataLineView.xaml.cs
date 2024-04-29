@@ -3,6 +3,7 @@ using FastReport.Export.Dbf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -35,7 +36,7 @@ namespace WPFBase.Views.BMView
 
         private async  void Button_Click(object sender, RoutedEventArgs e)
         {
-            var reportFile = System.IO.Path.Join(Environment.CurrentDirectory, "Simple List.frx");//按计划单号与日期明细 Simple List
+            var reportFile = System.IO.Path.Join(Environment.CurrentDirectory, "按计划单号与日期明细.frx");//按计划单号与日期明细 Simple List
             var report = new Report();
             report.Load(reportFile);
             await viewModel.SearchAsync();
@@ -79,8 +80,14 @@ namespace WPFBase.Views.BMView
             dataTable.Columns.Add("Id", typeof(int));
             dataTable.Columns.Add("PlanNumber", typeof(string));
             dataTable.Columns.Add("CarNumber", typeof(string));
-            // 添加其他列，如果有的话...
-
+            dataTable.Columns.Add("SupplierName", typeof(string));
+            dataTable.Columns.Add("RecipientName", typeof(string));
+            dataTable.Columns.Add("BatchNumber", typeof(string));
+            dataTable.Columns.Add("GrossWeight", typeof(double));
+            dataTable.Columns.Add("TareWeight", typeof(double));
+            dataTable.Columns.Add("Suttle", typeof(double));
+            dataTable.Columns.Add("GrossWeighTime", typeof(DateTime));
+           
             // 遍历ObservableCollection，并将每个对象转换为DataRow
             foreach (TbWeighDatalineinfoDto item in weighDataList)
             {
@@ -88,6 +95,13 @@ namespace WPFBase.Views.BMView
                 dataRow["Id"] = item.Id;
                 dataRow["PlanNumber"] = item.PlanNumber;
                 dataRow["CarNumber"] = item.CarNumber;
+                dataRow["SupplierName"] = item.SupplierName;
+                dataRow["RecipientName"] = item.RecipientName;
+                dataRow["BatchNumber"] = item.BatchNumber;
+                dataRow["GrossWeight"] = item.GrossWeight;
+                dataRow["TareWeight"] = item.TareWeight;
+                dataRow["Suttle"] = item.Suttle;
+                dataRow["GrossWeighTime"] = item.GrossWeighTime;
                 // 设置其他列的值，如果有的话...
 
                 dataTable.Rows.Add(dataRow);

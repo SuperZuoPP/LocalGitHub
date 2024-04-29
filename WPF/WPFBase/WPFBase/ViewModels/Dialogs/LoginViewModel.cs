@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WPFBase.Base;
 using WPFBase.Models;
 using WPFBase.Services;
 using WPFBase.Shared;
@@ -22,7 +23,7 @@ namespace WPFBase.ViewModels.Dialogs
         
         private readonly ILoginService loginService;
 
-       
+        OPCCommunication communication = new OPCCommunication();
 
 
         public LoginViewModel(ILoginService loginService)
@@ -31,6 +32,7 @@ namespace WPFBase.ViewModels.Dialogs
             this.loginService = loginService;
             //ToDoDto todo = new ToDoDto() { Title="test",Content= "test", Status=1 };
             //SqliteHelper.InsertData1<ToDoDto,ToDo>(todo);
+            communication.ConnectToOpcServer();
         }
 
         #region 属性
