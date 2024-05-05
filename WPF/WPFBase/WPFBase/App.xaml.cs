@@ -72,6 +72,7 @@ namespace WPFBase
             containerRegistry.Register<IMenuService, MenuService>();
             containerRegistry.Register<IDataInfoService, DataInfoService>();
             containerRegistry.Register<ITbWeighWeighbridgeofficeService, TbWeighWeighbridgeofficeService>();
+            containerRegistry.Register<IVideoService, VideoService>();
 
             containerRegistry.RegisterForNavigation<LoginView, LoginViewModel>();
             containerRegistry.RegisterForNavigation<TreeDemoView,TreeDemoViewModel>();
@@ -90,6 +91,9 @@ namespace WPFBase
             containerRegistry.RegisterForNavigation<DataInfoView, DataInfoViewModel>();
             containerRegistry.RegisterForNavigation<QueryDataLineView,QueryDataLineViewModel>();
             containerRegistry.RegisterForNavigation<QueryDataLineWinfromView>();
+            containerRegistry.RegisterForNavigation<VideoRealPlayView,VideoRealPlayViewModel> ();
+
+            
 
 
         }

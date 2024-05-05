@@ -91,7 +91,7 @@ namespace WPFBase.ViewModels
             MenuBars.Add(new MenuBar() { Icon = "NotebookOutline", Title = "数据综合查询", NameSpace = "DataInfoView" });
             MenuBars.Add(new MenuBar() { Icon = "NotebookOutline", Title = "报表管理", NameSpace = "QueryDataLineView" });
             MenuBars.Add(new MenuBar() { Icon = "NotebookOutline", Title = "报表管理1", NameSpace = "QueryDataLineWinfromView" }); 
-            MenuBars.Add(new MenuBar() { Icon = "NotebookPlusOutline", Title = "备忘录", NameSpace = "MemoView" });
+            MenuBars.Add(new MenuBar() { Icon = "NotebookPlusOutline", Title = "录像查询", NameSpace = "VideoRealPlayView" });
             MenuBars.Add(new MenuBar() { Icon = "Cog", Title = "系统管理", NameSpace = "SettingsView" }); 
         }
        

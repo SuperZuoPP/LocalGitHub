@@ -32,5 +32,9 @@ namespace WPFBase.Api.Context
         public DbSet<TbWeighPlan> TbWeighPlan { get; set; }
 
         public DbSet<TbWeighWeighbridgeoffice> TbWeighOffice { get; set; }
+
+        public DbSet<TbWeighVideo> TbWeighVideo { get; set; }
+
+        public DbSet<TbWeighDevicestatus> TbWeighDevicestatus { get; set; }
     }
 }

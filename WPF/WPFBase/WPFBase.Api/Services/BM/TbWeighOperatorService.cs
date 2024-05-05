@@ -224,18 +224,7 @@ namespace WPFBase.Api.Services.BM
                 var repository1 = unitOfWork.GetRepository<TbWeighGroupauthority>();
                 var repository2 = unitOfWork.GetRepository<TbWeighGroupauthorityuser>();
                 var repository3 = unitOfWork.GetRepository<TbWeighMenu>();
-                //var query = from ga in repository1.GetAll()
-                //            join gau in repository2.GetAll() on ga.UserGroupCode equals gau.UserGroupCode
-                //            join m in repository3.GetAll() on ga.AuthorityCode equals m.MenuCode
-                //            where gau.UserCode == usercode
-                //            select new MenuBarDto
-                //            {
-                //                Id = m.Id, 
-                //                ParentId = m.MenuNumber,
-                //                Icon = m.Attribute2,
-                //                Title = m.MenuName,
-                //                NameSpace = ga.AuthorityCode 
-                //            }; 
+          
                 // Step 1: Query data from repository1 based on usercode
                 var groupAuthorities = await repository1.GetAll()
                     .Where(ga => repository2.GetAll().Any(gau => gau.UserCode == usercode && gau.UserGroupCode == ga.UserGroupCode))

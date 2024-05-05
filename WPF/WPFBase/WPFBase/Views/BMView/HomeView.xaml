@@ -67,6 +67,8 @@
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
                 <TextBlock
                     Margin="20,20"
@@ -93,15 +95,27 @@
                         Margin="0,0,20,0"
                         VerticalAlignment="Center"
                         Text="实时状态" />
-
                 </StackPanel>
                 <ToggleButton
                     Grid.Row="2"
                     Width="30"
                     Height="30"
                     HorizontalAlignment="Right"
-                    VerticalAlignment="Center" />
-                <ItemsControl Grid.Row="3" />
+                    VerticalAlignment="Center"
+                    Command="{Binding OPCCommand}"
+                    IsChecked="{Binding IsChenked, UpdateSourceTrigger=PropertyChanged}" />
+                <StackPanel Grid.Row="3" Orientation="Horizontal">
+                    <TextBlock Margin="0,5,20,20" Text="{Binding OPCProperties[Double1].Value, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Margin="10,5,20,0" Text="{Binding OPCProperties[Double1].ServerTimestamp, UpdateSourceTrigger=PropertyChanged, StringFormat='yyyy-MM-dd HH:mm:ss'}" />
+                </StackPanel>
+                <StackPanel Grid.Row="4" Orientation="Horizontal">
+                    <TextBlock Margin="0,5,20,20" Text="{Binding OPCProperties[Word1].Value, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Margin="10,5,20,0" Text="{Binding OPCProperties[Word1].ServerTimestamp, UpdateSourceTrigger=PropertyChanged, StringFormat='yyyy-MM-dd HH:mm:ss'}" />
+                </StackPanel>
+                <StackPanel Grid.Row="5" Orientation="Horizontal">
+                    <TextBlock Margin="0,5,20,20" Text="{Binding OPCProperties[Float1].Value, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Margin="10,5,20,0" Text="{Binding OPCProperties[Float1].ServerTimestamp, UpdateSourceTrigger=PropertyChanged, StringFormat='yyyy-MM-dd HH:mm:ss'}" />
+                </StackPanel>
             </Grid>
             <!--  右侧布局  -->
             <Grid Grid.Column="2" HorizontalAlignment="Stretch">
@@ -131,7 +145,7 @@
                             Width="60"
                             Height="90"
                             ForeColor="#38baec"
-                            ProgressValue="30" />
+                            ProgressValue="{Binding OPCProperties[Double1].Value, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
                     <StackPanel>
                         <TextBlock

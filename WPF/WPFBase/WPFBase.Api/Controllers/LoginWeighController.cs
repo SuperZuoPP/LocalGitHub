@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using log4net;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using WPFBase.Api.Services.BM;
 using WPFBase.Api.Services.SM;
@@ -13,13 +14,19 @@ namespace WPFBase.Api.Controllers
     public class LoginWeighController : Controller
     {
         private readonly ITbWeighOperatorService service;
+        private static readonly ILog log = LogManager.GetLogger(typeof(LoginWeighController));
+
         public LoginWeighController(ITbWeighOperatorService service)
         {
             this.service = service;
         }
 
         [HttpPost]
-        public async Task<ApiResponse> Login([FromBody] TbWeighOperatorDto param) => await service.LoginAsync(param.UserNumber, param.PassWord);
+        public async Task<ApiResponse> Login([FromBody] TbWeighOperatorDto param) //=> await service.LoginAsync(param.UserNumber, param.PassWord);
+        {
+            log.Info("Login request received."); // 记录日志
+            return await service.LoginAsync(param.UserNumber, param.PassWord);
+        }
 
         [HttpPost]
         //[Authorize]

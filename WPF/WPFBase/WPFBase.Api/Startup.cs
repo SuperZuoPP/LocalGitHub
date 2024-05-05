@@ -1,6 +1,8 @@
 using AutoMapper;
+using log4net.Config;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using WPFBase.Api.Context;
@@ -29,6 +32,9 @@ namespace WPFBase.Api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            XmlConfigurator.Configure(new FileInfo("log4net.config")); // ¥” log4net.config ∂¡»°≈‰÷√
+
+
         }
 
         public IConfiguration Configuration { get; }
@@ -67,6 +73,7 @@ namespace WPFBase.Api
             services.AddTransient<IMenuService, MenuService>(); 
             services.AddTransient<ITbWeighDatalineinfoService, TbWeighDatalineinfoService>();
             services.AddTransient<ITbWeighWeighbridgeofficeService, TbWeighWeighbridgeofficeService>();
+            services.AddTransient<ITbWeighVideoService, TbWeighVideoService>();
 
             //ÃÌº”AutoMapper
             var atuomapperConfig = new MapperConfiguration(config => {
