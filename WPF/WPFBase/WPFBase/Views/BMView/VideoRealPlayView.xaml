@@ -6,8 +6,6 @@
     xmlns:local="clr-namespace:WPFBase.Views.BMView"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-    xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
-    xmlns:wfi="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
     d:DesignHeight="1080"
     d:DesignWidth="1920"
     mc:Ignorable="d">
@@ -163,47 +161,7 @@
                 BorderBrush="LightGray"
                 BorderThickness="1"
                 CornerRadius="3">
-                <UniformGrid
-                    Margin="3"
-                    Columns="3"
-                    Rows="2">
-                    <wfi:WindowsFormsHost
-                        Name="windowsFormsHost1"
-                        Margin="2"
-                        Background="AliceBlue">
-                        <wf:PictureBox x:Name="picture1"/>
-                    </wfi:WindowsFormsHost>
-                    <wfi:WindowsFormsHost
-                        Name="windowsFormsHost2"
-                        Margin="2"
-                        Background="AliceBlue">
-                        <wf:PictureBox x:Name="picture2" />
-                    </wfi:WindowsFormsHost>
-                    <wfi:WindowsFormsHost
-                        Name="windowsFormsHost3"
-                        Margin="2"
-                        Background="AliceBlue">
-                        <wf:PictureBox x:Name="picture3" />
-                    </wfi:WindowsFormsHost>
-                    <wfi:WindowsFormsHost
-                        Name="windowsFormsHost4"
-                        Margin="2"
-                        Background="AliceBlue">
-                        <wf:PictureBox x:Name="picture4" />
-                    </wfi:WindowsFormsHost>
-                    <wfi:WindowsFormsHost
-                        Name="windowsFormsHost5"
-                        Margin="2"
-                        Background="AliceBlue">
-                        <wf:PictureBox x:Name="picture5" />
-                    </wfi:WindowsFormsHost>
-                    <wfi:WindowsFormsHost
-                        Name="windowsFormsHost6"
-                        Margin="2"
-                        Background="AliceBlue">
-                        <wf:PictureBox x:Name="picture6" />
-                    </wfi:WindowsFormsHost>
-                </UniformGrid>
+                <local:CameraManageView x:Name="MyCameraManageView" />
             </Border>
 
 

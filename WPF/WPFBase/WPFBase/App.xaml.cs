@@ -92,7 +92,7 @@ namespace WPFBase
             containerRegistry.RegisterForNavigation<QueryDataLineView,QueryDataLineViewModel>();
             containerRegistry.RegisterForNavigation<QueryDataLineWinfromView>();
             containerRegistry.RegisterForNavigation<VideoRealPlayView,VideoRealPlayViewModel> ();
-
+            containerRegistry.RegisterForNavigation<CameraManageView, CameraManageViewModel>();
             
 
 

@@ -22,19 +22,31 @@ using System.Windows.Documents;
 using FastReport.DataVisualization.Charting;
 using FastReport.RichTextParser;
 using System.Windows.Forms.Integration;
+using System.Windows;
+using FastReport.Dialog;
+using System.Windows.Controls.Primitives;
+using WPFBase.Views.BMView;
+using WPFBase.Components;
+using HandyControl.Tools.Extension;
+using FastReport;
 
 namespace WPFBase.ViewModels.BMViewModel
 {
-    public class VideoRealPlayViewModel : NavigationViewModel
+    public class CameraManageViewModel : NavigationViewModel
     {
         private readonly IVideoService service;
          
-        public VideoRealPlayViewModel(IContainerProvider containerProvider, IVideoService service) : base(containerProvider)
+        public CameraManageViewModel(IContainerProvider containerProvider, IVideoService service) : base(containerProvider)
         {
            
             this.service = service;
-            ExecuteCommand = new DelegateCommand<string>(Execute); 
+            ExecuteCommand = new DelegateCommand<string>(Execute);
+            CmdLoaded = new DelegateCommand<RoutedEventArgs>(Loaded);
+            CmdLayOut = new DelegateCommand<string>(LayOut);
+            Init();
+            GetDvrVideoList();
         }
+ 
 
         #region 字段
 
@@ -116,6 +128,26 @@ namespace WPFBase.ViewModels.BMViewModel
         #endregion
 
         #region 属性
+        private UniformGrid MyVideoContainer { get; set; }
+        private List<PictureBox> MyPictureBoxes { get; set; } = new List<PictureBox>();
+
+
+        private int intRows = 3;
+
+        public int IntRows
+        {
+            get { return intRows; }
+            set { SetProperty<int>(ref intRows, value); }
+        }
+
+        private int intCols = 3;
+
+        public int IntCols
+        {
+            get { return intCols; }
+            set { SetProperty<int>(ref intCols, value); }
+        }
+
 
         private List<TbWeighVideoDto> dvrVideoLists;
 
@@ -134,14 +166,7 @@ namespace WPFBase.ViewModels.BMViewModel
             set { dvrMonitorChannelList = value; }
         }
 
-        private PictureBox picture1;
-
-        public PictureBox Picture1
-        {
-            get { return picture1; }
-            set { SetProperty<PictureBox>(ref picture1, value); }
-        }
-
+         
         #endregion
 
         #region 命令
@@ -149,9 +174,82 @@ namespace WPFBase.ViewModels.BMViewModel
         public DelegateCommand<string> ExecuteCommand { get; set; }
 
 
+        /// <summary>
+        /// 关联控件
+        /// </summary>
+        public DelegateCommand<RoutedEventArgs> CmdLoaded { get; set; }
+
+        /// <summary>
+        /// 布局
+        /// </summary>
+        public DelegateCommand<string> CmdLayOut { get; set; }
+
         #endregion
 
         #region 方法
+
+        private void Init() 
+        {
+            try
+            {
+                // 初始化多摄像头资源控制类
+                if (multiVideo == null)
+                {
+                    multiVideo = new MultiVideoOperate("", @"C:\HikSdk\SdkLog", @"C:\HikSdk\JPEGCapture", 0, 0xff, "", "", "");
+                }
+                else
+                {
+                    multiVideo.LoginOut();
+                }
+
+                // 初始化sdk
+                if (!multiVideo.Init(VideoSdkInitType.Mix))
+                {
+                    Console.WriteLine("摄像机SDK初始化失败");
+                    return;
+                }
+
+                // 初始化通道列表
+                if (videoMonitorChannelList == null)
+                {
+                    videoMonitorChannelList = new List<VideoMonitorChannelInfo>();
+                }
+                else
+                {
+                    videoMonitorChannelList.Clear();
+                }
+
+            }
+            finally
+            {
+                // 重置变量
+                ResetState();
+            }
+        }
+
+        private void Loaded(RoutedEventArgs args)
+        {
+             
+            MyVideoContainer = (args.Source as CameraManageView).videoContainer;
+            // 图像显示容器
+            for (int i = 0; i < MyVideoContainer.Children.Count; i++)
+            { 
+                MyPictureBoxes.Add((MyVideoContainer.Children[i] as PictureBoxForm).CustomWindowsFormsHost.Child as PictureBox);
+            }
+        }
+
+
+        private void LayOut(string num)
+        {
+            int videonum = int.Parse(num);
+            IntRows = (int)Math.Sqrt(videonum);
+            IntCols = IntRows;
+            for (int i = 0; i < MyVideoContainer.Children.Count; i++)
+            {
+                MyVideoContainer.Children[i].Visibility = i < videonum ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
 
         //获取硬盘录像机，指定启用状态的摄像机列表
         async void GetDvrVideoList() 
