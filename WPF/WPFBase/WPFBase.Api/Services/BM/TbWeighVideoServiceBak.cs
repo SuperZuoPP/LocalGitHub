@@ -14,12 +14,12 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace WPFBase.Api.Services.BM
 {
-    public class TbWeighVideoService : ITbWeighVideoService
+    public class TbWeighVideoServiceBak  
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
 
-        public TbWeighVideoService(IUnitOfWork unitOfWork, IMapper mapper)
+        public TbWeighVideoServiceBak(IUnitOfWork unitOfWork, IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
@@ -123,19 +123,49 @@ namespace WPFBase.Api.Services.BM
             }
         }
 
-
-        /// <summary>
-        /// 获取启用的类型设备
-        /// PlateCognition = 1,     // 车牌识别
-        /// Monitor = 2,            // 监控
-        /// MonitorCapture = 3,     // 监控和抓拍
-        /// DVR = 4                 // 硬盘录像机
-        /// </summary>
-        /// <param name="parameter"></param>
-        /// <returns></returns>
         public async Task<ApiResponse> GetVideoList(TbWeighVideoDtoParameter parameter)
         {
-           
+            //方法一
+            //try
+            //{  
+            //    var repository1 = unitOfWork.GetRepository<TbWeighVideo>();
+            //    var repository2 = unitOfWork.GetRepository<TbWeighDevicestatus>();
+
+            //    string videoTypeNo = parameter.VideoTypeNo.ToString();
+            //    int status = parameter.Status;
+
+            //    var query = from t1 in repository1.GetAll()
+            //                join t2 in repository2.GetAll()
+            //                on t1.Attribute1 equals t2.SlaveDeviceNo into statusGroup
+            //                from t2 in statusGroup.DefaultIfEmpty()
+            //                where t1.VideoTypeNo == videoTypeNo
+            //                && (t1.OperateBit != 2 || t1.OperateBit == null)
+            //                && (t2.Status == status || t2.Status == null)
+            //                select new
+            //                {
+            //                    t1.VideoTypeNo,
+            //                    t1.Ip,
+            //                    t1.Port,
+            //                    t1.UserName,
+            //                    t1.PassWord,
+            //                    t1.Channelnub,
+            //                    t1.Position,
+            //                    t1.Status,
+            //                    t1.WeighHouseCodes,
+            //                    t2.SlaveDeviceName,
+            //                    t2.SlaveDeviceNo,
+            //                    t2.SlaveDeviceType
+            //                };
+
+            //    var result = await query.ToListAsync();
+            //    return new ApiResponse(true, result); 
+            //}
+            //catch (Exception ex)
+            //{
+            //    return new ApiResponse(ex.Message);
+            //}
+
+            //方法二，分步查
             try
             {
                 var repository1 = unitOfWork.GetRepository<TbWeighVideo>();
@@ -172,74 +202,29 @@ namespace WPFBase.Api.Services.BM
                                 Attribute1 = t2.SlaveDeviceNo,
                                 t2.SlaveDeviceType
                             };
+        //         private string factory;
+        //private string model;
+        //private string videoType;
+        //private string videoTypeNo;
+        //private string iP;
+        //private string iPHistory;
+        //private string port;
+        //private double userName;
+        //private double passWord;
+        //private double channelnub;
+        //private string storage;
+        //private string pOSITION;
+        //private string status;
+        //private string weighHouseCodes;
+                var result = query.ToList();
+                return new ApiResponse(true, result);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse(ex.Message);
+            }
+        }
+
        
-                var result = query.ToList();
-                return new ApiResponse(true, result);
-            }
-            catch (Exception ex)
-            {
-                return new ApiResponse(ex.Message);
-            }
-        }
-
-
-        /// <summary>
-        /// 获取指定磅房，指定硬盘录像机，指定摄像头类型，指定启用状态的通道对应的摄像机列表
-        /// </summary>
-        /// <param name="parameter"></param>
-        /// <returns></returns>
-        public async Task<ApiResponse> GetDvrMonitorChannelList(TbWeighVideoDtoParameter parameter)
-        {
-
-            try
-            {
-                var repository1 = unitOfWork.GetRepository<TbWeighVideo>();
-                var repository2 = unitOfWork.GetRepository<TbWeighDevicestatus>();
-
-                string deviceNo = parameter.DeviceNo.ToString();
-                int status = parameter.Status;
-
-                // 查询 repository1 中满足条件的数据
-                var filteredVideos = await repository1.GetAll()
-                    .Where(t1 => t1.Attribute3 == deviceNo 
-                            && t1.WeighHouseCodes.Contains(parameter.WeighHouseCodes) 
-                            && new[] { "2", "3" }.Contains(t1.VideoTypeNo)
-                            && (t1.OperateBit != 2 || t1.OperateBit == null))
-                    .ToListAsync();
-
-                // 根据 filteredVideos 中的 Attribute1 查询 repository2 中的数据
-                var query = from t1 in filteredVideos
-                            join t2 in repository2.GetAll() on t1.Attribute1 equals t2.SlaveDeviceNo into statusGroup
-                            from t2 in statusGroup.DefaultIfEmpty()
-                            where t2.Status == status || t2.Status == null
-                            select new
-                            {
-                                t1.Factory,
-                                t1.VideoTypeNo,
-                                t1.VideoType,
-                                t1.Ip,
-                                t1.Port,
-                                t1.UserName,
-                                t1.PassWord,
-                                t1.Channelnub,
-                                t1.Position,
-                                t1.Status,
-                                t1.WeighHouseCodes,
-                                t1.Attribute2,
-                                t2.SlaveDeviceName,
-                                Attribute1 = t2.SlaveDeviceNo,
-                                t2.SlaveDeviceType,
-                                t1.Attribute3,
-                                t1.Attribute4
-                            };
-
-                var result = query.ToList();
-                return new ApiResponse(true, result);
-            }
-            catch (Exception ex)
-            {
-                return new ApiResponse(ex.Message);
-            }
-        }
     }
 }

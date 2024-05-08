@@ -116,7 +116,8 @@ namespace WPFBase.ViewModels.BMViewModel
         {
             //OpcPropertyKey = "ns=2;s=数据类型示例.16 位设备.R 寄存器.Double1";
             var newProperties = await communication.ReadMultiple(new[] { "Double1", "Word1", "Float1" });
-            OPCProperties = newProperties;
+            
+            OPCProperties = newProperties; 
         }
         #endregion
 

@@ -5,10 +5,14 @@
     xmlns:components="clr-namespace:WPFBase.Components"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:WPFBase.Views.BMView"
+    xmlns:timeConvert="clr-namespace:WPFBase.Common.Converters"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="650"
     d:DesignWidth="1200"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <timeConvert:UtcToLocalTimeConverter x:Key="utcToLocalConverter"/>
+    </UserControl.Resources>
     <Grid>
 
         <Canvas
@@ -104,18 +108,27 @@
                     VerticalAlignment="Center"
                     Command="{Binding OPCCommand}"
                     IsChecked="{Binding IsChenked, UpdateSourceTrigger=PropertyChanged}" />
-                <StackPanel Grid.Row="3" Orientation="Horizontal">
-                    <TextBlock Margin="0,5,20,20" Text="{Binding OPCProperties[Double1].Value, UpdateSourceTrigger=PropertyChanged}" />
-                    <TextBlock Margin="10,5,20,0" Text="{Binding OPCProperties[Double1].ServerTimestamp, UpdateSourceTrigger=PropertyChanged, StringFormat='yyyy-MM-dd HH:mm:ss'}" />
-                </StackPanel>
-                <StackPanel Grid.Row="4" Orientation="Horizontal">
-                    <TextBlock Margin="0,5,20,20" Text="{Binding OPCProperties[Word1].Value, UpdateSourceTrigger=PropertyChanged}" />
-                    <TextBlock Margin="10,5,20,0" Text="{Binding OPCProperties[Word1].ServerTimestamp, UpdateSourceTrigger=PropertyChanged, StringFormat='yyyy-MM-dd HH:mm:ss'}" />
-                </StackPanel>
-                <StackPanel Grid.Row="5" Orientation="Horizontal">
-                    <TextBlock Margin="0,5,20,20" Text="{Binding OPCProperties[Float1].Value, UpdateSourceTrigger=PropertyChanged}" />
-                    <TextBlock Margin="10,5,20,0" Text="{Binding OPCProperties[Float1].ServerTimestamp, UpdateSourceTrigger=PropertyChanged, StringFormat='yyyy-MM-dd HH:mm:ss'}" />
-                </StackPanel>
+ 
+                
+                <DockPanel LastChildFill="False" Grid.Row="3">
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                        <TextBlock Margin="10,15,20,20" Width="100" Text="实时监控值"/>
+                        <TextBlock Margin="10,15,20,0" Text="时间" />
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                        <TextBlock Margin="10,5,20,20" Width="100"  Text="{Binding OPCProperties[Double1].Value, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Margin="10,5,20,0"   Text="{Binding OPCProperties[Double1].ServerTimestamp,Converter={StaticResource utcToLocalConverter}, UpdateSourceTrigger=PropertyChanged, StringFormat='yyyy-MM-dd HH:mm:ss'}" />
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Top"  Orientation="Horizontal">
+                        <TextBlock Margin="10,5,20,20" Width="100"  Text="{Binding OPCProperties[Word1].Value, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Margin="10,5,20,0" Text="{Binding OPCProperties[Word1].ServerTimestamp, Converter={StaticResource utcToLocalConverter},UpdateSourceTrigger=PropertyChanged, StringFormat='yyyy-MM-dd HH:mm:ss'}" />
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                        <TextBlock Margin="10,5,20,20" Width="100"  Text="{Binding OPCProperties[Float1].Value, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Margin="10,5,20,0" Text="{Binding OPCProperties[Float1].ServerTimestamp,Converter={StaticResource utcToLocalConverter}, UpdateSourceTrigger=PropertyChanged, StringFormat='yyyy-MM-dd HH:mm:ss'}" />
+                    </StackPanel>
+                </DockPanel>
+                
             </Grid>
             <!--  右侧布局  -->
             <Grid Grid.Column="2" HorizontalAlignment="Stretch">

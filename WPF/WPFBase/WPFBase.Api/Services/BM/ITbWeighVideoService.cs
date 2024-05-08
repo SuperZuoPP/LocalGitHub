@@ -8,6 +8,8 @@ namespace WPFBase.Api.Services.BM
     public interface ITbWeighVideoService : IBaseService<TbWeighVideoDto>
     { 
         Task<ApiResponse> GetVideoList(TbWeighVideoDtoParameter parameter);
-         
+
+        Task<ApiResponse> GetDvrMonitorChannelList(TbWeighVideoDtoParameter parameter);
+        
     }
 }

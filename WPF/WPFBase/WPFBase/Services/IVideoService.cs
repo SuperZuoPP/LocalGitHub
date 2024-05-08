@@ -16,6 +16,8 @@ namespace WPFBase.Services
     {
         Task<ApiResponse> GetVideoList(TbWeighVideoDtoParameter parameter);
         //Task<ApiResponse<PagedList<TbWeighVideoDto>>> GetVideoList(TbWeighVideoDtoParameter parameter);
-
+         
+        Task<ApiResponse> GetDvrMonitorChannelList(TbWeighVideoDtoParameter parameter);
+        
     }
 }

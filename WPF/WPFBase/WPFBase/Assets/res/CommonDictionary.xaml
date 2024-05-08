@@ -177,4 +177,54 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+
+    <Style x:Key="MyButtonIcon" BasedOn="{StaticResource ButtonBaseStyle}" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+        <Setter Property="hc:BorderElement.CornerRadius" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border CornerRadius="{Binding Path=(hc:BorderElement.CornerRadius),RelativeSource={RelativeSource TemplatedParent}}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+                        <ContentControl HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Path x:Name="MyPath" Fill="{TemplateBinding Foreground}" SnapsToDevicePixels="True" Stretch="Uniform" Width="{TemplateBinding Height}" Data="{TemplateBinding hc:IconElement.Geometry}"/>
+                                <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{TemplateBinding Content}" Margin="5,0"
+                                        Foreground="{Binding ElementName=MyPath, Path=Fill}"/>
+                            </Grid>
+                        </ContentControl>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <!-- 鼠标停留时背景色 -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="MyPath" Property="Fill" Value="{DynamicResource PrimaryBrush}"/>
+                        </Trigger>
+
+                        <!-- 特殊文字颜色 -->
+                        <Trigger Property="Content" Value="开始采集">
+                            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+                        </Trigger>
+                        <Trigger Property="Content" Value="停止采集">
+                            <Setter Property="Foreground" Value="{DynamicResource AccentBrush}"/>
+                        </Trigger>
+                        <Trigger Property="Content" Value="连接设备">
+                            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+                        </Trigger>
+                        <Trigger Property="Content" Value="断开设备">
+                            <Setter Property="Foreground" Value="{DynamicResource AccentBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

@@ -171,7 +171,7 @@
                         Name="windowsFormsHost1"
                         Margin="2"
                         Background="AliceBlue">
-                        <wf:PictureBox x:Name="picture1" />
+                        <wf:PictureBox x:Name="picture1"/>
                     </wfi:WindowsFormsHost>
                     <wfi:WindowsFormsHost
                         Name="windowsFormsHost2"

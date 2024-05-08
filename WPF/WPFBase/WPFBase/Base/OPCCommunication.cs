@@ -154,7 +154,7 @@ namespace WPFBase.Base
                 {
                     if (StatusCode.IsGood(readResponse.Results[i].StatusCode))
                     {
-                        result.Add(tags.ElementAt(i), readResponse.Results[i]);
+                        result.Add(tags.ElementAt(i), readResponse.Results[i]); 
                     }
                     else
                     {

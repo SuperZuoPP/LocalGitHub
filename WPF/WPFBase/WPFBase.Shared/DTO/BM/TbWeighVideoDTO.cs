@@ -18,7 +18,7 @@ namespace WPFBase.Shared.DTO.BM
         private string passWord;
         private string channelnub;
         private string storage; 
-        private string pOSITION;
+        private string position;
         private string status; 
         private string weighHouseCodes;  
          
@@ -88,10 +88,10 @@ namespace WPFBase.Shared.DTO.BM
 
  
          
-        public string POSITION
+        public string Position
         {
-            get { return pOSITION; }
-            set { SetProperty<string>(ref pOSITION, value); }
+            get { return position; }
+            set { SetProperty<string>(ref position, value); }
         }
 
 

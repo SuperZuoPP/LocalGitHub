@@ -31,8 +31,20 @@ namespace WPFBase.Services
             baseRequest.Route = $"api/{serviceName}/GetVideoList?VideoTypeNo={parameter.VideoTypeNo}" +
                 $"&Status={parameter.Status}";
             baseRequest.Parameter = parameter;
+            return await client.ExecuteAsync(baseRequest); 
+        }
+
+
+        public async Task<ApiResponse> GetDvrMonitorChannelList(TbWeighVideoDtoParameter parameter)
+        {
+            BaseRequest baseRequest = new BaseRequest();
+            baseRequest.Method = RestSharp.Method.Get;
+            baseRequest.Route = $"api/{serviceName}/GetDvrMonitorChannelList?DeviceNo={parameter.DeviceNo}" +
+                $"&Status={parameter.Status}" +
+                $"&WeighHouseCodes={parameter.WeighHouseCodes}";
+            baseRequest.Parameter = parameter;
             return await client.ExecuteAsync(baseRequest);
 
-        } 
+        }
     }
 }

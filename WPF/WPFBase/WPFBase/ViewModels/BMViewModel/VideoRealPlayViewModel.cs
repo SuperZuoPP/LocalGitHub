@@ -19,6 +19,9 @@ using System.Collections.ObjectModel;
 using WPFBase.Models;
 using WPFBase.Shared.DTO.BM;
 using System.Windows.Documents;
+using FastReport.DataVisualization.Charting;
+using FastReport.RichTextParser;
+using System.Windows.Forms.Integration;
 
 namespace WPFBase.ViewModels.BMViewModel
 {
@@ -28,6 +31,7 @@ namespace WPFBase.ViewModels.BMViewModel
          
         public VideoRealPlayViewModel(IContainerProvider containerProvider, IVideoService service) : base(containerProvider)
         {
+           
             this.service = service;
             ExecuteCommand = new DelegateCommand<string>(Execute);
             GetDvrVideoList(); 
@@ -60,90 +64,7 @@ namespace WPFBase.ViewModels.BMViewModel
                 {
                     videoMonitorChannelList.Clear();
                 }
-
-                //******************************************************************
-                //* 操作录像机                                        
-                //******************************************************************
-                //List<tb_weigh_video> dvrList = tb_weigh_video.GetList((int)VideoWorkType.DVR, (int)EnumDevicestatus.Working);
-                //foreach (var dvr in VideoLists)
-                //{
-                //    string deviceNo = dvr.Attribute1;
-                //    EnumDirection position = MultiVideoOperate.GetDirection(dvr.POSITION);
-                //    VideoSdkType sdkType = MultiVideoOperate.GetSdkTypeByFactory(dvr.Factory);
-
-                //    // 获取启用状态
-                //    EnumDevicestatus deviceStatus = EnumDevicestatus.Disable;
-                //    try
-                //    {
-                //        deviceStatus = (EnumDevicestatus)tb_weigh_devicestatus.GetModel(deviceNo).Status;
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //        Console.WriteLine("获取录像机{0}初始状态失败: {1}", deviceNo, ex.Message);
-                //    }
-
-                //    VideoOperateInfo info = new VideoOperateInfo
-                //    {
-                //        DeviceNo = deviceNo,
-                //        Position = position,
-                //        WorkType = VideoWorkType.DVR,
-                //        SDKType = sdkType,
-                //        DeviceStatus = deviceStatus,
-                //        IP = dvr.IP,
-                //        Port = dvr.Port,
-                //        UserName = dvr.UserName,
-                //        Password = dvr.PassWord
-                //    };
-
-                //    // 登录硬盘录像机
-                //    if (multiVideo.Login(ref info))
-                //    {
-                //        VideoLoginInfo dvrLoginInfo = info.Operate.GetVideoLoginInfo();
-                //        // 磅房可用摄像头列表
-                //        List<tb_weigh_video> videoList = tb_weigh_video.GetDvrMonitorChannelList(dvr.Attribute1, weighHouseCode);
-
-                //        foreach (var channelInfo in dvrLoginInfo.ChannelInfoList)
-                //        {
-                //            try
-                //            {
-                //                if (channelInfo.ConnectStatus == VideoChannelConnectStatus.AChan_Disabled || channelInfo.ConnectStatus == VideoChannelConnectStatus.DChan_Idle)
-                //                {
-                //                    continue; // 通道禁用或空闲
-                //                }
-                //                int iChannelNum = channelInfo.iChannelNum;
-                //                int index = videoList.FindIndex(x =>
-                //                {
-                //                    int ch;
-                //                    if (int.TryParse(x.Attribute4, out ch))
-                //                    {
-                //                        return ch == iChannelNum;
-                //                    }
-                //                    return false;
-                //                });
-                //                if (index < 0)
-                //                {
-                //                    continue; // 通道不属于磅房
-                //                }
-
-                //                VideoMonitorChannelInfo monitorChannelInfo = new VideoMonitorChannelInfo
-                //                {
-                //                    UserID = info.UserID, // 用户ID
-                //                    DeviceNo = info.DeviceNo, // 设备编号
-                //                    OperateInfo = info, // 操作类
-                //                    ChannelInfo = channelInfo, // 通道信息
-                //                    ChannelNum = iChannelNum, // 通道号
-                //                    IsActive = false
-                //                };
-                //                videoMonitorChannelList.Add(monitorChannelInfo);
-                //            }
-                //            catch (Exception ex)
-                //            {
-                //                Console.WriteLine(ex.Message);
-                //                continue;
-                //            }
-                //        }
-                //    }
-                //}
+                 
             }
             finally
             {
@@ -234,12 +155,29 @@ namespace WPFBase.ViewModels.BMViewModel
 
         #region 属性
 
-        private List<TbWeighVideoDto> videoLists;
+        private List<TbWeighVideoDto> dvrVideoLists;
 
-        public List<TbWeighVideoDto> VideoLists
+        public List<TbWeighVideoDto> DvrVideoLists
         {
-            get { return videoLists; }
-            set { videoLists = value; }
+            get { return dvrVideoLists; }
+            set { dvrVideoLists = value; }
+        }
+
+
+        private List<TbWeighVideoDto> dvrMonitorChannelList;
+
+        public List<TbWeighVideoDto> DvrMonitorChannelList
+        {
+            get { return dvrMonitorChannelList; }
+            set { dvrMonitorChannelList = value; }
+        }
+
+        private PictureBox picture1;
+
+        public PictureBox Picture1
+        {
+            get { return picture1; }
+            set { SetProperty<PictureBox>(ref picture1, value); }
         }
 
         #endregion
@@ -256,20 +194,121 @@ namespace WPFBase.ViewModels.BMViewModel
         //获取硬盘录像机，指定启用状态的摄像机列表
         async void GetDvrVideoList() 
         {
-            var videolist = await service.GetVideoList(new Shared.Parameters.TbWeighVideoDtoParameter()
+            var dvrlist = await service.GetVideoList(new Shared.Parameters.TbWeighVideoDtoParameter()
             { 
                 VideoTypeNo = (int)VideoWorkType.DVR,
                 Status = (int)EnumDevicestatus.Working
             });
-            if (videolist != null && videolist.Status)
+            if (dvrlist != null && dvrlist.Status)
             {  
-                var resultjson = videolist.Result.ToString();
-                VideoLists = JsonConvert.DeserializeObject<List<TbWeighVideoDto>>(resultjson); 
-            }
+                var resultjson = dvrlist.Result.ToString();
+                DvrVideoLists = JsonConvert.DeserializeObject<List<TbWeighVideoDto>>(resultjson); 
+            } 
             else
             {
                 Growl.WarningGlobal("获取摄像机数据失败！");
             }
+
+            foreach (var dvr in DvrVideoLists)
+            {
+                string deviceNo = dvr.Attribute1;
+                EnumDirection position = MultiVideoOperate.GetDirection(dvr.Position);
+                VideoSdkType sdkType = MultiVideoOperate.GetSdkTypeByFactory(dvr.Factory);
+
+                // 获取启用状态
+                EnumDevicestatus deviceStatus = EnumDevicestatus.Disable;
+                try
+                {
+                    deviceStatus = EnumDevicestatus.Working;//(EnumDevicestatus)tb_weigh_devicestatus.GetModel(deviceNo).Status;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("获取录像机{0}初始状态失败: {1}", deviceNo, ex.Message);
+                }
+
+                VideoOperateInfo info = new VideoOperateInfo
+                {
+                    DeviceNo = deviceNo,
+                    Position = position,
+                    WorkType = VideoWorkType.DVR,
+                    SDKType = sdkType,
+                    DeviceStatus = deviceStatus,
+                    IP = dvr.IP,
+                    Port = dvr.Port,
+                    UserName = dvr.UserName,
+                    Password = dvr.PassWord
+                };
+
+                // 登录硬盘录像机
+                if (multiVideo.Login(ref info))
+                {
+                    VideoLoginInfo dvrLoginInfo = info.Operate.GetVideoLoginInfo();
+                    // 磅房可用摄像头列表
+
+                    var dvrslaveList = await service.GetDvrMonitorChannelList(new Shared.Parameters.TbWeighVideoDtoParameter()
+                    {
+                        DeviceNo = dvr.Attribute1,
+                        WeighHouseCodes = "U8VMH-XGYCY-IB5O7-4SR58",
+                        Status = (int)EnumDevicestatus.Working
+                    });
+
+                    if (dvrslaveList != null && dvrslaveList.Status)
+                    {
+                        var resultslavejson = dvrslaveList.Result.ToString();
+                        DvrMonitorChannelList = JsonConvert.DeserializeObject<List<TbWeighVideoDto>>(resultslavejson);
+                    }
+                    else
+                    {
+                        Growl.WarningGlobal("获取摄像机数据失败！");
+                    }
+                    //List<tb_weigh_video> videoList = tb_weigh_video.GetDvrMonitorChannelList(dvr.Attribute1, weighHouseCode);
+
+                    foreach (var channelInfo in dvrLoginInfo.ChannelInfoList)
+                    {
+                        try
+                        {
+                            if (channelInfo.ConnectStatus == VideoChannelConnectStatus.AChan_Disabled || channelInfo.ConnectStatus == VideoChannelConnectStatus.DChan_Idle)
+                            {
+                                continue; // 通道禁用或空闲
+                            }
+                            int iChannelNum = channelInfo.iChannelNum;
+                            int index = DvrMonitorChannelList.FindIndex(x =>
+                            {
+                                int ch;
+                                if (int.TryParse(x.Attribute4, out ch))
+                                {
+                                    return ch == iChannelNum;
+                                }
+                                return false;
+                            });
+                            if (index < 0)
+                            {
+                                continue; // 通道不属于磅房
+                            }
+
+                            VideoMonitorChannelInfo monitorChannelInfo = new VideoMonitorChannelInfo
+                            {
+                                UserID = info.UserID, // 用户ID
+                                DeviceNo = info.DeviceNo, // 设备编号
+                                OperateInfo = info, // 操作类
+                                ChannelInfo = channelInfo, // 通道信息
+                                ChannelNum = iChannelNum, // 通道号
+                                IsActive = false
+                            };
+                            videoMonitorChannelList.Add(monitorChannelInfo);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                            continue;
+                        }
+                    }
+
+                    // 更新监控窗口数量
+                    monitorChannelNum = Math.Min(videoMonitorChannelList.Count(), 6);
+                }
+            }
+         
         }
 
         void Execute(string obj)
@@ -279,12 +318,75 @@ namespace WPFBase.ViewModels.BMViewModel
                 case "RealPlayEnd": StopPlayBack(); break;
                 //case "RealPlayPause": GetDataAsync(); break;
                 //case "RealPlaySlow": SaveMenu(); break;
-                //case "RealPlayNormal": SaveMenu(); break;
+                case "RealPlayNormal": PlayBack(); break;
                 //case "RealPlayFast": SaveMenu(); break;
                 //case "RealPlayCaptureBMP": SaveMenu(); break;
                 //case "RealPlaySingleFrame": SaveMenu(); break;
             }
 
+        }
+
+
+        /// <summary>
+        /// 打开回放
+        /// </summary>
+        private void PlayBack()
+        {
+            if (isPlayBack)
+            {
+                Growl.WarningGlobal("请关闭当前回放！"); 
+                return;
+            }
+
+            // 查询时间
+            DateTime playBackTime;
+            double advanceTime, postponeTime;
+            try
+            {
+                playBackTime = DateTime.Now.AddMinutes(-100);
+                advanceTime = double.Parse("1"); // 提前时间
+                postponeTime = double.Parse("1"); // 延迟时间
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("回放时间异常：" + ex.Message);
+                return;
+            }
+
+            // 打开回放
+            for (var i = 0; i < monitorChannelNum; i++)
+            {
+                PictureBox pictureBox = picBoxArr[i];
+                VideoMonitorChannelInfo monitorChannelInfo = videoMonitorChannelList[i];
+                monitorChannelInfo.RealPlayWnd = pictureBox;
+                pictureBox.Tag = monitorChannelInfo.DeviceNo + "#" + monitorChannelInfo.ChannelNum;
+
+                try
+                {
+                    IVideoOperate operate = monitorChannelInfo.OperateInfo.Operate;
+                    Int64 playHandle = -1;
+                    bool ret = operate.PlayBackByTime(playBackTime.AddMinutes(-advanceTime), playBackTime.AddMinutes(postponeTime), (short)monitorChannelInfo.ChannelNum, pictureBox.Handle, out playHandle);
+                    if (ret)
+                    {
+                        monitorChannelInfo.ChannelInfo.PlayHandle = playHandle;
+                        monitorChannelInfo.ChannelInfo.PlayStatus = VideoChannelPlayStatus.PlayBack;
+                        isPlayBack = true;
+
+                        Console.WriteLine(string.Format(FORMAT_MSG_CHANNEL_OPSUCC, monitorChannelInfo.ChannelNum, "打开回放"));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(string.Format(FORMAT_MSG_CHANNEL_OPFAIL, monitorChannelInfo.ChannelNum, "打开回放异常", ex.Message));
+                    continue;
+                }
+            }
+            // 至少有一个通道成功开启回放
+            //if (isPlayBack)
+            //{
+            //    SetControlButtons(true);
+            //    timerPlayBack.Start();
+            //}
         }
 
         /// <summary>
