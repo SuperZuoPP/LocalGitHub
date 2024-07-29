@@ -5,13 +5,13 @@
     xmlns:components="clr-namespace:WPFBase.Components"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:WPFBase.Views.BMView"
-    xmlns:timeConvert="clr-namespace:WPFBase.Common.Converters"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:timeConvert="clr-namespace:WPFBase.Common.Converters"
     d:DesignHeight="650"
     d:DesignWidth="1200"
     mc:Ignorable="d">
     <UserControl.Resources>
-        <timeConvert:UtcToLocalTimeConverter x:Key="utcToLocalConverter"/>
+        <timeConvert:UtcToLocalTimeConverter x:Key="utcToLocalConverter" />
     </UserControl.Resources>
     <Grid>
 
@@ -108,27 +108,39 @@
                     VerticalAlignment="Center"
                     Command="{Binding OPCCommand}"
                     IsChecked="{Binding IsChenked, UpdateSourceTrigger=PropertyChanged}" />
- 
-                
-                <DockPanel LastChildFill="False" Grid.Row="3">
+
+
+                <DockPanel Grid.Row="3" LastChildFill="False">
                     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                        <TextBlock Margin="10,15,20,20" Width="100" Text="实时监控值"/>
+                        <TextBlock
+                            Width="100"
+                            Margin="10,15,20,20"
+                            Text="OPC实时监控值" />
                         <TextBlock Margin="10,15,20,0" Text="时间" />
                     </StackPanel>
                     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                        <TextBlock Margin="10,5,20,20" Width="100"  Text="{Binding OPCProperties[Double1].Value, UpdateSourceTrigger=PropertyChanged}" />
-                        <TextBlock Margin="10,5,20,0"   Text="{Binding OPCProperties[Double1].ServerTimestamp,Converter={StaticResource utcToLocalConverter}, UpdateSourceTrigger=PropertyChanged, StringFormat='yyyy-MM-dd HH:mm:ss'}" />
-                    </StackPanel>
-                    <StackPanel DockPanel.Dock="Top"  Orientation="Horizontal">
-                        <TextBlock Margin="10,5,20,20" Width="100"  Text="{Binding OPCProperties[Word1].Value, UpdateSourceTrigger=PropertyChanged}" />
-                        <TextBlock Margin="10,5,20,0" Text="{Binding OPCProperties[Word1].ServerTimestamp, Converter={StaticResource utcToLocalConverter},UpdateSourceTrigger=PropertyChanged, StringFormat='yyyy-MM-dd HH:mm:ss'}" />
+                        <TextBlock
+                            Width="100"
+                            Margin="10,5,20,20"
+                            Text="{Binding OPCProperties[Double1].Value, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Margin="10,5,20,0" Text="{Binding OPCProperties[Double1].ServerTimestamp, Converter={StaticResource utcToLocalConverter}, UpdateSourceTrigger=PropertyChanged, StringFormat='yyyy-MM-dd HH:mm:ss'}" />
                     </StackPanel>
                     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                        <TextBlock Margin="10,5,20,20" Width="100"  Text="{Binding OPCProperties[Float1].Value, UpdateSourceTrigger=PropertyChanged}" />
-                        <TextBlock Margin="10,5,20,0" Text="{Binding OPCProperties[Float1].ServerTimestamp,Converter={StaticResource utcToLocalConverter}, UpdateSourceTrigger=PropertyChanged, StringFormat='yyyy-MM-dd HH:mm:ss'}" />
+                        <TextBlock
+                            Width="100"
+                            Margin="10,5,20,20"
+                            Text="{Binding OPCProperties[Word1].Value, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Margin="10,5,20,0" Text="{Binding OPCProperties[Word1].ServerTimestamp, Converter={StaticResource utcToLocalConverter}, UpdateSourceTrigger=PropertyChanged, StringFormat='yyyy-MM-dd HH:mm:ss'}" />
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                        <TextBlock
+                            Width="100"
+                            Margin="10,5,20,20"
+                            Text="{Binding OPCProperties[Float1].Value, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Margin="10,5,20,0" Text="{Binding OPCProperties[Float1].ServerTimestamp, Converter={StaticResource utcToLocalConverter}, UpdateSourceTrigger=PropertyChanged, StringFormat='yyyy-MM-dd HH:mm:ss'}" />
                     </StackPanel>
                 </DockPanel>
-                
+
             </Grid>
             <!--  右侧布局  -->
             <Grid Grid.Column="2" HorizontalAlignment="Stretch">
@@ -152,34 +164,34 @@
                     <StackPanel>
                         <TextBlock
                             HorizontalAlignment="Center"
-                            Foreground="#99FFFFFF"
-                            Text="监控值" />
+                            Foreground="Black"
+                            Text="CPU使用率" />
                         <components:CircularProgressBar
                             Width="60"
                             Height="90"
                             ForeColor="#38baec"
-                            ProgressValue="{Binding OPCProperties[Double1].Value, UpdateSourceTrigger=PropertyChanged}" />
+                            ProgressValue="{Binding CpuUsage, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
                     <StackPanel>
                         <TextBlock
                             HorizontalAlignment="Center"
-                            Foreground="#99FFFFFF"
-                            Text="监控值" />
+                            Foreground="Black"
+                            Text="内存使用率" />
                         <components:CircularProgressBar
                             Width="60"
                             Height="90"
-                            ProgressValue="50" />
+                            ProgressValue="{Binding MemoryUsage, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
                     <StackPanel>
                         <TextBlock
                             HorizontalAlignment="Center"
-                            Foreground="#99FFFFFF"
-                            Text="监控值" />
+                            Foreground="Black"
+                            Text="磁盘使用率" />
                         <components:CircularProgressBar
                             Width="60"
                             Height="90"
                             ForeColor="#20c9b4"
-                            ProgressValue="78" />
+                            ProgressValue="{Binding DiskUsage, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
                 </UniformGrid>
                 <TextBlock

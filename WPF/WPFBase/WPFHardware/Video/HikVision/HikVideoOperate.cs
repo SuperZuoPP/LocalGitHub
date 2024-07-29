@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -474,10 +475,12 @@ namespace WPFHardware.Video.HikVision
             lpPreviewInfo.dwDisplayBufNum = 15; //播放库播放缓冲区最大缓冲帧数
             lpPreviewInfo.byProtoType = 0;
             lpPreviewInfo.byPreviewMode = 0;
-            //if (RealData == null)
-            //{
-            //    RealData = new CHCNetSDK.REALDATACALLBACK(RealDataCallBack);//预览实时流回调函数
-            //}
+
+            if (fRealData ==null )
+            {
+                fRealData = new CHCNetSDK.REALDATACALLBACK(RealDataCallBack);//预览实时流回调函数
+            } 
+
             IntPtr pUser = new IntPtr();//用户数据 //打开预览 Start live view 
             lRealHandle = CHCNetSDK.NET_DVR_RealPlay_V40((int)lUserID, ref lpPreviewInfo, null, pUser);
             if (lRealHandle < 0)
@@ -489,6 +492,32 @@ namespace WPFHardware.Video.HikVision
             return true;
         }
 
+        /// <summary>
+        /// 取流回调函数
+        /// </summary>
+        /// <param name="lRealHandle"></param>
+        /// <param name="dwDataType"></param>
+        /// <param name="pBuffer"></param>
+        /// <param name="dwBufSize"></param>
+        /// <param name="pUser"></param>
+        public void RealDataCallBack(int lRealHandle, uint dwDataType, IntPtr pBuffer, uint dwBufSize, IntPtr pUser)
+        {
+            if (dwBufSize > 0)
+            {
+                byte[] sData = new byte[dwBufSize];
+                Marshal.Copy(pBuffer, sData, 0, (int)dwBufSize);
+                // 多设备注意文件占用
+                string str = string.Format(@"Data\CapStream\实时流数据{0}.ps", lRealHandle);
+                FileStream fs = new FileStream(str, FileMode.Create);
+                int iLen = (int)dwBufSize;
+                fs.Write(sData, 0, iLen);
+                fs.Close(); 
+            }
+            else
+            {
+                
+            }
+        }
         /// <summary>
         /// 停止实时预览
         /// </summary>
@@ -573,32 +602,50 @@ namespace WPFHardware.Video.HikVision
         /// <returns></returns>
         public bool JPEGCapturePicture(int iChannelNum, ushort wPicQuality, ushort wPicSize, string ipSavePath)
         {
-            uint dwSizeReturned = 0;
-            CHCNetSDK.NET_DVR_JPEGPARA lpJpegPara = new CHCNetSDK.NET_DVR_JPEGPARA();
-            lpJpegPara.wPicQuality = wPicQuality; //图像质量 Image quality
-            lpJpegPara.wPicSize = wPicSize; //抓图分辨率 Picture size: 0xff-Auto(使用当前码流分辨率) 
-                                            //抓图分辨率需要设备支持，更多取值请参考SDK文档
-                                            //JEPG抓图，数据保存在缓冲区中 Capture a JPEG picture and save in the buffer
-            uint iBuffSize = 1024 * 1024 * 10; //缓冲区大小需要不小于一张图片数据的大小 The buffer size should not be less than the picture size
-            byte[] byJpegPicBuffere = new byte[iBuffSize];
+            //uint dwSizeReturned = 0;
+            //CHCNetSDK.NET_DVR_JPEGPARA lpJpegPara = new CHCNetSDK.NET_DVR_JPEGPARA();
+            //lpJpegPara.wPicQuality = wPicQuality; //图像质量 Image quality
+            //lpJpegPara.wPicSize = wPicSize; //抓图分辨率 Picture size: 0xff-Auto(使用当前码流分辨率) 
+            //                                //抓图分辨率需要设备支持，更多取值请参考SDK文档
+            //                                //JEPG抓图，数据保存在缓冲区中 Capture a JPEG picture and save in the buffer
+            //uint iBuffSize = 1024 * 1024 * 10; //缓冲区大小需要不小于一张图片数据的大小 The buffer size should not be less than the picture size
+            //byte[] byJpegPicBuffere = new byte[iBuffSize];
             //JPEG抓图保存成文件 Capture a JPEG picture
-            if (!CHCNetSDK.NET_DVR_CaptureJPEGPicture_NEW((int)lUserID, iChannelNum, ref lpJpegPara, byJpegPicBuffere, iBuffSize, ref dwSizeReturned))
+            CHCNetSDK.NET_DVR_JPEGPARA lpJpegPara = new CHCNetSDK.NET_DVR_JPEGPARA
+            {
+                // 图像质量
+                wPicQuality = wPicQuality,
+                // 抓图分辨率 Picture size: 2- 4CIF，0xff- Auto(使用当前码流分辨率)，抓图分辨率需要设备支持，更多取值请参考SDK文档
+                wPicSize = wPicSize,
+            };
+
+            bool savePic = CHCNetSDK.NET_DVR_CaptureJPEGPicture((int)lUserID, iChannelNum , ref lpJpegPara, ipSavePath); 
+            if (savePic)
+            { 
+                return true;
+            }
+            else
             {
                 iLastErr = CHCNetSDK.NET_DVR_GetLastError();
                 return false;
             }
-            else
-            {
-                //将缓冲区里的JPEG图片数据写入文件 save the data into a file
-                FileStream fs = new FileStream(ipSavePath, FileMode.Create);
-                int iLen = (int)dwSizeReturned;
-                // byte[] bytes = Convert.FromBase64String(byJpegPicBuffer);
-                //给全局变量赋图片缓存，后续保存成功清除缓存
-                fs.Write(byJpegPicBuffere, 0, iLen);
-                fs.Close();
+            //if (!CHCNetSDK.NET_DVR_CaptureJPEGPicture_NEW((int)lUserID, iChannelNum, ref lpJpegPara, byJpegPicBuffere, iBuffSize, ref dwSizeReturned))
+            //{
+            //    iLastErr = CHCNetSDK.NET_DVR_GetLastError();
+            //    return false;
+            //}
+            //else
+            //{
+            //    //将缓冲区里的JPEG图片数据写入文件 save the data into a file
+            //    FileStream fs = new FileStream(ipSavePath, FileMode.Create);
+            //    int iLen = (int)dwSizeReturned;
+            //    // byte[] bytes = Convert.FromBase64String(byJpegPicBuffer);
+            //    //给全局变量赋图片缓存，后续保存成功清除缓存
+            //    fs.Write(byJpegPicBuffere, 0, iLen);
+            //    fs.Close();
 
-                return true;
-            }
+            //    return true;
+            //}
         }
 
         public void JPEGCapturePicture(int iChannelNum, ushort wPicQuality, ushort wPicSize, out byte[] byJpegPicBuffere, out uint dwSizeReturned)

@@ -13,9 +13,9 @@
     Width="1280"
     Height="768"
     prism:ViewModelLocator.AutoWireViewModel="True"
-    AllowsTransparency="True"
     Background="{DynamicResource MaterialDesignPaper}"
     FontFamily="微软雅黑"
+    ResizeMode="CanMinimize"
     TextElement.FontSize="13"
     TextElement.FontWeight="Regular"
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -24,15 +24,6 @@
     WindowStartupLocation="CenterScreen"
     WindowStyle="None"
     mc:Ignorable="d">
-    <!--<Window.Background>
-    -->
-    <!--  线性渐变  -->
-    <!--
-        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-            <GradientStop Color="#F7F9FA" Offset="0"/>
-            <GradientStop Color="#FFD3EBF7" Offset="1"/>
-        </LinearGradientBrush>
-    </Window.Background>-->
 
     <materialDesign:DialogHost
         x:Name="DialogHost"

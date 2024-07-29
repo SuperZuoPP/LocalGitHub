@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using static WPFHardware.Video.HikVision.CHCNetSDK;
 using WPFHardware.Video.Constants;
 using NetSDKCS.Control;
+using System.IO;
+using WPFHardware.Video.HikVision;
+using System.Threading.Channels;
 
 namespace WPFHardware.Video.DaHua
 {
@@ -269,7 +272,7 @@ namespace WPFHardware.Video.DaHua
         /// <param name="dwUser"></param>
         private void SnapRevCallBack(IntPtr lLoginID, IntPtr pBuf, uint RevLen, uint EncodeType, uint CmdSerial, IntPtr dwUser)
         {
-
+            
         }
 
         /// <summary>
@@ -467,22 +470,25 @@ namespace WPFHardware.Video.DaHua
 
         public bool JPEGCapturePicture(int lChannel, ushort wPicQuality, ushort wPicSize, string savePath)
         {
-            m_SavePath = savePath;
+            //NET_SNAP_PARAMS sNAP_PARAMS = new NET_SNAP_PARAMS();
+            //sNAP_PARAMS.Channel = (uint)lChannel;
+            //sNAP_PARAMS.Quality = 0;
+            //sNAP_PARAMS.ImageSize = 0;
+            //sNAP_PARAMS.mode = 0;
+            //sNAP_PARAMS.InterSnap = 0;
 
-            NET_MANUAL_SNAP_PARAMETER par = new NET_MANUAL_SNAP_PARAMETER();
-            par.byReserved = new byte[60];
-            par.nChannel = lChannel;
-            par.bySequence = "";
-            IntPtr parPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(NET_MANUAL_SNAP_PARAMETER)));
-
-            Marshal.StructureToPtr(par, parPtr, true);
-            bool ret = NETClient.ControlDevice((IntPtr)lUserID, EM_CtrlType.MANUAL_SNAP, parPtr, m_WaitTime);
-            if (!ret)
-            {
-                iLastErr = NETClient.GetDeviceLastError();
-            }
-            Marshal.FreeHGlobal(parPtr);
-            return ret;
+            //NET_IN_SNAP_PIC_TO_FILE_PARAM nET_IN_SNAP_PIC_TO_FILE_PARAM = new NET_IN_SNAP_PIC_TO_FILE_PARAM();
+            //nET_IN_SNAP_PIC_TO_FILE_PARAM.dwSize = 1;
+            //nET_IN_SNAP_PIC_TO_FILE_PARAM.stuParam = sNAP_PARAMS;
+            //nET_IN_SNAP_PIC_TO_FILE_PARAM.szFilePath = savePath;
+            //NET_OUT_SNAP_PIC_TO_FILE_PARAM nET_OUT_SNAP_PIC_TO_FILE_PARAM =  new NET_OUT_SNAP_PIC_TO_FILE_PARAM() ;
+            //bool result = NETClient.SnapPictureToFile((IntPtr)lUserID, ref nET_IN_SNAP_PIC_TO_FILE_PARAM,ref nET_OUT_SNAP_PIC_TO_FILE_PARAM, 0);
+            //if (!result)
+            //{
+            //    iLastErr = NETClient.GetDeviceLastError();
+            //} 
+            //return result;
+            return false;
         }
 
         public void JPEGCapturePicture(int lChannel, ushort wPicQuality, ushort wPicSize, out byte[] byJpegPicBuffere, out uint dwSizeReturned)
@@ -738,14 +744,19 @@ namespace WPFHardware.Video.DaHua
         }
 
         /// <summary>
-        /// 抓图
+        /// 回放抓图
         /// </summary>
         /// <param name="lPlayHandle">回放句柄</param>
         /// <param name="sBmpPicFileName">图片保存路径和文件名</param>
         /// <returns></returns>
         public bool PlayBackBMP(Int64 lPlayHandle, string sBmpPicFileName = "test.bmp")
-        {
-            return false;
+        { 
+            bool result = NETClient.CapturePicture((IntPtr)lPlayHandle, sBmpPicFileName, EM_NET_CAPTURE_FORMATS.JPEG);
+            if (!result)
+            {
+                iLastErr = NETClient.GetDeviceLastError();
+            }
+            return result;
         }
 
         #endregion

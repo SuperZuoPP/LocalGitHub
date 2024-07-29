@@ -47,7 +47,7 @@ namespace WPFBase.Api
             {
 
                 //使用sqlserver
-                var connectionString = Configuration.GetConnectionString("SqlServerConnection1");
+                var connectionString = Configuration.GetConnectionString("SqlServerConnection");
                 options.UseSqlServer(connectionString);
 
                 //使用sqlite

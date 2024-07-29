@@ -142,11 +142,14 @@ namespace WPFBase.Api.Services.BM
                 var repository2 = unitOfWork.GetRepository<TbWeighDevicestatus>();
 
                 string videoTypeNo = parameter.VideoTypeNo.ToString();
+                string weighHouseCodes = parameter.WeighHouseCodes.ToString();
                 int status = parameter.Status;
 
                 // 查询 repository1 中满足条件的数据
                 var filteredVideos = await repository1.GetAll()
-                    .Where(t1 => t1.VideoTypeNo == videoTypeNo && (t1.OperateBit != 2 || t1.OperateBit == null))
+                    .Where(t1 => t1.VideoTypeNo == videoTypeNo 
+                    && t1.WeighHouseCodes == weighHouseCodes
+                    && (t1.OperateBit != 2 || t1.OperateBit == null))
                     .ToListAsync();
 
                 // 根据 filteredVideos 中的 Attribute1 查询 repository2 中的数据

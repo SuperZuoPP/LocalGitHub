@@ -29,7 +29,8 @@ namespace WPFBase.Services
             BaseRequest baseRequest = new BaseRequest();
             baseRequest.Method = RestSharp.Method.Get;
             baseRequest.Route = $"api/{serviceName}/GetVideoList?VideoTypeNo={parameter.VideoTypeNo}" +
-                $"&Status={parameter.Status}";
+                $"&Status={parameter.Status}" +
+                $"&WeighHouseCodes={parameter.WeighHouseCodes}";
             baseRequest.Parameter = parameter;
             return await client.ExecuteAsync(baseRequest); 
         }

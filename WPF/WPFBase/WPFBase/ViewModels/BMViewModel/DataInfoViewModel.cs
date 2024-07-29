@@ -37,7 +37,8 @@ namespace WPFBase.ViewModels.BMViewModel
             SearchGroupCmd = new DelegateCommand(SearchGroup);
             PerPageNumSeletedCommand = new DelegateCommand<ComboBoxItem>(PerPageNumSeleted);
             PageUpdatedCommand = new DelegateCommand(PageUpdated);
-            GetGroupList();
+            // GetGroupList();
+            GroupList = AppSession.PoundRoomGroupList;
         }
 
        

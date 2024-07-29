@@ -2,7 +2,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:hc="https://handyorg.github.io/handycontrol"
-    xmlns:i="http://schemas.microsoft.com/xaml/behaviors">
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <Style x:Key="noneBorderWindowStyle" TargetType="Window">
         <Setter Property="WindowStyle" Value="None" />
@@ -179,52 +180,76 @@
     </Style>
 
 
-    <Style x:Key="MyButtonIcon" BasedOn="{StaticResource ButtonBaseStyle}" TargetType="Button">
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
-        <Setter Property="hc:BorderElement.CornerRadius" Value="0"/>
-        <Setter Property="Cursor" Value="Hand"/>
+    <Style
+        x:Key="MyButtonIcon"
+        BasedOn="{StaticResource ButtonBaseStyle}"
+        TargetType="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+        <Setter Property="hc:BorderElement.CornerRadius" Value="0" />
+        <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border CornerRadius="{Binding Path=(hc:BorderElement.CornerRadius),RelativeSource={RelativeSource TemplatedParent}}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
-                        <ContentControl HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{Binding Path=(hc:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}">
+                        <ContentControl
+                            Margin="{TemplateBinding Padding}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Path x:Name="MyPath" Fill="{TemplateBinding Foreground}" SnapsToDevicePixels="True" Stretch="Uniform" Width="{TemplateBinding Height}" Data="{TemplateBinding hc:IconElement.Geometry}"/>
-                                <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{TemplateBinding Content}" Margin="5,0"
-                                        Foreground="{Binding ElementName=MyPath, Path=Fill}"/>
+                                <Path
+                                    x:Name="MyPath"
+                                    Width="{TemplateBinding Height}"
+                                    Data="{TemplateBinding hc:IconElement.Geometry}"
+                                    Fill="{TemplateBinding Foreground}"
+                                    SnapsToDevicePixels="True"
+                                    Stretch="Uniform" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Margin="5,0"
+                                    VerticalAlignment="Center"
+                                    Foreground="{Binding ElementName=MyPath, Path=Fill}"
+                                    Text="{TemplateBinding Content}" />
                             </Grid>
                         </ContentControl>
                     </Border>
 
                     <ControlTemplate.Triggers>
-                        <!-- 鼠标停留时背景色 -->
+                        <!--  鼠标停留时背景色  -->
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="MyPath" Property="Fill" Value="{DynamicResource PrimaryBrush}"/>
+                            <Setter TargetName="MyPath" Property="Fill" Value="{DynamicResource PrimaryBrush}" />
                         </Trigger>
 
-                        <!-- 特殊文字颜色 -->
+                        <!--  特殊文字颜色  -->
                         <Trigger Property="Content" Value="开始采集">
-                            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
                         </Trigger>
                         <Trigger Property="Content" Value="停止采集">
-                            <Setter Property="Foreground" Value="{DynamicResource AccentBrush}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource AccentBrush}" />
                         </Trigger>
                         <Trigger Property="Content" Value="连接设备">
-                            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
                         </Trigger>
                         <Trigger Property="Content" Value="断开设备">
-                            <Setter Property="Foreground" Value="{DynamicResource AccentBrush}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource AccentBrush}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+
+
+
 </ResourceDictionary>

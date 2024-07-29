@@ -29,7 +29,12 @@ namespace WPFBase.ViewModels.SMViewModel
             if (obj == null || string.IsNullOrWhiteSpace(obj.NameSpace))
                 return;
 
-            regionManager.Regions[PrismManager.SettingsViewRegionName].RequestNavigate(obj.NameSpace);
+            NavigationParameters param = new NavigationParameters();
+            if (obj.NameSpace == "UserView")
+            {
+                param.Add("Value", 0);
+            }
+            regionManager.Regions[PrismManager.SettingsViewRegionName].RequestNavigate(obj.NameSpace,param);
         }
 
         public DelegateCommand<MenuBar> NavigateCommand { get; private set; }

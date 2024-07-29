@@ -20,9 +20,15 @@ namespace WPFBase.Extensions
 
 
         /// <summary>
-        /// 设置页区域
+        /// 设置计量首页区域
         /// </summary>
         public static readonly string WeighSiteViewRegionName = "WeighSiteViewRegion";
+
+
+        /// <summary>
+        /// 设置video区域
+        /// </summary>
+        public static readonly string VideoRealPlayViewRegionName = "VideoRealPlayViewRegion";
     }
 }
 

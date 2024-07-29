@@ -1,10 +1,13 @@
-﻿using ImTools;
+﻿using FastReport;
+using ImTools;
 using Prism.Commands;
 using Prism.Ioc;
 using Prism.Regions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Management;
 using System.Text; 
 using System.Timers;
 using WPFBase.Base;
@@ -20,13 +23,13 @@ namespace WPFBase.ViewModels.BMViewModel
         private Timer opcTimer;
         private Dictionary<string, object> opcProperties = new Dictionary<string, object>();
         OPCCommunication communication = new OPCCommunication();
+        private PerformanceCounter cpuCounter, ramCounter, diskCounter; 
+
         public HomeViewModel(IContainerProvider containerProvider, IRegionManager regionManager) : base(containerProvider)
         {
-            this.regionManager = regionManager;
-            IsChenked = true;
+            this.regionManager = regionManager; 
             ComponentCommand = new DelegateCommand<object>(ComponentCmd);
-            OPCCommand = new DelegateCommand(OPCConnect);
-            OPCConnect();
+            OPCCommand = new DelegateCommand(OPCConnect); 
         }
 
 
@@ -49,7 +52,31 @@ namespace WPFBase.ViewModels.BMViewModel
             set { tag = value; }
         }
 
-      
+
+        private double cpuUsage;
+
+        public double CpuUsage
+        {
+            get { return cpuUsage; }
+            set { SetProperty<double>(ref cpuUsage, value); }
+        }
+
+        private double memoryUsage;
+
+        public double MemoryUsage
+        {
+            get { return memoryUsage; }
+            set { SetProperty<double>(ref memoryUsage, value); }
+        }
+
+        private double diskUsage;
+
+        public double DiskUsage
+        {
+            get { return diskUsage; }
+            set { SetProperty<double>(ref diskUsage, value); }
+        }
+
         public Dictionary<string, object> OPCProperties
         {
             get { return opcProperties;  }
@@ -59,7 +86,6 @@ namespace WPFBase.ViewModels.BMViewModel
       
 
         #endregion
-
 
         #region 命令
 
@@ -76,20 +102,20 @@ namespace WPFBase.ViewModels.BMViewModel
         }
 
         private void OPCConnect()
-        {
+        { 
             if (IsChenked) 
-            {
-                communication.ConnectToOpcServer();
+            { 
                 StartOpcTimer();
-            }else
-            {
-                communication.DisConnectOpcServer();
+            }
+            else
+            { 
                 StopOpcTimer();
             } 
         }
 
         public void StartOpcTimer()
-        { 
+        {
+            communication.ConnectToOpcServer();
             opcTimer = new Timer(3000); // 3秒（3000毫秒）
             opcTimer.Elapsed += OpcTimer_Elapsed;
             opcTimer.AutoReset = true; // 设置为true，计时器到时间后会自动重新开始
@@ -98,6 +124,7 @@ namespace WPFBase.ViewModels.BMViewModel
 
         public void StopOpcTimer()
         {
+            communication.DisConnectOpcServer();
             if (opcTimer != null)
             {
                 opcTimer.Stop(); // 停止计时器
@@ -119,6 +146,61 @@ namespace WPFBase.ViewModels.BMViewModel
             
             OPCProperties = newProperties; 
         }
+
+
+        /// <summary>
+        /// 获取电脑使用性能
+        /// </summary>
+        private void ComputerPerformance()
+        { 
+            // 每隔一段时间更新计数器值
+            System.Timers.Timer timer = new System.Timers.Timer(3000);
+            try
+            { 
+                cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+                ramCounter = new PerformanceCounter("Memory", "Available MBytes");
+                diskCounter = new PerformanceCounter("PhysicalDisk", "% Disk Time", "_Total");
+
+                // 开始计算CPU和内存、磁盘使用情况  
+                timer.Elapsed += (s, e) =>
+                {
+                    CpuUsage = Math.Round(cpuCounter.NextValue(), 0);
+                    DiskUsage = Math.Round(diskCounter.NextValue(), 0);
+                    long totalMemory = 1;  
+                    using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT TotalVisibleMemorySize FROM Win32_OperatingSystem"))
+                    {
+                        foreach (ManagementObject share in searcher.Get())
+                        {
+                            totalMemory = Convert.ToInt64(share["TotalVisibleMemorySize"])/1024;
+                        }
+                    } 
+                    double ramUsage = (100 - (ramCounter.NextValue() / totalMemory)*100); 
+                    MemoryUsage = Math.Round(ramUsage, 0);
+                };
+                timer.Start();
+            }
+            catch 
+            {
+                timer.Stop();
+            }
+        }
+
+        public override void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            base.OnNavigatedTo(navigationContext);
+            IsChenked = true;
+            OPCConnect();
+            ComputerPerformance();
+        }
+
+        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            base.OnNavigatedTo(navigationContext);
+            IsChenked=false;
+            OPCConnect();
+        }
+
+
         #endregion
 
     }

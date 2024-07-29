@@ -22,19 +22,20 @@ namespace WPFBase.ViewModels.Dialogs
     {
         
         private readonly ILoginService loginService;
+        private readonly ITbWeighWeighbridgeofficeService officeService;
 
-        
 
 
-        public LoginViewModel(ILoginService loginService)
+        public LoginViewModel(ILoginService loginService, ITbWeighWeighbridgeofficeService officeService)
         { 
             ExecuteCommand = new DelegateCommand<string>(Execute);
             this.loginService = loginService;
+            this.officeService = officeService;
             //ToDoDto todo = new ToDoDto() { Title="test",Content= "test", Status=1 };
             //SqliteHelper.InsertData1<ToDoDto,ToDo>(todo);
-           
-        }
 
+        }
+        
 
        
 
@@ -102,7 +103,7 @@ namespace WPFBase.ViewModels.Dialogs
             {
                 AppSession.UserName = loginResult.Result.UserName;
                 AppSession.UserCode = loginResult.Result.UserCode;
-
+                GetPoundRoomGroupList();
                 var menulist = await loginService.MenuAuthority(loginResult.Result.UserCode);
                 if (menulist.Status)
                 {
@@ -119,6 +120,26 @@ namespace WPFBase.ViewModels.Dialogs
                 Growl.WarningGlobal(loginResult.Message); 
             }
         }
+
+        private async void GetPoundRoomGroupList()
+        {
+
+            var grouplists = await officeService.GetList();
+
+            if (grouplists.Status)
+            {
+                AppSession.PoundRoomGroupList.Clear();
+                foreach (var item in grouplists.Result.Items)
+                {
+                    AppSession.PoundRoomGroupList.Add(new PoundRoomGroup()
+                    {
+                        GroupId = item.WeighHouseCode,
+                        GroupName = item.WeighHouseName
+                    });
+                }
+            }
+        }
+
 
         public event Action<IDialogResult> RequestClose;
 
