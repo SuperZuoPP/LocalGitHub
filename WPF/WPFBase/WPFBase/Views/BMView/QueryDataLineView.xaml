@@ -3,8 +3,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:frdesign="clr-namespace:FastReport.Design;assembly=FastReport.WPF"
-    xmlns:frpreview="clr-namespace:FastReport.Preview;assembly=FastReport.WPF"
     xmlns:hc="https://handyorg.github.io/handycontrol"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:WPFBase.Views.BMView"
@@ -17,7 +15,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="120" />
-            <RowDefinition Height="*" /> 
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <Border
@@ -67,7 +65,6 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         Click="Button_Click"
-                        
                         Content="查询" />
                 </StackPanel>
                 <StackPanel
@@ -112,11 +109,11 @@
 
 
         <!--<frdesign:WpfDesignerControl Grid.Row="1" Height="287" />-->
-        <frpreview:WpfPreviewControl
+        <!--<frpreview:WpfPreviewControl
             x:Name="previewControl"
             Grid.Row="1"
             Margin="10"
-            ToolbarVisible="True" />
+            ToolbarVisible="True" />-->
 
     </Grid>
 </UserControl>

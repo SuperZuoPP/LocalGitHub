@@ -19,7 +19,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WPFBase.Shared.DTO.BM;
 using WPFBase.ViewModels.BMViewModel;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using WPFBase.Views.Reports;
 
 namespace WPFBase.Views.BMView
 {
@@ -29,52 +29,40 @@ namespace WPFBase.Views.BMView
     public partial class QueryDataLineWinfromView : UserControl
     {
         private QueryDataLineViewModel viewModel=>this.DataContext as QueryDataLineViewModel;
-       // FastReport.Design.StandardDesigner.DesignerControl designer = new FastReport.Design.StandardDesigner.DesignerControl();
-        FastReport.Preview.PreviewControl prew = new FastReport.Preview.PreviewControl();
+        //FastReport.Design.StandardDesigner.DesignerControl designer = new FastReport.Design.StandardDesigner.DesignerControl();
+        //FastReport.Preview.PreviewControl prew = new FastReport.Preview.PreviewControl();
          
 
 
         public QueryDataLineWinfromView()
         {
             InitializeComponent(); 
-            //designer.Report = report1;
-            //designer.RefreshLayout();
-            //WindowsFormsHost1.Child = designer;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private  void Button_Click(object sender, RoutedEventArgs e)
         {
-            //winFromPanel.Controls.Add(prew);
-            //var reportFile = System.IO.Path.Join(Environment.CurrentDirectory, "按计划单号与日期明细.frx");//按计划单号与日期明细 Simple List
-            //Report report1 = new Report();
-            //report1.Load(reportFile);
-            //report1.Preview = prew;
-            //report1.Show();
-
-            //report1.Prepare();
-            //report1.ShowPrepared();
-
-            //await viewModel.SearchAsync();
-            //var ds = ConvertToDataSet(viewModel.WeighDataListsDtos);
-            // var ds = ConvertToDataSet(viewModel.DataInfos);
-            // report.RegisterData(ds, "NorthWind");
-            //// var ds1 = TestData();
-            //// report.RegisterData(ds1, "NorthWind");
-            // report.PrepareAsync(previewControl); 
+            //viewModel.Search(); 
+            //var ds = ConvertToDataSet(viewModel.WeighDataListsDtos); 
+            Preview prew = new Preview();
+            prew.Show();
+            //var ds = TestData();
+            //FastReport.Report report = new FastReport.Report();
+            //report.RegisterData(ds);
+            //report.Show(); 
         }
 
-       
+
         private DataSet TestData()
         {
             DataSet ds = new DataSet();
 
             // 创建一个DataTable
-            DataTable table = new DataTable("Employees");
+            DataTable table = new DataTable("tb_weigh_datalineinfo");
 
             // 定义列
-            table.Columns.Add("EmployeeID", typeof(int));
-            table.Columns.Add("LastName", typeof(string));
-            table.Columns.Add("FirstName", typeof(string));
+            table.Columns.Add("Id", typeof(int));
+            table.Columns.Add("PlanNumber", typeof(string));
+            table.Columns.Add("CarNumber", typeof(string));
 
             // 添加测试数据
             table.Rows.Add(1, "Name1", "zuochao");

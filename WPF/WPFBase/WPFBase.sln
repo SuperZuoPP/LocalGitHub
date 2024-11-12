@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPFBase.Shared", "WPFBase.S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPFHardware", "WPFHardware\WPFHardware.csproj", "{44827761-33E5-4D1C-A84C-9096C508D9CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFBase.Entities", "WPFBase.Entities\WPFBase.Entities.csproj", "{DA62EC45-A116-48FE-BDC5-301C5F4C4855}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,8 +21,8 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AABBEB73-D2ED-4488-8C46-85D80167F997}.Debug|Any CPU.ActiveCfg = Debug|x64
-		{AABBEB73-D2ED-4488-8C46-85D80167F997}.Debug|Any CPU.Build.0 = Debug|x64
+		{AABBEB73-D2ED-4488-8C46-85D80167F997}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AABBEB73-D2ED-4488-8C46-85D80167F997}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AABBEB73-D2ED-4488-8C46-85D80167F997}.Debug|x64.ActiveCfg = Debug|x64
 		{AABBEB73-D2ED-4488-8C46-85D80167F997}.Debug|x64.Build.0 = Debug|x64
 		{AABBEB73-D2ED-4488-8C46-85D80167F997}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,6 +53,14 @@ Global
 		{44827761-33E5-4D1C-A84C-9096C508D9CD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{44827761-33E5-4D1C-A84C-9096C508D9CD}.Release|x64.ActiveCfg = Release|Any CPU
 		{44827761-33E5-4D1C-A84C-9096C508D9CD}.Release|x64.Build.0 = Release|Any CPU
+		{DA62EC45-A116-48FE-BDC5-301C5F4C4855}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA62EC45-A116-48FE-BDC5-301C5F4C4855}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA62EC45-A116-48FE-BDC5-301C5F4C4855}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DA62EC45-A116-48FE-BDC5-301C5F4C4855}.Debug|x64.Build.0 = Debug|Any CPU
+		{DA62EC45-A116-48FE-BDC5-301C5F4C4855}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA62EC45-A116-48FE-BDC5-301C5F4C4855}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA62EC45-A116-48FE-BDC5-301C5F4C4855}.Release|x64.ActiveCfg = Release|Any CPU
+		{DA62EC45-A116-48FE-BDC5-301C5F4C4855}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

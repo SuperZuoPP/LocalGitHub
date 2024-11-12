@@ -31,7 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FastReport.WPF.Demo" Version="2024.2.1" />
     <PackageReference Include="HandyControl" Version="3.5.0" />
     <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -44,6 +43,24 @@
   <ItemGroup>
     <ProjectReference Include="..\WPFBase.Shared\WPFBase.Shared.csproj" />
     <ProjectReference Include="..\WPFHardware\WPFHardware.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="FastReport">
+      <HintPath>Assets\dll\FastReport.dll</HintPath>
+    </Reference>
+    <Reference Include="FastReport.Bars">
+      <HintPath>Assets\dll\FastReport.Bars.dll</HintPath>
+    </Reference>
+    <Reference Include="FastReport.Editor">
+      <HintPath>Assets\dll\FastReport.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="FastReport.Install">
+      <HintPath>Assets\dll\FastReport.Install.dll</HintPath>
+    </Reference>
+    <Reference Include="FastReport.VSDesign">
+      <HintPath>Assets\dll\FastReport.VSDesign.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

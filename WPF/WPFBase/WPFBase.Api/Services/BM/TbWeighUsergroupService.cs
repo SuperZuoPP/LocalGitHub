@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WPFBase.Api.Context.Model.BM;
+using WPFBase.Entities.BM;
 using WPFBase.Api.Context.UnitOfWork;
 using WPFBase.Api.Extensions;
 using WPFBase.Api.Services.SM;
@@ -28,14 +28,14 @@ namespace WPFBase.Api.Services.BM
         {
             try
             { 
-                var dbmodel = mapper.Map<TbWeighUsergroup>(modeldto);
-                var repository = unitOfWork.GetRepository<TbWeighUsergroup>();
+                var dbmodel = mapper.Map<tb_weigh_usergroup>(modeldto);
+                var repository = unitOfWork.GetRepository<tb_weigh_usergroup>();
                 var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.UserGroupName.Equals(modeldto.UserGroupName));
                 if (model == null)
                 {
                     dbmodel.CreateTime = DateTime.Now;
                     dbmodel.UserGroupCode = SystemBase.GetRndStrOnlyFor(20, true); 
-                    await unitOfWork.GetRepository<TbWeighUsergroup>().InsertAsync(dbmodel);
+                    await unitOfWork.GetRepository<tb_weigh_usergroup>().InsertAsync(dbmodel);
                     if (await unitOfWork.SaveChangesAsync() > 0)
                         return new ApiResponse(true, dbmodel);
                 }
@@ -54,7 +54,7 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var repository = unitOfWork.GetRepository<TbWeighUsergroup>();
+                var repository = unitOfWork.GetRepository<tb_weigh_usergroup>();
                 var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(id));
                 repository.Delete(model);
                 if (await unitOfWork.SaveChangesAsync() > 0)
@@ -71,7 +71,7 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var repository = unitOfWork.GetRepository<TbWeighUsergroup>();
+                var repository = unitOfWork.GetRepository<tb_weigh_usergroup>();
                 var models = await repository.GetPagedListAsync(predicate:x=> string.IsNullOrWhiteSpace(query.Search) ? true : x.UserGroupName.Contains(query.Search),
                     pageIndex:query.PageIndex,
                     pageSize:query.PageSize,
@@ -88,7 +88,7 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var repository = unitOfWork.GetRepository<TbWeighUsergroup>();
+                var repository = unitOfWork.GetRepository<tb_weigh_usergroup>();
                 var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(id));
                 return new ApiResponse(true, model); 
             }
@@ -103,8 +103,8 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var dbmodel = mapper.Map<TbWeighUsergroup>(modeldto);
-                var repository = unitOfWork.GetRepository<TbWeighUsergroup>();
+                var dbmodel = mapper.Map<tb_weigh_usergroup>(modeldto);
+                var repository = unitOfWork.GetRepository<tb_weigh_usergroup>();
                 var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(dbmodel.Id));
                 model.LastModifiedTime = DateTime.Now; 
                 repository.Update(model);
@@ -129,7 +129,7 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var repository = unitOfWork.GetRepository<TbWeighOperator>();
+                var repository = unitOfWork.GetRepository<tb_weigh_operator>();
                 var models = await repository.GetPagedListAsync( x => (string.IsNullOrWhiteSpace(paramter.Search) ? true : x.UserName.Contains(paramter.Search))
                    && (!paramter.Status.HasValue || x.Status == (paramter.Status == 1)),
                     pageIndex: paramter.PageIndex,
@@ -147,7 +147,7 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var repository = unitOfWork.GetRepository<TbWeighOperator>();
+                var repository = unitOfWork.GetRepository<tb_weigh_operator>();
                 var count = await repository.CountAsync();
                 return new ApiResponse(true, count);
             }
@@ -161,7 +161,7 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var repository = unitOfWork.GetRepository<TbWeighGroupauthorityuser>();
+                var repository = unitOfWork.GetRepository<tb_weigh_groupauthorityusers>();
                 var models = await repository.GetPagedListAsync(predicate: x => string.IsNullOrWhiteSpace(query.Search) ? true : x.UserGroupCode.Equals(query.Search),
                     pageIndex: query.PageIndex,
                     pageSize: query.PageSize,
@@ -178,8 +178,8 @@ namespace WPFBase.Api.Services.BM
         {
             try
             { 
-                var dbmodel = mapper.Map<TbWeighGroupauthorityuser>(groupauthorityuserDto);
-                var repository = unitOfWork.GetRepository<TbWeighGroupauthorityuser>();
+                var dbmodel = mapper.Map<tb_weigh_groupauthorityusers>(groupauthorityuserDto);
+                var repository = unitOfWork.GetRepository<tb_weigh_groupauthorityusers>();
                 var model = await repository.GetFirstOrDefaultAsync(predicate: x => (x.UserCode.Equals(groupauthorityuserDto.UserCode) && x.UserGroupCode.Equals(groupauthorityuserDto.UserGroupCode) ));
                 if (model == null)
                 {
@@ -206,8 +206,8 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var dbmodel = mapper.Map<TbWeighGroupauthorityuser>(groupauthorityuserDto);
-                var repository = unitOfWork.GetRepository<TbWeighGroupauthorityuser>();
+                var dbmodel = mapper.Map<tb_weigh_groupauthorityusers>(groupauthorityuserDto);
+                var repository = unitOfWork.GetRepository<tb_weigh_groupauthorityusers>();
                 var model = await repository.GetFirstOrDefaultAsync(predicate: x => (x.UserCode.Equals(groupauthorityuserDto.UserCode) && x.UserGroupCode.Equals(groupauthorityuserDto.UserGroupCode)));
                 repository.Delete(model);
                 if (await unitOfWork.SaveChangesAsync() > 0)
@@ -225,7 +225,7 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var repository = unitOfWork.GetRepository<TbWeighGroupauthority>();
+                var repository = unitOfWork.GetRepository<tb_weigh_groupauthority>();
                 var models = await repository.GetPagedListAsync(predicate: x => string.IsNullOrWhiteSpace(parameter.Search) ? true : x.UserGroupCode.Equals(parameter.Search),
                     pageIndex: parameter.PageIndex,
                     pageSize: parameter.PageSize,
@@ -242,8 +242,8 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var dbmodel = mapper.Map<TbWeighGroupauthority>(tbWeighGroupauthorityDto);
-                var repository = unitOfWork.GetRepository<TbWeighGroupauthority>();
+                var dbmodel = mapper.Map<tb_weigh_groupauthority>(tbWeighGroupauthorityDto);
+                var repository = unitOfWork.GetRepository<tb_weigh_groupauthority>();
                 var model = await repository.GetFirstOrDefaultAsync(predicate: x => (x.UserGroupCode.Equals(tbWeighGroupauthorityDto.UserGroupCode) && x.AuthorityCode.Equals(tbWeighGroupauthorityDto.AuthorityCode)));
                 if (model == null)
                 {
@@ -268,8 +268,8 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var dbmodel = mapper.Map<TbWeighGroupauthority>(tbWeighGroupauthorityDto);
-                var repository = unitOfWork.GetRepository<TbWeighGroupauthority>();
+                var dbmodel = mapper.Map<tb_weigh_groupauthority>(tbWeighGroupauthorityDto);
+                var repository = unitOfWork.GetRepository<tb_weigh_groupauthority>();
                 var model = await repository.GetFirstOrDefaultAsync(predicate: x => (x.UserGroupCode.Equals(tbWeighGroupauthorityDto.UserGroupCode) && x.AuthorityCode.Equals(tbWeighGroupauthorityDto.AuthorityCode)));
                 repository.Delete(model);
                 if (await unitOfWork.SaveChangesAsync() > 0)

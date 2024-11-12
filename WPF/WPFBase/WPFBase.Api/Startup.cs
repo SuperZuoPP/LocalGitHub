@@ -18,8 +18,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using WPFBase.Api.Context;
 using WPFBase.Api.Context.Model;
-using WPFBase.Api.Context.Model.BM;
-using WPFBase.Api.Context.Model.SM;
+using WPFBase.Entities.BM;
+using WPFBase.Entities.SM;
 using WPFBase.Api.Context.Repository;
 using WPFBase.Api.Context.UnitOfWork;
 using WPFBase.Api.Extensions;
@@ -58,13 +58,13 @@ namespace WPFBase.Api
            .AddCustomRepository<Memo, MemoRepository>()
            .AddCustomRepository<User, UserRepository>()
            .AddCustomRepository<Operator, OperatorRepository>()
-           .AddCustomRepository<TbWeighOperator, TbWeighOperatorRepository>()
-           .AddCustomRepository<TbWeighUsergroup, TbWeighUsergroupRepository>()
-           .AddCustomRepository<TbWeighGroupauthorityuser, TbWeighGroupauthorityuserRepository>()
-           .AddCustomRepository<TbWeighMenu, TbWeighMenuRepository>()
-           .AddCustomRepository<TbWeighDatalineinfo, TbWeighDatalineinfoRepository>()
-           .AddCustomRepository<TbWeighPlan, TbWeighPlanRepository>()
-           .AddCustomRepository<TbWeighLittleplan, TbWeighLittleplanRepository>();
+           .AddCustomRepository<tb_weigh_operator, TbWeighOperatorRepository>()
+           .AddCustomRepository<tb_weigh_usergroup, TbWeighUsergroupRepository>()
+           .AddCustomRepository<tb_weigh_groupauthorityusers, TbWeighGroupauthorityuserRepository>()
+           .AddCustomRepository<tb_weigh_menu, TbWeighMenuRepository>()
+           .AddCustomRepository<tb_weigh_datalineinfo, TbWeighDatalineinfoRepository>()
+           .AddCustomRepository<tb_weigh_plan, TbWeighPlanRepository>()
+           .AddCustomRepository<tb_weigh_littleplan, TbWeighLittleplanRepository>();
 
             services.AddTransient<IToDoService, ToDoService>();
             services.AddTransient<ILoginService, LoginService>();

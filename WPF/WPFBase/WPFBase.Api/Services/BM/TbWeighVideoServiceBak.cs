@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
-using WPFBase.Api.Context.Model.BM;
+using WPFBase.Entities.BM;
 using WPFBase.Api.Context.UnitOfWork;
 using WPFBase.Api.Extensions;
 using WPFBase.Api.Services.SM; 
@@ -29,13 +29,13 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var dbmodel = mapper.Map<TbWeighVideo>(modeldto);
-                var repository = unitOfWork.GetRepository<TbWeighVideo>();
+                var dbmodel = mapper.Map<tb_weigh_video>(modeldto);
+                var repository = unitOfWork.GetRepository<tb_weigh_video>();
                 var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(modeldto.Id));
                 if (model == null)
                 {
                     dbmodel.CreateTime = DateTime.Now; 
-                    await unitOfWork.GetRepository<TbWeighVideo>().InsertAsync(dbmodel);
+                    await unitOfWork.GetRepository<tb_weigh_video>().InsertAsync(dbmodel);
                     if (await unitOfWork.SaveChangesAsync() > 0)
                         return new ApiResponse(true, dbmodel);
                 }
@@ -53,7 +53,7 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var repository = unitOfWork.GetRepository<TbWeighVideo>();
+                var repository = unitOfWork.GetRepository<tb_weigh_video>();
                 var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(id));
                 if (model != null) 
                 {
@@ -76,7 +76,7 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var repository = unitOfWork.GetRepository<TbWeighVideo>();
+                var repository = unitOfWork.GetRepository<tb_weigh_video>();
                 var models = await repository.GetPagedListAsync(predicate: x => string.IsNullOrWhiteSpace(query.Search) ? true : x.Ip.Contains(query.Search),
                     pageIndex: query.PageIndex,
                     pageSize: query.PageSize,
@@ -93,7 +93,7 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var repository = unitOfWork.GetRepository<TbWeighVideo>();
+                var repository = unitOfWork.GetRepository<tb_weigh_video>();
                 var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(id));
                 return new ApiResponse(true, model);
             }
@@ -108,8 +108,8 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var dbmodel = mapper.Map<TbWeighVideo>(modeldto);
-                var repository = unitOfWork.GetRepository<TbWeighVideo>();
+                var dbmodel = mapper.Map<tb_weigh_video>(modeldto);
+                var repository = unitOfWork.GetRepository<tb_weigh_video>();
                 var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(dbmodel.Id));
                 model.LastModifiedTime = DateTime.Now;
                 repository.Update(model);
@@ -168,8 +168,8 @@ namespace WPFBase.Api.Services.BM
             //方法二，分步查
             try
             {
-                var repository1 = unitOfWork.GetRepository<TbWeighVideo>();
-                var repository2 = unitOfWork.GetRepository<TbWeighDevicestatus>();
+                var repository1 = unitOfWork.GetRepository<tb_weigh_video>();
+                var repository2 = unitOfWork.GetRepository<tb_weigh_devicestatus>();
 
                 string videoTypeNo = parameter.VideoTypeNo.ToString();
                 int status = parameter.Status;

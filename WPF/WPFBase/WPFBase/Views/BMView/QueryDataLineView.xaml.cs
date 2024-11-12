@@ -45,7 +45,7 @@ namespace WPFBase.Views.BMView
             report.RegisterData(ds, "NorthWind");
             // var ds1 = TestData();
             // report.RegisterData(ds1, "NorthWind");
-            report.PrepareAsync(previewControl);
+            //report.PrepareAsync(previewControl);
         }
 
        

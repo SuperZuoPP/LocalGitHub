@@ -2,8 +2,8 @@
 using System;
 using System.Threading.Tasks;
 using WPFBase.Api.Context.Model;
-using WPFBase.Api.Context.Model.BM;
-using WPFBase.Api.Context.Model.SM;
+using WPFBase.Entities.BM;
+using WPFBase.Entities.SM;
 using WPFBase.Api.Context.UnitOfWork;
 using WPFBase.Api.Extensions;
 using WPFBase.Api.Services.SM;

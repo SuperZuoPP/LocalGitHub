@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using WPFBase.Api.Context.Model.BM;
+using WPFBase.Entities.BM;
 using WPFBase.Api.Context.UnitOfWork;
 using WPFBase.Api.Extensions;
 using WPFBase.Api.Services.SM;
@@ -28,14 +28,14 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var dbmodel = mapper.Map<TbWeighWeighbridgeoffice>(modeldto);
-                var repository = unitOfWork.GetRepository<TbWeighWeighbridgeoffice>();
+                var dbmodel = mapper.Map<tb_weigh_weighbridgeoffice>(modeldto);
+                var repository = unitOfWork.GetRepository<tb_weigh_weighbridgeoffice>();
                 var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(modeldto.Id));
                 if (model == null)
                 {
                     dbmodel.CreateTime = DateTime.Now;
                     dbmodel.WeighHouseCode = SystemBase.GetRndStrOnlyFor(20, true);
-                    await unitOfWork.GetRepository<TbWeighWeighbridgeoffice>().InsertAsync(dbmodel);
+                    await unitOfWork.GetRepository<tb_weigh_weighbridgeoffice>().InsertAsync(dbmodel);
                     if (await unitOfWork.SaveChangesAsync() > 0)
                         return new ApiResponse(true, dbmodel);
                 }
@@ -53,7 +53,7 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var repository = unitOfWork.GetRepository<TbWeighWeighbridgeoffice>();
+                var repository = unitOfWork.GetRepository<tb_weigh_weighbridgeoffice>();
                 var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(id));
                 if (model != null) 
                 {
@@ -76,7 +76,7 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var repository = unitOfWork.GetRepository<TbWeighWeighbridgeoffice>();
+                var repository = unitOfWork.GetRepository<tb_weigh_weighbridgeoffice>();
                 var models = await repository.GetPagedListAsync(predicate: x => string.IsNullOrWhiteSpace(query.Search) ? true : x.WeighHouseName.Contains(query.Search),
                     pageIndex: query.PageIndex,
                     pageSize: query.PageSize,
@@ -94,7 +94,7 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var repository = unitOfWork.GetRepository<TbWeighWeighbridgeoffice>();
+                var repository = unitOfWork.GetRepository<tb_weigh_weighbridgeoffice>();
                 var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(id));
                 return new ApiResponse(true, model);
             }
@@ -109,8 +109,8 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var dbmodel = mapper.Map<TbWeighWeighbridgeoffice>(modeldto);
-                var repository = unitOfWork.GetRepository<TbWeighWeighbridgeoffice>();
+                var dbmodel = mapper.Map<tb_weigh_weighbridgeoffice>(modeldto);
+                var repository = unitOfWork.GetRepository<tb_weigh_weighbridgeoffice>();
                 var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(dbmodel.Id));
                 model.LastModifiedTime = DateTime.Now;
                 repository.Update(model);
@@ -133,7 +133,7 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var repository = unitOfWork.GetRepository<TbWeighWeighbridgeoffice>();
+                var repository = unitOfWork.GetRepository<tb_weigh_weighbridgeoffice>();
                 var models = await repository.GetPagedListAsync(predicate: x =>x.OperateBit!=2 && x.Status==true,
                     orderBy: source => source.OrderByDescending(t => t.CreateTime));
                 return new ApiResponse(true, models);

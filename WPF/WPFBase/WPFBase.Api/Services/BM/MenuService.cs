@@ -9,7 +9,7 @@ using WPFBase.Shared.DTO.BM;
 using WPFBase.Shared.Parameters;
 using WPFBase.Api.Context.UnitOfWork;
 using System.Linq;
-using WPFBase.Api.Context.Model.BM;
+using WPFBase.Entities.BM;
 using System.Reflection.Metadata;
 
 namespace WPFBase.Api.Services.BM
@@ -30,7 +30,7 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var repository = unitOfWork.GetRepository<TbWeighMenu>();
+                var repository = unitOfWork.GetRepository<tb_weigh_menu>();
                 var models = await repository.GetPagedListAsync(predicate:
                    x => string.IsNullOrWhiteSpace(parameter.Search) ? true : x.MenuName.Contains(parameter.Search),
                    pageIndex: parameter.PageIndex,
@@ -48,7 +48,7 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var repository = unitOfWork.GetRepository<TbWeighMenu>();
+                var repository = unitOfWork.GetRepository<tb_weigh_menu>();
                 var models = await repository.GetPagedListAsync(predicate:
                    x => (string.IsNullOrWhiteSpace(parameter.Search) ? true : x.MenuName.Contains(parameter.Search))
                    && (!parameter.Status.HasValue || x.Status == (parameter.Status == 1)),
@@ -68,7 +68,7 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var repository = unitOfWork.GetRepository<TbWeighMenu>();
+                var repository = unitOfWork.GetRepository<tb_weigh_menu>();
                 var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(id));
                 return new ApiResponse(true, model);
             }
@@ -82,9 +82,9 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var model = mapper.Map<TbWeighMenu>(parameter); 
+                var model = mapper.Map<tb_weigh_menu>(parameter); 
                 model.CreateTime = DateTime.Now;
-                await unitOfWork.GetRepository<TbWeighMenu>().InsertAsync(model);
+                await unitOfWork.GetRepository<tb_weigh_menu>().InsertAsync(model);
                 if (await unitOfWork.SaveChangesAsync() > 0)
                     return new ApiResponse(true, model);
                 return new ApiResponse(false, "添加数据失败");
@@ -99,7 +99,7 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var repository = unitOfWork.GetRepository<TbWeighMenu>();
+                var repository = unitOfWork.GetRepository<tb_weigh_menu>();
                 var count = await repository.CountAsync();
                 return new ApiResponse(true, count);
             }
@@ -112,8 +112,8 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var dbmodel = mapper.Map<TbWeighMenu>(parameter);
-                var repository = unitOfWork.GetRepository<TbWeighMenu>();
+                var dbmodel = mapper.Map<tb_weigh_menu>(parameter);
+                var repository = unitOfWork.GetRepository<tb_weigh_menu>();
                 var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(dbmodel.Id) && !x.Attribute15.Equals("1"));//1系统菜单
                 if (model != null)
                 {
@@ -141,7 +141,7 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var repository = unitOfWork.GetRepository<TbWeighMenu>();
+                var repository = unitOfWork.GetRepository<tb_weigh_menu>();
                 var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(id) && !x.Attribute15.Equals("1"));
                 repository.Delete(model);
                 if (await unitOfWork.SaveChangesAsync() > 0)

@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using WPFBase.Api.Context.Model;
-using WPFBase.Api.Context.Model.BM;
-using WPFBase.Api.Context.Model.SM;
+using WPFBase.Entities.BM;
+using WPFBase.Entities.SM;
 
 namespace WPFBase.Api.Context
 {
@@ -17,24 +17,24 @@ namespace WPFBase.Api.Context
         public DbSet<User> User { get; set; } 
         public DbSet<Operator> Operator { get; set; }
 
-        public DbSet<TbWeighOperator> TbWeighOperator { get; set; }
+        public DbSet<tb_weigh_operator> TbWeighOperator { get; set; }
 
-        public DbSet<TbWeighUsergroup> TbWeighUsergroup { get; set; } 
-        public DbSet<TbWeighGroupauthorityuser> TbWeighGroupauthorityuser { get; set; } 
-        public DbSet<TbWeighMenu> TbWeighMenu { get; set; }
+        public DbSet<tb_weigh_usergroup> TbWeighUsergroup { get; set; } 
+        public DbSet<tb_weigh_groupauthorityusers> TbWeighGroupauthorityuser { get; set; } 
+        public DbSet<tb_weigh_menu> TbWeighMenu { get; set; }
 
-        public DbSet<TbWeighGroupauthority> TbWeighGroupauthority { get; set; }
+        public DbSet<tb_weigh_groupauthority> TbWeighGroupauthority { get; set; }
 
-        public DbSet<TbWeighDatalineinfo> TbWeighDatalineinfo { get; set; }
+        public DbSet<tb_weigh_datalineinfo> tb_weigh_datalineinfo { get; set; }
 
-        public DbSet<TbWeighLittleplan> TbWeighLittleplan { get; set; }
+        public DbSet<tb_weigh_littleplan> TbWeighLittleplan { get; set; }
 
-        public DbSet<TbWeighPlan> TbWeighPlan { get; set; }
+        public DbSet<tb_weigh_plan> TbWeighPlan { get; set; }
 
-        public DbSet<TbWeighWeighbridgeoffice> TbWeighOffice { get; set; }
+        public DbSet<tb_weigh_weighbridgeoffice> TbWeighOffice { get; set; }
 
-        public DbSet<TbWeighVideo> TbWeighVideo { get; set; }
+        public DbSet<tb_weigh_video> TbWeighVideo { get; set; }
 
-        public DbSet<TbWeighDevicestatus> TbWeighDevicestatus { get; set; }
+        public DbSet<tb_weigh_devicestatus> TbWeighDevicestatus { get; set; }
     }
 }

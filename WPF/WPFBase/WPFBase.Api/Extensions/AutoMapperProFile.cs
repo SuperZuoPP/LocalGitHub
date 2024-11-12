@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using AutoMapper.Configuration;
 using WPFBase.Api.Context.Model;
-using WPFBase.Api.Context.Model.BM;
-using WPFBase.Api.Context.Model.SM;
+using WPFBase.Entities.BM;
+using WPFBase.Entities.SM;
 using WPFBase.Api.Context.UnitOfWork;
 using WPFBase.Shared.DTO.BM;
 using WPFBase.Shared.DTO.SM;
@@ -17,14 +17,14 @@ namespace WPFBase.Api.Extensions
             CreateMap<ToDo, ToDoDto>().ReverseMap();
             CreateMap<User, UserDto>().ReverseMap();
             CreateMap<Operator, OperatorDto>().ReverseMap();
-            CreateMap<TbWeighOperator, TbWeighOperatorDto>().ReverseMap();
-            CreateMap<TbWeighUsergroup, TbWeighUsergroupDto>().ReverseMap();
-            CreateMap<TbWeighGroupauthorityuser, TbWeighGroupauthorityuserDto>().ReverseMap();
-            CreateMap<TbWeighMenu, TbWeighMenuDto>().ReverseMap();
-            CreateMap<TbWeighGroupauthority, TbWeighGroupauthorityDto>().ReverseMap(); 
-            CreateMap<TbWeighDatalineinfo, TbWeighDatalineinfoDto>().ReverseMap();
-            CreateMap<TbWeighLittleplan, TbWeighLittleplanDto>().ReverseMap();
-
+            CreateMap<tb_weigh_operator, TbWeighOperatorDto>().ReverseMap();
+            CreateMap<tb_weigh_usergroup, TbWeighUsergroupDto>().ReverseMap();
+            CreateMap<tb_weigh_groupauthorityusers, TbWeighGroupauthorityuserDto>().ReverseMap();
+            CreateMap<tb_weigh_menu, TbWeighMenuDto>().ReverseMap();
+            CreateMap<tb_weigh_groupauthority, TbWeighGroupauthorityDto>().ReverseMap(); 
+            CreateMap<tb_weigh_datalineinfo, TbWeighDatalineinfoDto>().ReverseMap();
+            CreateMap<tb_weigh_littleplan, TbWeighLittleplanDto>().ReverseMap();
+            CreateMap<tb_weigh_plan, TbWeighPlanDto>().ReverseMap();
         }
     }
 } 

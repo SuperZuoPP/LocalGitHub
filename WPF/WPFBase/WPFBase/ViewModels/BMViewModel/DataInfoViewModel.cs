@@ -101,9 +101,9 @@ namespace WPFBase.ViewModels.BMViewModel
             set { SetProperty<string>(ref qMaterialName, value); }
         }
 
-        private DateTime queryTime=DateTime.Today;
+        private DateTime queryTime=DateTime.Now.AddMonths(-11);
 
-        public DateTime QueryTime
+        public DateTime QueryTime 
         {
             get { return queryTime; }
             set { SetProperty<DateTime>(ref queryTime, value); }

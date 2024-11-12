@@ -10,8 +10,8 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using WPFBase.Api.Context.Model;
-using WPFBase.Api.Context.Model.BM;
-using WPFBase.Api.Context.Model.SM;
+using WPFBase.Entities.BM;
+using WPFBase.Entities.SM;
 using WPFBase.Api.Context.UnitOfWork;
 using WPFBase.Api.Extensions;
 using WPFBase.Api.Services.SM;
@@ -37,7 +37,7 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var repository = unitOfWork.GetRepository<TbWeighOperator>();
+                var repository = unitOfWork.GetRepository<tb_weigh_operator>();
                 var operators = await repository.GetPagedListAsync(predicate:
                    x => (string.IsNullOrWhiteSpace(paramter.Search) ? true : x.UserName.Contains(paramter.Search))
                    && (!paramter.Status.HasValue || x.Status == (paramter.Status == 1)),//(paramter.Status == null ? true : x.Status.Equals(paramter.Status)),
@@ -59,7 +59,7 @@ namespace WPFBase.Api.Services.BM
             try
             {
                 password = EncryptTools.GetMD5(account+password);
-                var model = await  unitOfWork.GetRepository<TbWeighOperator>().GetFirstOrDefaultAsync(predicate: x => (x.UserNumber.Equals(account)) && (x.Password.Equals(password)));
+                var model = await  unitOfWork.GetRepository<tb_weigh_operator>().GetFirstOrDefaultAsync(predicate: x => (x.UserNumber.Equals(account)) && (x.Password.Equals(password)));
                 if (model == null)
                     return new ApiResponse("账号密码错误！请重新输入！");
 
@@ -81,8 +81,8 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var model = mapper.Map<TbWeighOperator>(operatorDto);
-                var repository = unitOfWork.GetRepository<TbWeighOperator>();
+                var model = mapper.Map<tb_weigh_operator>(operatorDto);
+                var repository = unitOfWork.GetRepository<tb_weigh_operator>();
                 var operatormodel = await repository.GetFirstOrDefaultAsync(predicate: x => x.UserNumber.Equals(model.UserNumber));
                 if (operatormodel != null)
                     return new ApiResponse($"当前账号:{model.UserNumber}已存在,请重新注册！");
@@ -107,7 +107,7 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var repository = unitOfWork.GetRepository<TbWeighOperator>();
+                var repository = unitOfWork.GetRepository<tb_weigh_operator>();
                 var count = await repository.CountAsync();  
                 return new ApiResponse(true, count);
             }
@@ -121,7 +121,7 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var repository = unitOfWork.GetRepository<TbWeighOperator>();
+                var repository = unitOfWork.GetRepository<tb_weigh_operator>();
                 var models = await repository.GetPagedListAsync(predicate:
                    x => string.IsNullOrWhiteSpace(parameter.Search) ? true : x.UserName.Contains(parameter.Search),
                    pageIndex: parameter.PageIndex,
@@ -140,7 +140,7 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var repository = unitOfWork.GetRepository<TbWeighOperator>();
+                var repository = unitOfWork.GetRepository<tb_weigh_operator>();
                 var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(id));
                 return new ApiResponse(true, model);
             }
@@ -155,15 +155,15 @@ namespace WPFBase.Api.Services.BM
             try
             {
 
-                var dbmodel = mapper.Map<TbWeighOperator>(tbWeighOperator);
-                var repository = unitOfWork.GetRepository<TbWeighOperator>();
+                var dbmodel = mapper.Map<tb_weigh_operator>(tbWeighOperator);
+                var repository = unitOfWork.GetRepository<tb_weigh_operator>();
                 var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.UserNumber.Equals(tbWeighOperator.UserNumber));
                 if (model == null) 
                 {
                     dbmodel.CreateTime = DateTime.Now;
                     dbmodel.UserCode = SystemBase.GetRndStrOnlyFor(20, true);
                     dbmodel.Password = EncryptTools.GetMD5(dbmodel.UserNumber+dbmodel.Password);
-                    await unitOfWork.GetRepository<TbWeighOperator>().InsertAsync(dbmodel);
+                    await unitOfWork.GetRepository<tb_weigh_operator>().InsertAsync(dbmodel);
                     if (await unitOfWork.SaveChangesAsync() > 0)
                         return new ApiResponse(true, dbmodel);
                 }
@@ -180,8 +180,8 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var dbmodel= mapper.Map<TbWeighOperator>(tbWeighOperator);
-                var repository = unitOfWork.GetRepository<TbWeighOperator>();
+                var dbmodel= mapper.Map<tb_weigh_operator>(tbWeighOperator);
+                var repository = unitOfWork.GetRepository<tb_weigh_operator>();
                 var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(dbmodel.Id));
                 model.UserNumber = dbmodel.UserNumber;
                 model.Password = EncryptTools.GetMD5(dbmodel.UserNumber+dbmodel.Password);
@@ -204,7 +204,7 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var repository = unitOfWork.GetRepository<TbWeighOperator>();
+                var repository = unitOfWork.GetRepository<tb_weigh_operator>();
                 var model = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(id));
                 repository.Delete(model); 
                 if (await unitOfWork.SaveChangesAsync() > 0)
@@ -221,9 +221,9 @@ namespace WPFBase.Api.Services.BM
         {
             try
             {
-                var repository1 = unitOfWork.GetRepository<TbWeighGroupauthority>();
-                var repository2 = unitOfWork.GetRepository<TbWeighGroupauthorityuser>();
-                var repository3 = unitOfWork.GetRepository<TbWeighMenu>();
+                var repository1 = unitOfWork.GetRepository<tb_weigh_groupauthority>();
+                var repository2 = unitOfWork.GetRepository<tb_weigh_groupauthorityusers>();
+                var repository3 = unitOfWork.GetRepository<tb_weigh_menu>();
           
                 // Step 1: Query data from repository1 based on usercode
                 var groupAuthorities = await repository1.GetAll()
